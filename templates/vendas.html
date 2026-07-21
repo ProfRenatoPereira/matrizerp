@@ -49,79 +49,79 @@
         }
     </style>
 </head>
-<body>
+<body class="alto-contraste">
 <!-- Barra de Acessibilidade Superior Oficial -->
-<div class="barra-acessibilidade">
-    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+<div class="barra-acessibilidade" style="background: #111; padding: 10px; border-bottom: 1px solid #333; display: flex; gap: 10px;">
+    <button class="btn-acessibilidade" style="background: #FFFF00; color: #000; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(-1)">A-</button>
 </div>
 
 <!-- Cabeçalho Principal Terceiro ADM Associados -->
-<header class="cabecalho-corporativo">
-    <div class="identidade-container">
-        <div class="branding-flex">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+<header class="cabecalho-corporativo" style="background: #111; padding: 20px; border-bottom: 2px solid #FFFF00;">
+    <div class="identidade-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <div class="branding-flex" style="display: flex; align-items: center; gap: 15px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px; border: 1px solid #fff;">
             <div class="texto-empresa">
-                <h1>TERCEIRO ADM ASSOCIADOS</h1>
-                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+                <h1 style="color: #FFFF00; margin: 0; font-size: 22px;">TERCEIRO ADM ASSOCIADOS</h1>
+                <p style="color: #bbb; margin: 5px 0 0 0; font-size: 13px;">Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
             </div>
         </div>
-        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+        <button class="menu-hamburguer" style="background: none; border: 1px solid #fff; color: #fff; font-size: 24px; cursor: pointer; padding: 5px 12px; border-radius: 4px;" onclick="alternarMenuMobile()">☰</button>
     </div>
-
     <!-- Navegação Responsiva com Menus Dropdown Unificados -->
-    <nav class="nav-container" id="menuNavegacao">
-        <ul class="menu-cascata">
+    <nav class="nav-container" id="menuNavegacao" style="margin-top: 15px;">
+        <ul class="menu-cascata" style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 15px;">
             <li class="item-menu">
-                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <a href="#" class="link-principal" style="color: #FFFF00; font-weight: bold; text-decoration: none;">🏢 Módulos Iniciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
-                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
-                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
-                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
-                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
-                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
-                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                    <li><a href="/estrutura" style="color: #fff; text-decoration: none;">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas" style="color: #fff; text-decoration: none;">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh" style="color: #fff; text-decoration: none;">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro" style="color: #fff; text-decoration: none;">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes" style="color: #fff; text-decoration: none;">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras" style="color: #fff; text-decoration: none;">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais" style="color: #fff; text-decoration: none;">7. Almoxarifado (Materiais)</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🛠️ Custos & Engenharia ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
-                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                    <li><a href="/engenharia" style="color: #fff; text-decoration: none;">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao" style="color: #fff; text-decoration: none;">9. Controladoria e Precificação</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">💰 Operações Comerciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
-                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                    <li><a href="/vendas" style="color: #FFFF00; text-decoration: none; border-bottom: 2px solid #FFFF00;">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque" style="color: #fff; text-decoration: none;">11. Inventário de Acabados</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🏭 Chão de Fábrica & ROI ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
-                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                    <li><a href="/pcp" style="color: #fff; text-decoration: none;">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi" style="color: #fff; text-decoration: none;">13. Indicadores de Retorno (ROI)</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
 </header>
+
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box;">
     
-<div class="container">
     <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
-<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
-    <div>
-        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
-        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    <div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #111; border: 2px solid #FFFF00; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #fff; box-sizing: border-box; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <h4 style="margin: 0; font-size: 13px; text-transform: uppercase; color: #FFFF00;">💰 Caixa Operacional Disponível (Giro)</h4>
+            <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace; color: #00ff00;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+        </div>
+        <div style="text-align: right; border-left: 2px solid #333; padding-left: 20px;">
+            <span style="font-size: 12px; font-weight: bold; color: #FFFF00;">Aporte Inicial de Capital:</span><br>
+            <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+        </div>
     </div>
-    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
-        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
-        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
-    </div>
-</div>
 
     <h2>Página 8: Painel de Vendas e Faturamento de Pedidos</h2>
     
@@ -129,90 +129,94 @@
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ category }}" style="padding: 15px; margin-bottom: 20px; border-radius: 4px; background-color: {% if category=='success' %}#d4edda{% elif category=='warning' %}#fff3cd{% else %}#f8d7da{% endif %}; color: {% if category=='success' %}#155724{% elif category=='warning' %}#856404{% else %}#721c24{% endif %}; font-weight: bold; border: 1px solid;">
+          <div class="alert alert-{{ category }}" style="padding: 15px; margin-bottom: 20px; border-radius: 4px; background-color: #111; color: {% if category=='success' %}#00ff00{% elif category=='warning' %}#FFFF00{% else %}#ff4444{% endif %}; font-weight: bold; border: 2px solid {% if category=='success' %}#00ff00{% elif category=='warning' %}#FFFF00{% else %}#ff4444{% endif %}; font-family: monospace; font-size: 14px;">
             {{ message }}
           </div>
         {% endfor %}
       {% endif %}
     {% endwith %}
-
     <!-- Lançamento Comercial Card Reformado -->
-    <div class="card-vendas" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 25px;">
-        <h3>✍️ Registrar Nova Transação Comercial</h3>
+    <div class="card-vendas" style="background: #121212; padding: 20px; border-radius: 8px; border: 2px solid #333; margin-bottom: 25px; color: #fff;">
+        <h3 style="color: #FFFF00; margin-top: 0; font-size: 16px; text-transform: uppercase;">✍️ Registrar Nova Transação Comercial</h3>
         <form action="/lancar_venda" method="POST">
             <div class="grid-formulario">
                 <div class="form-group">
-                    <label for="vendas_produto_id">Selecionar Produto:</label>
-                    <select name="produto_id" id="vendas_produto_id" required onchange="verificarDisponibilidadeBotao()">
+                    <label for="vendas_produto_id" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Selecionar Produto:</label>
+                    <select name="produto_id" id="vendas_produto_id" required onchange="verificarDisponibilidadeBotao()" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
                         {% for prod in produtos %}
-                            <option value="{{ prod.id }}" data-estoque="{{ prod.estoque_atual }}">
-                                {{ prod.codigo_produto }} - {{ prod.nome_produto }} (Estoque: {{ prod.estoque_atual }} un)
+                            <!-- Mapeamento Neon PostgreSQL: prod=id, prod=codigo_produto, prod=nome_produto, prod=estoque_atual -->
+                            <option value="{{ prod }}" data-estoque="{{ prod }}" style="background: #121212;">
+                                {{ prod }} - {{ prod }} (Estoque: {{ prod }} un)
                             </option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="vendas_quantidade">Quantidade:</label>
-                    <input type="number" name="quantidade" id="vendas_quantidade" min="1" required value="1" oninput="verificarDisponibilidadeBotao()">
+                    <label for="vendas_quantidade" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Quantidade:</label>
+                    <input type="number" name="quantidade" id="vendas_quantidade" min="1" required value="1" oninput="verificarDisponibilidadeBotao()" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box; font-family: monospace;">
                 </div>
                 <div class="form-group">
-                    <label for="desconto_percentual">Desconto Concedido (%):</label>
-                    <input type="number" step="0.01" name="desconto_percentual" id="desconto_percentual" min="0" max="100" value="0">
+                    <label for="desconto_percentual" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Desconto Concedido (%):</label>
+                    <input type="number" step="0.01" name="desconto_percentual" id="desconto_percentual" min="0" max="100" value="0" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box; font-family: monospace;">
                 </div>
                 <div class="form-group">
-                    <label for="observacoes">Condições / Observações:</label>
-                    <input type="text" name="observacoes" id="observacoes" placeholder="Ex: Cliente solicita entrega expressa">
+                    <label for="observacoes" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Condições / Observações:</label>
+                    <input type="text" name="observacoes" id="observacoes" placeholder="Ex: Cliente solicita entrega expressa" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
                 </div>
             </div>
             <div style="margin-top: 20px;">
-                <button type="submit" id="btnAcaoVendas" class="btn btn-success" style="width: 100%; font-weight: bold; padding: 12px; font-size: 16px; cursor: pointer;"></button>
+                <button type="submit" id="btnAcaoVendas" style="width: 100%; font-weight: bold; padding: 14px; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; text-transform: uppercase; tracking-wider; transition: all;"></button>
             </div>
         </form>
     </div>
 
-    <h3>🧾 Histórico de Faturamento e Carteira de Pedidos</h3>
-        <!-- Contêiner de rolagem para garantir a responsividade em celulares -->
-        <div style="overflow-x: auto; width: 100%; margin-bottom: 20px; -webkit-overflow-scrolling: touch;">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID Transação</th>
-                        <th>Código / Item</th>
-                        <th>Volume</th>
-                        <th>Preço Unitário</th>
-                        <th>Logística / Observações Cadastradas</th>
-                        <th>Ações Fiscais</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for ped in pedidos %}
-                    <tr>
-                        <td><code>NF-00{{ ped.id }}</code></td>
-                        <td><code>{{ ped.codigo_produto }}</code> - {{ ped.nome_produto }}</td>
-                        <td>{{ ped.quantidade }} un</td>
-                        <td>R$ {{ "%.2f"|format(ped.preco_venda_final) }}</td>
-                        <td><small style="color: #444; font-weight: 500;">{{ ped.observacoes }}</small></td>
-                        <td>
-                            <div style="display: flex; gap: 5px; align-items: center;">
-                                <a href="/imprimir_nf/{{ ped.id }}" target="_blank" class="btn btn-primary" style="font-size: 11px; padding: 5px 8px; text-decoration: none; font-weight: bold; display: inline-block;">🖨️ Emitir Danfe / NF</a>
-                                <form action="/deletar_venda/{{ ped.id }}" method="POST" style="display:inline; margin:0;" onsubmit="return confirm('Deseja estornar esta transação e devolver os itens?');">
-                                    <button type="submit" class="btn btn-danger" style="font-size: 11px; padding: 5px 8px; font-weight: bold; cursor: pointer;">❌ Estornar</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+    <h3 style="color: #FFFF00; margin-top: 30px; margin-bottom: 15px; font-size: 16px; text-transform: uppercase;">🧾 Histórico de Faturamento e Carteira de Pedidos</h3>
+    <div style="overflow-x: auto; width: 100%; margin-bottom: 20px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; font-family: monospace;">
+            <thead>
+                <tr style="border-bottom: 2px solid #333; color: #FFFF00;">
+                    <th style="padding: 10px;">ID Transação</th>
+                    <th style="padding: 10px;">Código / Item</th>
+                    <th style="padding: 10px;">Volume</th>
+                    <th style="padding: 10px; text-align: right;">Preço Unitário</th>
+                    <th style="padding: 10px;">Logística / Observações Cadastradas</th>
+                    <th style="padding: 10px; text-align: center;">Ações Fiscais</th>
+                </tr>
+            </thead>
+            <tbody style="color: #fff;">
+                {% for ped in pedidos %}
+                <tr style="border-bottom: 1px solid #222;">
+                    <!-- Mapeamento posicional do Neon PostgreSQL: 0=id, 5=codigo_produto, 6=nome_produto, 2=quantidade, 7=preco_venda_final, 4=observacoes -->
+                    <td style="padding: 10px;"><code>NF-00{{ ped }}</code></td>
+                    <td style="padding: 10px;"><code>{{ ped }}</code> - <span style="font-family: sans-serif;">{{ ped }}</span></td>
+                    <td style="padding: 10px; color: #00ff00; font-weight: bold;">{{ ped }} un</td>
+                    <td style="padding: 10px; text-align: right; color: #00ff00;">R$ {{ "%.2f"|format(ped) }}</td>
+                    <td style="padding: 10px; color: #bbb; font-family: sans-serif;"><small>{{ ped if ped else '--' }}</small></td>
+                    <td style="padding: 10px; text-align: center;">
+                        <div style="display: flex; gap: 5px; align-items: center; justify-content: center;">
+                            <a href="/imprimir_nf/{{ ped }}" target="_blank" style="font-size: 11px; padding: 5px 10px; background: #222; border: 1px solid #FFFF00; color: #FFFF00; text-decoration: none; font-weight: bold; border-radius: 4px; text-transform: uppercase;">🖨️ Emitir Danfe</a>
+                            <form action="/deletar_venda/{{ ped }}" method="POST" style="display:inline; margin:0;" onsubmit="return confirm('Deseja estornar esta transação e devolver os itens?');">
+                                <button type="submit" style="font-size: 11px; padding: 5px 10px; background: #222; border: 1px solid #ff4444; color: #ff4444; font-weight: bold; cursor: pointer; border-radius: 4px; text-transform: uppercase;">❌ Estornar</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" style="padding: 20px; text-align: center; color: #555; font-family: sans-serif;">Nenhum faturamento de pedido gerado ou integrado em carteira comercial.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-
-    <script>
+</div>
+<script>
     function verificarDisponibilidadeBotao() {
         const select = document.getElementById('vendas_produto_id');
-        if (!select || !select.options.length) return;
+        if (!select || !select.options.length || select.selectedIndex === -1) return;
         
         const option = select.options[select.selectedIndex];
+        const {0: id, 1: codigo, 2: nome, 3: estoque} = option.text.split(' - ');
         const estoqueDisponivel = parseFloat(option.getAttribute('data-estoque')) || 0;
         const qtdDigitada = parseFloat(document.getElementById('vendas_quantidade').value) || 0;
         const btn = document.getElementById('btnAcaoVendas');
@@ -221,10 +225,14 @@
         
         if(qtdDigitada > estoqueDisponivel) {
             btn.innerText = "🛒 Emitir Pedido sob Encomenda (Calcular Prazo de Entrega via PCP)";
-            btn.className = "btn btn-primary"; // Azul sinalizando encomenda no PCP
+            btn.style.background = "#222";
+            btn.style.border = "2px solid #FFFF00";
+            btn.style.color = "#FFFF00";
         } else {
             btn.innerText = "💾 Efetivar Venda Imediata (Faturar do Estoque Disponível)";
-            btn.className = "btn btn-success"; // Verde para faturamento imediato
+            btn.style.background = "#FFFF00";
+            btn.style.border = "none";
+            btn.style.color = "#000";
         }
     }
 
@@ -240,16 +248,14 @@
         }
     }
     
-    // Reformado para usar a folha de estilo nativa do sistema em vez do filtro cego
     function alternarAltoContraste() {
         const corpo = document.body;
         corpo.classList.toggle('alto-contraste');
     }
 
-    // Inicializa a verificação assim que os dados carregam
     window.onload = function() {
         verificarDisponibilidadeBotao();
     };
-    </script>
+</script>
 </body>
 </html>
