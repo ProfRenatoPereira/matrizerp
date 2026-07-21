@@ -1,0 +1,250 @@
+/* Variáveis de Cores para o Tema Industrial */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #18bc9c;
+    --danger-color: #e74c3c;
+    --background-color: #ecf0f1;
+    --card-color: #ffffff;
+    --text-color: #2c3e50;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    transition: all 0.2s ease;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+input[type="text"], input[type="password"], input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input:readonly, input[readonly] {
+    background-color: #eaeded;
+    color: #7f8c8d;
+    font-weight: bold;
+    border-color: var(--secondary-color);
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+}
+
+.btn-primary { background-color: #1c3144; }
+.btn-success { background-color: var(--secondary-color); }
+.btn-danger { background-color: var(--danger-color); }
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+}
+
+.data-table th, .data-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.data-table th {
+    background-color: #243a4e;
+    color: white;
+}
+/* --- BARRA DE ACESSIBILIDADE SUPERIOR --- */
+.barra-acessibilidade {
+    background-color: #0b1a30;
+    padding: 6px 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #1a2a40;
+}
+.btn-acessibilidade {
+    background-color: #1c3144;
+    color: white;
+    border: 1px solid #3f5e77;
+    padding: 4px 10px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.btn-acessibilidade:hover { background-color: #18bc9c; }
+
+/* --- CABEÇALHO CORPORATIVO --- */
+.cabecalho-corporativo {
+    background-color: #243a4e;
+    padding: 15px 25px;
+    color: white;
+    border-bottom: 2px solid #1c2d3d;
+    position: relative;
+}
+.identidade-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+}
+.branding-flex {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.texto-empresa h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+}
+.texto-empresa p {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    color: #b0c4de;
+}
+
+/* --- BOTÃO HAMBÚRGUER (MOBILE) --- */
+.menu-hamburguer {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* --- MENU EM CASCATA --- */
+.nav-container {
+    border-top: 1px solid #3f5e77;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+.menu-cascata {
+    display: flex;
+    gap: 25px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.item-menu { position: relative; }
+.link-principal {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 13px;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    display: block;
+    border-radius: 4px;
+}
+.link-principal:hover { background-color: #1c3144; }
+
+/* Submenu dropdown desktop */
+.sub-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #ffffff;
+    min-width: 240px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1000;
+}
+.sub-menu li a {
+    color: #243a4e;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    border-bottom: 1px solid #f1f3f5;
+}
+.sub-menu li a:hover { background-color: #243a4e; color: white; }
+.item-menu:hover .sub-menu { display: block; }
+
+/* --- RESPONSIVIDADE: MOBILE --- */
+@media (max-width: 992px) {
+    .menu-hamburguer { display: block; }
+    .nav-container {
+        display: none;
+        width: 100%;
+    }
+    .nav-container.ativo {
+        display: block;
+    }
+    .menu-cascata {
+        flex-direction: column;
+        gap: 5px;
+        width: 100%;
+    }
+    .sub-menu {
+        position: static;
+        display: block;
+        box-shadow: none;
+        background-color: #1c3144;
+        border-radius: 0;
+        margin-top: 5px;
+    }
+    .sub-menu li a {
+        color: #ffffff;
+        padding-left: 25px;
+        border-bottom: 1px solid #243a4e;
+    }
+    .sub-menu li a:hover { background-color: #18bc9c; }
+}
+
+/* --- ADAPTAÇÃO BIG TVS 80" --- */
+@media (min-width: 1900px) {
+    .container { max-width: 92%; }
+    .texto-empresa h1 { font-size: 32px; }
+    .texto-empresa p { font-size: 16px; }
+    .link-principal { font-size: 18px; }
+    .sub-menu li a { font-size: 16px; min-width: 300px; }
+    .data-table th, .data-table td { font-size: 16px; padding: 16px; }
+}
+
+
+
+.alto-contraste .card-caixa-mestre {
+    background-color: #1a1a1a !important;
+    border: 2px solid #ffffff !important;
+    color: #00ff00 !important;
+}
+.alto-contraste .card-caixa-mestre h4, .alto-contraste .card-caixa-mestre span {
+    color: #ffffff !important;
+}

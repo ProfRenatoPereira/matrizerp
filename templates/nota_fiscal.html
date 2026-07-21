@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DANFE Fictícia - NF-{{ p.id }}</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <style>
+        body { font-family: 'Courier New', Courier, monospace; margin: 20px; color: #000; font-size: 12px; }
+        .nf-box { border: 2px solid #000; padding: 15px; max-width: 800px; margin: 0 auto; background:#fff; }
+        .header { text-align: center; border-bottom: 2px dashed #000; padding-bottom: 10px; margin-bottom: 15px; }
+        .row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .footer-obs { margin-top: 20px; border-top: 2px dashed #000; padding-top: 10px; font-style: italic; }
+        .btn-print { background: #000; color: #fff; padding: 10px; border: none; font-weight: bold; cursor: pointer; display: block; margin: 10px auto; }
+        
+        /* CSS de Segurança para Alto Contraste Nativo sem quebrar o layout */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .nf-box {
+            background-color: #121212 !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .header, .alto-contraste .footer-obs {
+            border-bottom-color: #ffffff !important;
+            border-top-color: #ffffff !important;
+        }
+        .alto-contraste hr {
+            border-color: #ffffff !important;
+        }
+        .alto-contraste .btn-print {
+            background: #ffffff !important;
+            color: #000000 !important;
+        }
+
+        /* Regras exclusivas para organizar a impressão limpa */
+        @media print { 
+            .btn-print, 
+            .barra-acessibilidade, 
+            .cabecalho-corporativo, 
+            #menuNavegacao { 
+                display: none !important; 
+            } 
+            body { 
+                margin: 0; 
+                padding: 0; 
+                background-color: #ffffff !important;
+                color: #000000 !important;
+            }
+            .nf-box { 
+                border: 2px solid #000 !important;
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                max-width: 100%;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+ 
+<!-- Barra de Acessibilidade Superior Oficial -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+</div>
+
+<!-- Cabeçalho Principal Terceiro ADM Associados -->
+<header class="cabecalho-corporativo">
+    <div class="identidade-container">
+        <div class="branding-flex">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+            <div class="texto-empresa">
+                <h1>TERCEIRO ADM ASSOCIADOS</h1>
+                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+            </div>
+        </div>
+        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+    </div>
+
+    <!-- Navegação Responsiva com Menus Dropdown Unificados -->
+    <nav class="nav-container" id="menuNavegacao">
+        <ul class="menu-cascata">
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+    
+    <button class="btn-print" onclick="window.print()">🖨️ Emitir via Impressora</button>
+
+    <div class="nf-box">
+        <div class="header">
+            <h2>MÁQUINA METALÚRGICA S.A. - NOTA FISCAL ELETRÔNICA SIMULADA</h2>
+            <p>SISTEMA ERP PEDAGÓGICO PCP | DOCUMENTO AUXILIAR DA DANFE</p>
+            <strong>NÚMERO DA NOTA: NF-000{{ p.id }} | SÉRIE: 1</strong>
+        </div>
+
+        <h3>DADOS DO PRODUTO E FATURAMENTO</h3>
+        <div class="row">
+            <span><strong>PRODUTO:</strong> {{ p.codigo_produto }} - {{ p.nome_produto }}</span>
+            <span><strong>QUANTIDADE:</strong> {{ p.quantidade }} un</span>
+        </div>
+        <div class="row">
+            <span><strong>PREÇO UNITÁRIO:</strong> R$ {{ "%.2f"|format(p.preco_venda_final) }}</span>
+            <span><strong>SUBTOTAL:</strong> R$ {{ "%.2f"|format(subtotal) }}</span>
+        </div>
+        <div class="row">
+            <span><strong>DESCONTO APLICADO:</strong> {{ p.desconto_percentual }}% (-R$ {{ "%.2f"|format(v_desconto) }})</span>
+            <span><strong>VALOR LÍQUIDO DA NOTA:</strong> R$ {{ "%.2f"|format(total_liquido) }}</span>
+        </div>
+        <hr style="border: 1px solid #000;">
+        
+        <h3>DEMONSTRATIVO DE IMPOSTOS RETIDOS</h3>
+        <div class="row">
+            <span>ALIQUOTA ISS (MUNICIPAL): {{ p.imposto_municipal }}%</span>
+            <span>VALOR RETIDO ISS: R$ {{ "%.2f"|format(v_municipal) }}</span>
+        </div>
+        <div class="row">
+            <span>ALIQUOTA ICMS (ESTADUAL): 18.0%</span>
+            <span>VALOR RETIDO ICMS: R$ {{ "%.2f"|format(v_estadual) }}</span>
+        </div>
+        <div class="row">
+            <span>ALIQUOTA IMPOSTOS FEDERAIS: {{ p.imposto_federal }}%</span>
+            <span>VALOR RETIDO FEDERAIS: R$ {{ "%.2f"|format(v_federal) }}</span>
+        </div>
+        <div class="row" style="font-size:14px; font-weight:bold; margin-top:10px;">
+            <span>TOTAL DE TRIBUTOS ESTIMADOS:</span>
+            <span>R$ {{ "%.2f"|format(total_impostos) }}</span>
+        </div>
+
+        <div class="footer-obs">
+            <p><strong>OBSERVAÇÕES DO FISCO FILOSÓFICO:</strong> {{ p.observacoes }}</p>
+            <p>*Nota emitida para fins estritamente pedagogicos e simulações de engenharia econômica em sala de aula.</p>
+        </div>
+    </div>
+
+<script>
+    // Função para abrir e fechar o menu hambúrguer no celular
+    function alternarMenuMobile() {
+        const menu = document.getElementById('menuNavegacao');
+        menu.classList.toggle('ativo');
+    }
+
+    // Controle do tamanho das fontes para as Big TVs ou baixa visão
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
+        }
+    }
+
+    // Controle nativo por classes do modo de alto contraste corrigido
+    function alternarAltoContraste() {
+        const corpo = document.body;
+        corpo.classList.toggle('alto-contraste');
+    }
+</script>
+</body>
+</html>

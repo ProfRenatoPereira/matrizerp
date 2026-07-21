@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planejamento e Controle de Processos</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS de Segurança para Alto Contraste Nativo nas Linhas de OP e Inputs */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .data-table th {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border: 1px solid #ffffff !important;
+        }
+        .alto-contraste .data-table td {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            border: 1px solid #ffffff !important;
+        }
+        .alto-contraste .op-concluida {
+            background-color: #1c3d1c !important;
+            color: #a3e2a3 !important;
+        }
+        .alto-contraste .op-ativa {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste input {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+        .alto-contraste input::placeholder {
+            color: #b3b3b3 !important;
+        }
+        .alto-contraste code {
+            background-color: #2a2a2a !important;
+            color: #00ff00 !important;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        /* Contêiner de rolagem para tabelas densas em dispositivos móveis */
+        .tabela-responsiva {
+            overflow-x: auto;
+            width: 100%;
+            margin-bottom: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .input-apontamento {
+            padding: 8px; 
+            font-size: 14px; 
+            width: 120px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra de Acessibilidade Superior Oficial -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+</div>
+
+<!-- Cabeçalho Principal Terceiro ADM Associados -->
+<header class="cabecalho-corporativo">
+    <div class="identidade-container">
+        <div class="branding-flex">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+            <div class="texto-empresa">
+                <h1>TERCEIRO ADM ASSOCIADOS</h1>
+                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+            </div>
+        </div>
+        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+    </div>
+
+    <!-- Navegação Responsiva com Menus Dropdown Unificados -->
+    <nav class="nav-container" id="menuNavegacao">
+        <ul class="menu-cascata">
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+    
+<div class="container">
+    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
+<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
+    <div>
+        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
+        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    </div>
+    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
+        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
+        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+    </div>
+</div>
+
+    <h2>Página 10: Chão de Fábrica - Planilha Operacional de Roteiros Encadeados (PCP)</h2>
+    
+    <h3>Fila de Produção e Ordens de Serviço Ativas</h3>
+    <!-- Contêiner responsivo para evitar esmagamento em smartphones e tablets -->
+    <div class="tabela-responsiva">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>OS (Pedido)</th>
+                    <th>Nº Operação</th>
+                    <th>Posto / Máquina</th>
+                    <th>Produto / Lote</th>
+                    <th>Entrada</th>
+                    <th>Tempo Lote</th>
+                    <th>Saída (Fim)</th>
+                    <th>Custo Operação</th>
+                    <th>Operador / Apontamento</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ord in ordens %}
+                <tr class="{% if ord.status == 'Finalizado' %}op-concluida{% else %}op-ativa{% endif %}" style="background-color: {% if ord.status == 'Finalizado' %}#e2efda{% else %}#ffffff{% endif %}; color: {% if ord.status == 'Finalizado' %}#274e13{% else %}#000000{% endif %};">
+                    <td><code>OS-00{{ ord.pedido_id }}</code></td>
+                    <td><strong>{{ ord.numero_operacao }}</strong></td>
+                    <td>⚙️ {{ ord.maquina_name }}</td>
+                    <td><code>{{ ord.codigo_produto }}</code> - {{ ord.nome_produto }}</td>
+                    <td style="color:#1a5276; font-weight:bold;"><small>{{ ord.data_entrada }}</small></td>
+                    <td>{{ "%.1f"|format(ord.tempo_estimado_min) }} min</td>
+                    <td style="color:#78281f; font-weight:bold;"><small>{{ ord.data_saida }}</small></td>
+                    <td style="color:#27ae60; font-weight:bold;">R$ {{ "%.2f"|format(ord.custo_operacao) }}</td>
+                    <td><strong>{{ ord.operador_nome }}</strong></td>
+                    <td>
+                        {% if ord.status != 'Finalizado' %}
+                        <form action="/dar_baixa_op/{{ ord.id }}" method="POST" style="display: flex; gap: 5px; align-items: center; margin: 0;">
+                            <input type="text" name="operador_nome" required placeholder="Nome Operador" class="input-apontamento">
+                            <button type="submit" class="btn btn-success" style="padding: 8px 12px; font-size: 13px; font-weight: bold; cursor: pointer;">🏁 Concluir</button>
+                        </form>
+                        {% else %}
+                            <span style="color:#375623; font-weight:bold;">✔ Concluído</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Função para abrir e fechar o menu hambúrguer no celular
+    function alternarMenuMobile() {
+        const menu = document.getElementById('menuNavegacao');
+        menu.classList.toggle('ativo');
+    }
+
+    // Controle do tamanho das fontes para as Big TVs ou baixa visão
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
+        }
+    }
+
+    // Controle nativo por classes do modo de alto contraste corrigido
+    function alternarAltoContraste() {
+        const corpo = document.body;
+        corpo.classList.toggle('alto-contraste');
+    }
+</script>
+</body>
+</html>

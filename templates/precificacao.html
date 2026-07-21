@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formação de Preços e Configuração Fiscal</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS de Segurança para Alto Contraste Nativo nos Calculadores e Inputs */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .card-precificacao {
+            background-color: #121212 !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste input, .alto-contraste select {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+        .alto-contraste input[readonly] {
+            background-color: #2a2a2a !important;
+            color: #00ff00 !important;
+        }
+        .alto-contraste label, .alto-contraste h2, .alto-contraste h3 {
+            color: #ffffff !important;
+        }
+        
+        /* Grid responsivo universal (Mobile até TV) */
+        .grid-formulario {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 15px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra de Acessibilidade Superior Oficial -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+</div>
+
+<!-- Cabeçalho Principal Terceiro ADM Associados -->
+<header class="cabecalho-corporativo">
+    <div class="identidade-container">
+        <div class="branding-flex">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+            <div class="texto-empresa">
+                <h1>TERCEIRO ADM ASSOCIADOS</h1>
+                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+            </div>
+        </div>
+        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+    </div>
+
+    <!-- Navegação Responsiva com Menus Dropdown Unificados -->
+    <nav class="nav-container" id="menuNavegacao">
+        <ul class="menu-cascata">
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
+<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
+    <div>
+        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
+        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    </div>
+    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
+        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
+        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+    </div>
+</div>
+
+    <h2>Página 6: Controladoria - Formação de Preços & Configuração Fiscal</h2>
+    
+    <div class="card-precificacao" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <form action="/salvar_preco" method="POST" id="formPreco">
+            <!-- Grid de Formulário Totalmente Responsivo -->
+            <div class="grid-formulario">
+                <div class="form-group">
+                    <label for="produto_id">Selecionar Produto:</label>
+                    <select name="produto_id" id="produto_id" required onchange="atualizarCustoBase()">
+                        <option value="">-- Escolha o Produto --</option>
+                        {% for prod in produtos %}
+                        <option value="{{ prod.id }}" data-custo="{{ prod.custo_fabricacao }}">{{ prod.codigo_produto }} - {{ prod.nome_produto }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="custo_fabricacao_visivel">Custo Base de Fabricação (R$):</label>
+                    <input type="number" id="custo_fabricacao_visivel" readonly value="0.00" style="background-color: #f8f9fa; font-weight: bold;">
+                </div>
+                <div class="form-group">
+                    <label for="margem_lucro">Margem de Lucro Desejada (%):</label>
+                    <input type="number" step="0.1" name="margem_lucro" id="margem_lucro" required value="0" oninput="calcularPrecoVenda()">
+                </div>
+                <div class="form-group">
+                    <label for="imposto_municipal">Imposto Municipal / ISS (%):</label>
+                    <input type="number" step="0.1" name="imposto_municipal" id="imposto_municipal" value="5.0" required oninput="calcularPrecoVenda()">
+                </div>
+                <div class="form-group">
+                    <label for="imposto_estadual">Imposto Estadual / ICMS (%):</label>
+                    <input type="number" step="0.1" name="imposto_estadual" id="imposto_estadual" value="18.0" required oninput="calcularPrecoVenda()">
+                </div>
+                <div class="form-group">
+                    <label for="imposto_federal">Imposto Federal / IPI-PIS-COFINS (%):</label>
+                    <input type="number" step="0.1" name="imposto_federal" id="imposto_federal" value="9.25" required oninput="calcularPrecoVenda()">
+                </div>
+                <div class="form-group" style="grid-column: span 3;">
+                    <label for="preco_venda_final" style="font-weight: bold;">PREÇO DE VENDA FINAL SUGERIDO (R$):</label>
+                    <input type="number" step="0.01" name="preco_venda_final" id="preco_venda_final" readonly style="font-size: 18px; font-weight: bold; background-color: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0;">
+                </div>
+            </div>
+                <div style="margin-top: 15px;">
+                    <button type="submit" class="btn btn-success" style="cursor: pointer;">💾 Salvar Estrutura de Preço</button>
+                </div>
+            </form>
+        </div>
+        
+        <h3>Modelos de Precificação no Banco de Dados</h3>
+        <!-- Contêiner de rolagem para garantir a responsividade em celulares -->
+        <div style="overflow-x: auto; width: 100%; margin-bottom: 20px; -webkit-overflow-scrolling: touch;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>ISS (Mun.)</th>
+                        <th>ICMS (Est.)</th>
+                        <th>Federais</th>
+                        <th>Margem Lucro</th>
+                        <th>Preço Final</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for preco in precos_salvos %}
+                    <tr>
+                        <td><code>{{ preco.codigo_produto }}</code> - {{ preco.nome_produto }}</td>
+                        <td>{{ preco.imposto_municipal }}%</td>
+                        <td>{{ preco.imposto_estadual }}%</td>
+                        <td>{{ preco.imposto_federal }}%</td>
+                        <td>{{ preco.margem_lucro }}%</td>
+                        <td><strong>R$ {{ "%.2f"|format(preco.preco_venda_final) }}</strong></td>
+                        <td>
+                            <form action="/deletar_preco/{{ preco.id }}" method="POST" onsubmit="return confirm('Deseja remover este modelo de preço?');" style="margin: 0;">
+                                <button type="submit" class="btn btn-danger" style="cursor: pointer; padding: 5px 10px;">❌ Deletar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function atualizarCustoBase() {
+            const seletor = document.getElementById('produto_id');
+            const opcaoSelecionada = seletor.options[seletor.selectedIndex];
+            const custo = parseFloat(opcaoSelecionada.getAttribute('data-custo')) || 0;
+            document.getElementById('custo_fabricacao_visivel').value = custo.toFixed(2);
+            calcularPrecoVenda();
+        }
+
+        function calcularPrecoVenda() {
+            const custo = parseFloat(document.getElementById('custo_fabricacao_visivel').value) || 0;
+            const margem = parseFloat(document.getElementById('margem_lucro').value) || 0;
+            const municipal = parseFloat(document.getElementById('imposto_municipal').value) || 0;
+            const estadual = parseFloat(document.getElementById('imposto_estadual').value) || 0;
+            const federal = parseFloat(document.getElementById('imposto_federal').value) || 0;
+            
+            // Fórmula pedagógica do Markup por Dentro (Preço de venda absorve os impostos e a margem)
+            const somaPercentuais = (margem + municipal + estadual + federal) / 100;
+            
+            let precoFinal = 0;
+            if (somaPercentuais < 1) {
+                precoFinal = custo / (1 - somaPercentuais);
+            } else {
+                precoFinal = custo * (1 + somaPercentuais); // Fallback caso estoure os 100%
+            }
+            
+            document.getElementById('preco_venda_final').value = precoFinal.toFixed(2);
+        }
+
+        // Função para abrir e fechar o menu hambúrguer no celular
+        function alternarMenuMobile() {
+            const menu = document.getElementById('menuNavegacao');
+            menu.classList.toggle('ativo');
+        }
+
+        // Controle do tamanho das fontes para as Big TVs ou baixa visão
+        let tamanhoAtual = 100;
+        function mudarFonte(direcao) {
+            tamanhoAtual += (direcao * 10);
+            if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+                document.body.style.fontSize = tamanhoAtual + "%";
+            }
+        }
+
+        // Reformado para usar a folha de estilo nativa do sistema em vez do filtro cego
+        function alternarAltoContraste() {
+            const corpo = document.body;
+            corpo.classList.toggle('alto-contraste');
+        }
+    </script>
+</body>
+</html>

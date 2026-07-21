@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fluxo Financeiro e Controladoria</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS de Segurança para Alto Contraste Nativo nos Indicadores e Cards */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .card-financeiro {
+            background-color: #121212 !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .card-financeiro small {
+            color: #b3b3b3 !important;
+        }
+        .alto-contraste input {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+        .alto-contraste label, .alto-contraste h3 {
+            color: #ffffff !important;
+        }
+        .alto-contraste .alert {
+            background-color: #111111 !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+        
+        /* Grid responsivo universal (Mobile até TV) */
+        .grid-indicadores-financeiros {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .grid-form-dividendos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            align-items: center;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra de Acessibilidade Superior Oficial -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+</div>
+
+<!-- Cabeçalho Principal Terceiro ADM Associados -->
+<header class="cabecalho-corporativo">
+    <div class="identidade-container">
+        <div class="branding-flex">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+            <div class="texto-empresa">
+                <h1>TERCEIRO ADM ASSOCIADOS</h1>
+                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+            </div>
+        </div>
+        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+    </div>
+
+    <!-- Navegação Responsiva com Menus Dropdown Unificados -->
+    <nav class="nav-container" id="menuNavegacao">
+        <ul class="menu-cascata">
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
+<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
+    <div>
+        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
+        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    </div>
+    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
+        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
+        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+    </div>
+</div>
+
+    {% with m = get_flashed_messages(with_categories=true) %}{% if m %}{% for c, msg in m %}
+      <div class="alert alert-{{ c }}" style="padding:12px; margin-bottom:20px; font-weight:bold; border-radius:4px;">{{ msg }}</div>
+    {% endfor %}{% endif %}{% endwith %}
+
+    <h2>Módulo Financeiro: Fluxo de Caixa e Distribuição de Dividendos</h2>
+    <p>Demonstrativo consolidado em tempo real que cruza o faturamento bruto e as obrigações da folha de pagamento CLT.</p>
+
+    <!-- Indicadores Financeiros do Caixa Mestre Responsivo -->
+    <div class="grid-indicadores-financeiros">
+        <div class="card-financeiro" style="background: white; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-top: 4px solid #27ae60;">
+            <small style="color:#666; font-weight: bold;">Faturamento Operacional Bruto</small>
+            <h3 style="margin:5px 0 0 0; color:#27ae60; font-family: monospace;">R$ {{ "%.2f"|format(faturamento) }}</h3>
+        </div>
+        <div class="card-financeiro" style="background: white; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-top: 4px solid #c65911;">
+            <small style="color:#666; font-weight: bold;">Despesa Consolidada (RH/MOD)</small>
+            <h3 style="margin:5px 0 0 0; color:#c65911; font-family: monospace;">R$ {{ "%.2f"|format(custo_pessoal) }}</h3>
+        </div>
+        <div class="card-financeiro" style="background: white; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-top: 4px solid #ce1126;">
+            <small style="color:#666; font-weight: bold;">Provisão de Encargos Sociais</small>
+            <h3 style="margin:5px 0 0 0; color:#ce1126; font-family: monospace;">R$ {{ "%.2f"|format(impostos) }}</h3>
+        </div>
+        <div class="card-financeiro" style="background: white; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-top: 4px solid #007bff;">
+            <small style="color:#666; font-weight: bold;">Saldo Disponível em Caixa</small>
+            <h3 style="margin:5px 0 0 0; color:#007bff; font-family: monospace;">R$ {{ "%.2f"|format(saldo_liquido) }}</h3>
+        </div>
+    </div>
+    
+    <!-- Simulação Especializada de Dividendos dos Acionistas -->
+    <div class="card-financeiro" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 25px; border-left: 5px solid #27ae60;">
+        <h3>💰 Painel de Retorno Financeiro e Repasse de Dividendos</h3>
+        <form action="/pagar_dividendos" method="POST" class="grid-form-dividendos">
+            <div class="form-group">
+                <label for="percentual_lucro">Definir Percentual de Lucro Líquido para Distribuição de Dividendos (%):</label>
+                <input type="number" id="percentual_lucro" name="percentual_lucro" min="0" max="100" value="25" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-success" style="height: 42px; margin-top: 10px; font-weight: bold; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%;">💸 Processar Repasse aos Sócios</button>
+        </form>
+    </div>
+    <!-- Tabela Histórica de Lançamentos Contábeis Responsiva -->
+    <h3>📊 Histórico de Livro Diário / Lançamentos Consolidados</h3>
+    <div style="overflow-x: auto; width: 100%; margin-bottom: 20px; -webkit-overflow-scrolling: touch;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Data / Competência</th>
+                    <th>Origem / Destino do Fluxo</th>
+                    <th>Tipo de Movimentação</th>
+                    <th>Impacto Financeiro (R$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Competência Corrente</td>
+                    <td>Módulo Comercial - Faturamento de Pedidos de Vendas</td>
+                    <td><span style="color:green; font-weight:bold;">📥 ENTRADA</span></td>
+                    <td style="color:green; font-weight:bold; font-family: monospace;">+ R$ {{ "%.2f"|format(faturamento) }}</td>
+                </tr>
+                <tr>
+                    <td>Competência Corrente</td>
+                    <td>Módulo RH - Folha de Proventos e Adicionais CLT</td>
+                    <td><span style="color:red; font-weight:bold;">📤 SAÍDA</span></td>
+                    <td style="color:red; font-weight:bold; font-family: monospace;">- R$ {{ "%.2f"|format(custo_pessoal) }}</td>
+                </tr>
+                <tr>
+                    <td>Competência Corrente</td>
+                    <td>Provisão Previdenciária de Impostos s/ Mão de Obra</td>
+                    <td><span style="color:red; font-weight:bold;">📤 SAÍDA</span></td>
+                    <td style="color:red; font-weight:bold; font-family: monospace;">- R$ {{ "%.2f"|format(impostos) }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function alternarMenuMobile() { 
+        document.getElementById('menuNavegacao').classList.toggle('ativo'); 
+    }
+    
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
+        }
+    }
+    
+    // Reformado para usar o Modo de Alto Contraste nativo via CSS da Parte 1
+    function alternarAltoContraste() {
+        const corpo = document.body;
+        corpo.classList.toggle('alto-contraste');
+    }
+</script>
+</body>
+</html>

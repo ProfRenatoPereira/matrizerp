@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventário de Acabados e Controle de Estoque</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS de Segurança para Alto Contraste Nativo nas Tabelas e Alertas */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .data-table th {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border: 1px solid #ffffff !important;
+        }
+        .alto-contraste .data-table td {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+            border: 1px solid #ffffff !important;
+        }
+        .alto-contraste code {
+            background-color: #2a2a2a !important;
+            color: #00ff00 !important;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .alto-contraste .alert {
+            background-color: #111111 !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+        
+        /* Contêiner para rolagem de tabelas em dispositivos móveis */
+        .tabela-responsiva {
+            overflow-x: auto;
+            width: 100%;
+            margin-bottom: 30px;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .btn-acao-tabela {
+            font-size: 14px; 
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    
+<!-- Barra de Acessibilidade Superior Oficial -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+</div>
+
+<!-- Cabeçalho Principal Terceiro ADM Associados -->
+<header class="cabecalho-corporativo">
+    <div class="identidade-container">
+        <div class="branding-flex">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+            <div class="texto-empresa">
+                <h1>TERCEIRO ADM ASSOCIADOS</h1>
+                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+            </div>
+        </div>
+        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+    </div>
+
+    <!-- Navegação Responsiva com Menus Dropdown Unificados -->
+    <nav class="nav-container" id="menuNavegacao">
+        <ul class="menu-cascata">
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
+<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
+    <div>
+        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
+        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    </div>
+    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
+        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
+        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+    </div>
+</div>
+
+    <h2>Página 9: Almoxarifado Central - Inventário de Produtos Acabados</h2>
+    <p>O recebimento de novos lotes depende obrigatoriamente da finalização das ordens no chão de fábrica (PCP).</p>
+
+    <!-- Bloco de Alertas de Validação do ERP -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" style="padding: 12px; margin-bottom: 20px; border-radius: 4px; background-color: {% if category=='success' %}#d4edda{% elif category=='danger' %}#f8d7da{% else %}#fff3cd{% endif %}; color: {% if category=='success' %}#155724{% elif category=='danger' %}#721c24{% else %}#856404{% endif %}; font-weight: bold; border: 1px solid;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Tabela 1: Saldos Atuais no Inventário Interno Responsivo -->
+    <h3>📦 Saldo Atual em Almoxarifado</h3>
+    <div class="tabela-responsiva">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Código do Produto</th>
+                    <th>Nome do Item Comercial</th>
+                    <th>Quantidade Disponível</th>
+                    <th>Status Logístico</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in estoque_itens %}
+                <tr>
+                    <td><code>{{ item.codigo_produto }}</code></td>
+                    <td><strong>{{ item.nome_produto }}</strong></td>
+                    <td><span style="font-size: 15px; font-weight: bold; color: #2b5797;">{{ "%.0f"|format(item.quantidade_disponivel) }}</span> un</td>
+                    <td>
+                        {% if item.quantidade_disponivel <= 0 %}
+                            <span style="color:#721c24; font-weight:bold; background:#f8d7da; padding:3px 6px; border-radius:3px; font-size: 14px;">🚨 Estoque Zerado</span>
+                        {% elif item.quantidade_disponivel <= 5 %}
+                            <span style="color:#856404; font-weight:bold; background:#fff3cd; padding:3px 6px; border-radius:3px; font-size: 14px;">⚠️ Abastecimento Crítico</span>
+                        {% else %}
+                            <span style="color:#155724; font-weight:bold; background:#d4edda; padding:3px 6px; border-radius:3px; font-size: 14px;">✅ Nível Seguro</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Tabela 2: Demandas Comerciais Amarradas à Produção Responsiva -->
+    <h3>📋 Demandas de Vendas Aguardando Abastecimento / PCP</h3>
+    <div class="tabela-responsiva">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID Pedido</th>
+                    <th>Produto Requisitado</th>
+                    <th>Quantidade Solicitada</th>
+                    <th>Rastreabilidade / Engenharia</th>
+                    <th>Controle de Entrada de Almoxarifado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ped in pedidos %}
+                <tr>
+                    <td><code>OS-00{{ ped.id }}</code></td>
+                    <td><strong>{{ ped.nome_produto }}</strong></td>
+                    <td>{{ ped.quantidade }} unidades</td>
+                    <td>
+                        <!-- Gatilho para abrir a árvore de processos no PCP -->
+                        <form action="/solicitar_producao_pcp/{{ ped.id }}" method="POST" style="display:inline;">
+                            <button type="submit" class="btn btn-primary btn-acao-tabela" style="font-size: 12px; padding: 5px 10px; cursor: pointer;">🏭 Emitir Ordem ao PCP</button>
+                        </form>
+                    </td>
+                    <td>
+                        <!-- Tenta receber o lote do PCP. O back-end bloqueia se houver OPs pendentes -->
+                        <form action="/abastecer_estoque_pcp" method="POST" style="display:inline; display: flex; gap: 5px; align-items: center;">
+                            <input type="hidden" name="produto_id" value="{{ ped.produto_id }}">
+                            <input type="hidden" name="pedido_id" value="{{ ped.id }}">
+                            <input type="hidden" name="quantidade_abastecer" value="{{ ped.quantidade }}">
+                            <button type="submit" class="btn btn-success btn-acao-tabela" style="font-size: 12px; padding: 5px 10px; cursor: pointer;">📥 Receber Lote Concluído</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Função para abrir e fechar o menu hambúrguer no celular
+    function alternarMenuMobile() {
+        const menu = document.getElementById('menuNavegacao');
+        menu.classList.toggle('ativo');
+    }
+
+    // Controle do tamanho das fontes para as Big TVs ou baixa visão
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
+        }
+    }
+
+    // Controle nativo por classes do modo de alto contraste sem quebrar o layout
+    function alternarAltoContraste() {
+        const corpo = document.body;
+        corpo.classList.toggle('alto-contraste');
+    }
+</script>
+</body>
+</html>

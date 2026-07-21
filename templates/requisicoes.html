@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cockpit de Compras & Suprimentos</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS de Segurança para Alto Contraste Nativo nos Cards e Inputs */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .card-compra {
+            background-color: #121212 !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .card-compra h4, .alto-contraste .card-compra p {
+            color: #ffffff !important;
+        }
+        .alto-contraste input {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+        .alto-contraste label {
+            color: #ffffff !important;
+        }
+        
+        /* Grid responsivo universal para os cards (Mobile até TV) */
+        .grid-cards-compras {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra de Acessibilidade Superior Oficial -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+</div>
+
+<!-- Cabeçalho Principal Terceiro ADM Associados -->
+<header class="cabecalho-corporativo">
+    <div class="identidade-container">
+        <div class="branding-flex">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+            <div class="texto-empresa">
+                <h1>TERCEIRO ADM ASSOCIADOS</h1>
+                <p>Projetos, Execução, Assessoria, Auditoria e Gerenciamento Operacional e de Custos</p>
+            </div>
+        </div>
+        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+    </div>
+
+    <!-- Navegação Responsiva com Menus Dropdown Unificados -->
+    <nav class="nav-container" id="menuNavegacao">
+        <ul class="menu-cascata">
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/requisicoes">📋 3. Central de Requisições</a></li>
+                    <li><a href="/compras">💰 4. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais">5. Almoxarifado (Materiais)</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/engenharia">6. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao">7. Controladoria e Precificação</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/vendas">8. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque">9. Inventário de Acabados</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/pcp">10. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi">11. Indicadores de Retorno (ROI)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
+<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
+    <div>
+        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
+        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    </div>
+    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
+        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
+        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+    </div>
+</div>
+
+    <h2>Módulo 4: Cockpit de Compras & Suprimentos</h2>
+    <p>Abaixo estão listadas todas as requisições que passaram por cotação. Ajuste os termos antes de assinar o contrato ou efetivar a ativação.</p>
+    
+    <!-- Grid Flexível de Cards de Efetivação de Pedidos Cotados -->
+    <div class="grid-cards-compras">
+        {% for req in requisicoes_cotadas %}
+        <div class="card-compra" style="background: white; padding: 20px; border-radius: 8px; border-top: 4px solid #28a745; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <h4>Ordem #{{ req.id }} - {{ req.equipamento_tipo }}</h4>
+            <p><strong>Item Técnico Solicitado:</strong> {{ req.especificacao_desejada }}</p>
+            <p><strong>Quantidade Solicitada:</strong> {{ req.quantidade }}</p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+            <form action="/efetivar_compra/{{ req.id }}" method="POST">
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="preco_final_{{ req.id }}">Preço Final Fechado (R$ Total):</label>
+                    <input type="number" step="0.01" id="preco_final_{{ req.id }}" name="preco_final" value="{{ req.preco_cotado }}" required class="form-control">
+                </div>
+                {% if req.equipamento_tipo == "Máquina / Ativo" %}
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="potencia_final_{{ req.id }}">Potência Consumida (kW):</label>
+                    <input type="number" step="0.1" id="potencia_final_{{ req.id }}" name="potencia_final" value="{{ req.potencia_cotada }}" required class="form-control">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="depreciacao_final_{{ req.id }}">Depreciação Industrial (R$/mês):</label>
+                    <input type="number" step="0.01" id="depreciacao_final_{{ req.id }}" name="depreciacao_final" value="{{ req.depreciacao_sugerida }}" required class="form-control">
+                </div>
+                {% else %}
+                <input type="hidden" name="potencia_final" value="0">
+                <input type="hidden" name="depreciacao_final" value="0">
+                {% endif %}
+                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                    <button type="submit" class="btn btn-success" style="width: 100%; cursor: pointer;">✍️ Assinar Contrato e Ativar</button>
+                    <button type="button" class="btn btn-danger" style="cursor: pointer;" onclick="cancelarOrdem('{{ req.id }}')">❌ Cancelar</button>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <div style="grid-column: span 2; text-align: center; color: #6c757d; padding: 40px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <p>📭 Nenhuma requisição pronta para fechamento comercial. Cote uma solicitação na <a href="/requisicoes" style="color: #28a745; font-weight: bold;">Central de Requisições</a>.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    function cancelarOrdem(id) {
+        if(confirm("Deseja rejeitar e remover esta requisição da mesa de suprimentos?")) {
+            let f = document.createElement('form');
+            f.action = '/deletar_requisicao/' + id; f.method = 'POST';
+            document.body.appendChild(f); f.submit();
+        }
+    }
+    
+    function alternarMenuMobile() { 
+        document.getElementById('menuNavegacao').classList.toggle('ativo'); 
+    }
+    
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
+        }
+    }
+    
+    // Reformado para usar a folha de estilo nativa do sistema em vez do filtro cego
+    function alternarAltoContraste() {
+        const corpo = document.body;
+        corpo.classList.toggle('alto-contraste');
+    }
+</script>
+</body>
+</html>

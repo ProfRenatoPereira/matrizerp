@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retorno sobre o Investimento - ROI</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS de Segurança para Alto Contraste Nativo nos Cards e Painéis */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .card, .alto-contraste .analise-box {
+            background-color: #121212 !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+            box-shadow: none !important;
+        }
+        .alto-contraste .card h3 {
+            color: #b3b3b3 !important;
+        }
+        .alto-contraste .card p {
+            color: #00ff00 !important;
+        }
+        .alto-contraste label, .alto-contraste h2, .alto-contraste h3 {
+            color: #ffffff !important;
+        }
+        
+        /* Grid responsivo universal (Mobile até TV) */
+        .grid-cards { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+            gap: 20px; 
+            margin-top: 20px; 
+        }
+        .card { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+            text-align: center; 
+            border-top: 5px solid var(--primary-color); 
+        }
+        .card h3 { 
+            margin: 0 0 10px 0; 
+            color: #7f8c8d; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+        }
+        .card p { 
+            margin: 0; 
+            font-size: 24px; 
+            font-weight: bold; 
+            color: var(--primary-color); 
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra de Acessibilidade Superior Oficial -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+</div>
+
+<!-- Cabeçalho Principal Terceiro ADM Associados -->
+<header class="cabecalho-corporativo">
+    <div class="identidade-container">
+        <div class="branding-flex">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+            <div class="texto-empresa">
+                <h1>TERCEIRO ADM ASSOCIADOS</h1>
+                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+            </div>
+        </div>
+        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+    </div>
+
+    <!-- Navegação Responsiva com Menus Dropdown Unificados -->
+    <nav class="nav-container" id="menuNavegacao">
+        <ul class="menu-cascata">
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+    
+<div class="container">
+    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
+<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
+    <div>
+        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
+        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    </div>
+    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
+        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
+        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+    </div>
+</div>
+
+    <h2>Painel Corporativo - Indicadores de Retorno Acionário (ROI)</h2>
+    
+    <!-- Grid Flexível de Distribuição dos Cards Macro -->
+    <div class="grid-cards">
+        <div class="card" style="border-top-color: #3498db;">
+            <h3>Capital Inicial Imobilizado</h3>
+            <p>R$ {{ "%.2f"|format(capital) }}</p>
+        </div>
+        <div class="card" style="border-top-color: var(--secondary-color);">
+            <h3>Faturamento Bruto</h3>
+            <p>R$ {{ "%.2f"|format(receita) }}</p>
+        </div>
+        <div class="card" style="border-top-color: #9b59b6;">
+            <h3>Volume de Production</h3>
+            <p>{{ pecas }} peças</p>
+        </div>
+        <div class="card" style="border-top-color: var(--danger-color);">
+            <h3>Dividendos Acionistas</h3>
+            <p>R$ {{ "%.2f"|format(lucro_acionistas) }}</p>
+        </div>
+    </div>
+
+    <div class="analise-box" style="background: white; margin-top: 30px; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        <h3>Análise Econômica da Turma</h3>
+        <p>Com base no ritmo de vendas corporativas e nos investimentos estruturais cadastrados pelas equipes, estima-se que o tempo real para o pagamento integral dos ativos e retorno financeiro total ao caixa dos acionistas é de:</p>
+        <h1 style="color: var(--secondary-color); margin: 15px 0;">
+            {% if payback_real > 0 %}
+                {{ "%.1f"|format(payback_real) }} Ciclos/Meses Operacionais
+            </h1>
+            {% else %}
+                <span style="font-size: 20px; font-weight: normal; color: #7f8c8d;">Aguardando registro de faturamento...</span>
+            </h1>
+            {% endif %}
+        <p style="font-size: 12px; color: #7f8c8d;">*Métricas calculadas dinamicamente usando markup interno e amortização linear contábil.</p>
+    </div>
+</div>
+
+<script>
+    // Função para abrir e fechar o menu hambúrguer no celular
+    function alternarMenuMobile() {
+        const menu = document.getElementById('menuNavegacao');
+        menu.classList.toggle('ativo');
+    }
+
+    // Controle do tamanho das fontes para as Big TVs ou baixa visão
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
+        }
+    }
+
+    // Controle nativo por classes do modo de alto contraste corrigido
+    function alternarAltoContraste() {
+        const corpo = document.body;
+        corpo.classList.toggle('alto-contraste');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investimentos Imobiliários</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS de Segurança para Alto Contraste Nativo nos Inputs e Telas Grandes */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .card-form {
+            background-color: #121212 !important;
+            border: 2px solid #ffffff !important;
+        }
+        .alto-contraste input, .alto-contraste select {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+        .alto-contraste input[readonly] {
+            background-color: #2a2a2a !important;
+            color: #00ff00 !important;
+        }
+        .alto-contraste input::placeholder {
+            color: #b3b3b3 !important;
+        }
+        .alto-contraste label {
+            color: #ffffff !important;
+        }
+        
+        /* Grid responsivo universal (Mobile até TV) */
+        .grid-formulario {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra de Acessibilidade Superior Oficial -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+</div>
+
+<!-- Cabeçalho Principal Terceiro ADM Associados -->
+<header class="cabecalho-corporativo">
+    <div class="identidade-container">
+        <div class="branding-flex">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+            <div class="texto-empresa">
+                <h1>TERCEIRO ADM ASSOCIADOS</h1>
+                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+            </div>
+        </div>
+        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+    </div>
+
+    <!-- Navegação Responsiva com Menus Dropdown Unificados -->
+    <nav class="nav-container" id="menuNavegacao">
+        <ul class="menu-cascata">
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
+<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
+    <div>
+        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
+        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    </div>
+    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
+        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
+        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+    </div>
+</div>
+
+    <h2>Página 2: Investimentos Imobiliários e Estrutura de Custos</h2>
+    
+    <!-- Painel Resumido de Alocação de Capital Pedagógica (Sebrae/BPM) -->
+    {% if registros and registros[-1].capital_inicial_negocio > 0 %}
+    <div class="card-form" style="background: #e0f2fe; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #0284c7;">
+        <p style="margin: 0; color: #0369a1; font-weight: bold;">
+            📊 Orçamento Inicial da Empresa: R$ {{ "{:,.2f}".format(registros[-1].capital_inicial_negocio) }}
+        </p>
+        <small style="color: #075985;">
+            Teto sugerido para Investimento Imobiliário/Instalações (15%): R$ {{ "{:,.2f}".format(registros[-1].capital_inicial_negocio * 0.15) }}
+        </small>
+    </div>
+    {% endif %}
+    
+    <div class="card-form" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <form id="formEstrutura" action="/salvar_estrutura" method="POST">
+            <input type="hidden" id="registro_id" name="id">
+            
+            <div class="grid-formulario">
+                <div class="form-group">
+                    <label for="turma_nome">Identificação da Simulação / Grupo:</label>
+                    <input type="text" name="turma_nome" id="turma_nome" required value="{{ registros[-1].turma_nome if registros else '' }}" placeholder="Ex: Turma A - Grupo 1">
+                </div>
+                <div class="form-group">
+                    <label for="cidade_regiao">Cidade / Região:</label>
+                    <select name="cidade_regiao" id="cidade_regiao" required onchange="atualizarBairros()">
+                        <option value="">Selecione a Região...</option>
+                        <option value="Curitiba Zonas Nobres">Curitiba (Zonas Nobres)</option>
+                        <option value="Curitiba Zonas Mistas">Curitiba (Zonas Mistas/Industriais)</option>
+                        <option value="Regiao Metropolitana">Região Metropolitana (RMC)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bairro_imovel">Bairro / Localidade:</label>
+                    <select name="bairro_imovel" id="bairro_imovel" required onchange="aplicarValoresReferencia()">
+                        <option value="">Selecione o Bairro...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="area_imovel">Área Total do Imóvel (m²):</label>
+                    <input type="number" step="0.01" name="area_imovel" id="area_imovel" required oninput="aplicarValoresReferencia()">
+                </div>
+                <div class="form-group">
+                    <label for="taxa_selic">Taxa Referência (% a.a.):</label>
+                    <input type="number" step="0.01" name="taxa_selic" id="taxa_selic" value="{{ taxa_atual }}" required oninput="calcularMetricas()">
+                </div>
+                <div class="form-group">
+                    <label for="valor_imovel_estimado">Valor Imóvel (R$) - *Editável*:</label>
+                    <input type="number" step="0.01" name="valor_imovel_estimado" id="valor_imovel_estimado" required oninput="calcularMetricas()">
+                </div>
+                <div class="form-group">
+                    <label for="aluguel_regional">Aluguel Praticado (R$) - *Editável*:</label>
+                    <input type="number" step="0.01" name="aluguel_regional" id="aluguel_regional" required oninput="calcularMetricas()">
+                </div>
+                <div class="form-group">
+                    <label for="perc_acionistas">Retorno aos Acionistas (%):</label>
+                    <input type="number" step="0.01" name="perc_acionistas" id="perc_acionistas" min="0" max="100" required placeholder="Ex: 50" oninput="calcularMetricas()">
+                </div>
+                
+                <div class="form-group">
+                    <label for="retorno_acionistas">Retorno Acionistas (R$):</label>
+                    <input type="text" id="retorno_acionistas" readonly value="R$ 0,00" style="background-color: #f8f9fa; font-weight: bold;">
+                </div>
+                <div class="form-group">
+                    <label for="payback_estimado">Payback Relativo (Meses):</label>
+                    <input type="text" id="payback_estimado" readonly value="0 meses" style="background-color: #f8f9fa; font-weight: bold;">
+                </div>
+                <div class="form-group" style="grid-column: span 2;">
+                    <label for="aluguel_minuto">Custo Aluguel por Minuto Máquina:</label>
+                    <input type="text" id="aluguel_minuto" readonly value="R$ 0,0000" style="background-color: #f8f9fa; font-weight: bold; color: #c0392b;">
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px;">
+                <button type="submit" id="btnSalvar" class="btn btn-success">💾 Salvar Simulação</button>
+    <h3>Simulações Salvas no Banco de Dados</h3>
+    <!-- Contêiner de rolagem para garantir a responsividade em celulares -->
+    <div style="overflow-x: auto; width: 100%; margin-bottom: 20px;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Turma/Grupo</th>
+                    <th>Região / Bairro</th>
+                    <th>Área (m²)</th>
+                    <th>Taxa Ref.</th>
+                    <th>Valor Imóvel</th>
+                    <th>Aluguel Praticado</th>
+                    <th>% Acionistas</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reg in registros %}
+                <tr>
+                    <td>{{ reg.turma_nome }}</td>
+                    <td>{{ reg.cidade_regiao }} - {{ reg.bairro_imovel }}</td>
+                    <td>{{ "%.2f"|format(reg.area_imovel) }} m²</td>
+                    <td>{{ reg.taxa_selic }}%</td>
+                    <td>R$ {{ "%.2f"|format(reg.valor_imovel_estimado) }}</td>
+                    <td>R$ {{ "%.2f"|format(reg.aluguel_regional) }}</td>
+                    <td>{{ reg.perc_acionistas }}%</td>
+                    <td>
+                        <button class="btn btn-primary" onclick="prepararEdicao('{{ reg.id }}', '{{ reg.turma_nome }}', '{{ reg.cidade_regiao }}', '{{ reg.bairro_imovel }}', '{{ reg.area_imovel }}', '{{ reg.taxa_selic }}', '{{ reg.valor_imovel_estimado }}', '{{ reg.aluguel_regional }}', '{{ reg.perc_acionistas }}')">✏️ Alterar</button>
+                        <form action="/deletar_estrutura/{{ reg.id }}" method="POST" style="display:inline;" onsubmit="return confirm('Deseja realmente deletar esta simulação?');">
+                            <button type="submit" class="btn btn-danger">❌ Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const dadosImobiliarios = {
+        "Curitiba Zonas Nobres": {
+            "Batel": { m2: 15500, aluguel_m2: 55 },
+            "Bigorrilho": { m2: 13500, aluguel_m2: 48 },
+            "Ecoville": { m2: 12500, aluguel_m2: 45 }
+        },
+        "Curitiba Zonas Mistas": {
+            "CIC (Cidade Industrial)": { m2: 8500, aluguel_m2: 30 },
+            "Boqueirão": { m2: 7800, aluguel_m2: 28 },
+            "Novo Mundo": { m2: 8000, aluguel_m2: 32 }
+        },
+        "Regiao Metropolitana": {
+            "São José dos Pinhais": { m2: 6800, aluguel_m2: 25 },
+            "Araucária": { m2: 6500, aluguel_m2: 24 },
+            "Pinhais": { m2: 7000, aluguel_m2: 26 }
+        }
+    };
+
+    function atualizarBairros() {
+        const regiaoSel = document.getElementById('cidade_regiao').value;
+        const comboBairro = document.getElementById('bairro_imovel');
+        comboBairro.innerHTML = '<option value="">Selecione o Bairro...</option>';
+        if (regiaoSel && dadosImobiliarios[regiaoSel]) {
+            Object.keys(dadosImobiliarios[regiaoSel]).forEach(bairro => {
+                let opt = document.createElement('option');
+                opt.value = bairro; opt.innerHTML = bairro;
+                comboBairro.appendChild(opt);
+            });
+        }
+        aplicarValoresReferencia();
+    }
+
+    function aplicarValoresReferencia() {
+        const regiaoSel = document.getElementById('cidade_regiao').value;
+        const bairroSel = document.getElementById('bairro_imovel').value;
+        const area = parseFloat(document.getElementById('area_imovel').value) || 0;
+        if (regiaoSel && bairroSel && area > 0) {
+            const ref = dadosImobiliarios[regiaoSel][bairroSel];
+            document.getElementById('valor_imovel_estimado').value = (area * ref.m2).toFixed(2);
+            document.getElementById('aluguel_regional').value = (area * ref.aluguel_m2).toFixed(2);
+        }
+        calcularMetricas();
+    }
+
+    function calcularMetricas() {
+        const valorImovel = parseFloat(document.getElementById('valor_imovel_estimado').value) || 0;
+        const aluguelPraticado = parseFloat(document.getElementById('aluguel_regional').value) || 0;
+        const percAcionistas = parseFloat(document.getElementById('perc_acionistas').value) || 0;
+        
+        const retornoAcionistasRs = aluguelPraticado * (percAcionistas / 100);
+        document.getElementById('retorno_acionistas').value = "R$ " + retornoAcionistasRs.toFixed(2).replace('.', ',');
+
+        const sobraMensalLiquida = aluguelPraticado - (aluguelPraticado * 0.15) - retornoAcionistasRs;
+        if (sobraMensalLiquida > 0 && valorImovel > 0) {
+            document.getElementById('payback_estimado').value = Math.ceil(valorImovel / sobraMensalLiquida) + " meses";
+        } else {
+            document.getElementById('payback_estimado').value = "Rendimento Insuficiente";
+        }
+        
+        // Padrão de 176 horas mensais em minutos (44 horas semanais * 4 semanas)
+        const minutosUteisMes = 176 * 60;
+        document.getElementById('aluguel_minuto').value = "R$ " + (aluguelPraticado / minutosUteisMes).toFixed(4).replace('.', ',');
+    }
+
+    function prepararEdicao(id, nome, regiao, bairro, area, taxa, valorImovel, aluguel, percAcionistas) {
+        document.getElementById('formEstrutura').action = '/alterar_estrutura/' + id;
+        document.getElementById('turma_nome').value = nome;
+        document.getElementById('cidade_regiao').value = regiao;
+        atualizarBairros();
+        document.getElementById('bairro_imovel').value = bairro;
+        document.getElementById('area_imovel').value = area;
+        document.getElementById('taxa_selic').value = taxa;
+        document.getElementById('valor_imovel_estimado').value = valorImovel;
+        document.getElementById('aluguel_regional').value = aluguel;
+        document.getElementById('perc_acionistas').value = percAcionistas;
+        document.getElementById('btnSalvar').innerText = "🔄 Confirmar Alterações";
+        document.getElementById('btnCancelar').style.display = "inline-block";
+        calcularMetricas();
+    }
+
+    function cancelarEdicao() {
+        document.getElementById('formEstrutura').action = '/salvar_estrutura';
+        document.getElementById('formEstrutura').reset();
+        document.getElementById('bairro_imovel').innerHTML = '<option value="">Selecione o Bairro...</option>';
+        document.getElementById('btnSalvar').innerText = "💾 Salvar Simulação";
+        document.getElementById('btnCancelar').style.display = "none";
+        calcularMetricas();
+    }
+
+    function alternarMenuMobile() { 
+        document.getElementById('menuNavegacao').classList.toggle('ativo'); 
+    }
+    
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
+        }
+    }
+    
+    // Usando o gerenciamento nativo por classes combinado com as melhorias de CSS da Parte 1
+    function alternarAltoContraste() {
+        const corpo = document.body;
+        corpo.classList.toggle('alto-contraste');
+    }
+</script>
+</body>
+</html>

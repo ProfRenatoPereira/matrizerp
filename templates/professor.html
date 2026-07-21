@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Professor - ERP Acadêmico</title>
+    <!-- Vinculação correta com o sistema estático e WhiteNoise do seu projeto -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+        }
+        .painel-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .header-painel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+        .grid-painel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        @media (max-width: 768px) {
+            .grid-painel { grid-template-columns: 1fr; }
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #cbd5e1;
+        }
+        th { background-color: #f8fafc; color: #334155; }
+        .form-box {
+            background-color: #f8fafc;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box;
+        }
+        .btn {
+            background-color: #3498db; color: white; border: none; padding: 10px 15px;
+            border-radius: 4px; cursor: pointer; font-weight: bold; width: 100%;
+            transition: background 0.2s;
+        }
+        .btn:hover { background-color: #2980b9; }
+        .btn-danger { background-color: #e74c3c; }
+        .btn-danger:hover { background-color: #c0392b; }
+        .alerta {
+            padding: 12px; border-radius: 4px; margin-bottom: 15px; font-weight: bold; text-align: center;
+        }
+        .sucesso { background-color: #d1fae5; color: #065f46; }
+        .erro { background-color: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+
+    <div class="painel-container">
+        <div class="header-painel">
+            <h2>👨‍🏫 Painel do Professor - Controle de Equipes</h2>
+            <a href="{{ url_for('index') }}" style="color: #3498db; text-decoration: none; font-weight: bold;">← Voltar ao ERP</a>
+        </div>
+
+        <!-- Exibição de mensagens flash retornadas pelo app.py -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alerta {% if category == 'success' %}sucesso{% else %}erro{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="grid-painel">
+            <!-- COLUNA 1: Lista de Equipes Cadastradas -->
+            <div>
+                <h3>👥 Equipes no Banco de Dados</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Usuário/Equipe</th>
+                            <th>Status de Segurança</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario['id'] }}</td>
+                            <td><strong>{{ usuario['usuario'] }}</strong></td>
+                            <td><span style="color: #27ae60;">🔒 Criptografada (Hash)</span></td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: #7f8c8d;">Nenhuma equipe cadastrada no sistema.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- COLUNA 2: Botão de Pânico e Cadastro Manual -->
+            <div class="form-box">
+                <h3>🚨 Ferramentas de Emergência</h3>
+                
+                <!-- Formulário do Botão de Pânico (Reset Instantâneo) -->
+                <form action="/professor/resetar" method="POST" style="margin-bottom: 30px;">
+                    <h4 style="color: #c0392b; margin-bottom: 5px;">🔥 Botão de Pânico: Resetar Senha</h4>
+                    <p style="font-size: 0.85em; color: #666; margin-top: 0;">Use se o aluno esquecer a credencial no meio da aula.</p>
+                    
+                    <div class="form-group">
+                        <label for="user_reset">Selecione a Equipe Travada:</label>
+                        <select id="user_reset" name="username" required>
+                            <option value="">-- Escolha a equipe --</option>
+                            {% for usuario in usuarios %}
+                                <option value="{{ usuario['usuario'] }}">{{ usuario['usuario'] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="nova_senha">Nova Senha Provisória:</label>
+                        <input type="text" id="nova_senha" name="nova_senha" placeholder="Ex: 123456" required autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Forçar Nova Senha e Reconfigurar Hash</button>
+                </form>
+
+                <!-- Formulário de Cadastro Manual para Grupos Atrasados -->
+                <form action="/professor/cadastrar" method="POST">
+                    <h4 style="color: #2c3e50; margin-bottom: 5px;">➕ Cadastrar Nova Equipe Manualmente</h4>
+                    <p style="font-size: 0.85em; color: #666; margin-top: 0;">Gere novos acessos sem precisar reiniciar o banco.</p>
+                    
+                    <div class="form-group">
+                        <label for="novo_user">Nome de Usuário (Sem espaços):</label>
+                        <input type="text" id="novo_user" name="novo_user" placeholder="Ex: equipe_delta" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="senha_inicial">Senha de Acesso Inicial:</label>
+                        <input type="text" id="senha_inicial" name="senha_inicial" placeholder="Ex: adm2026" required autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn" style="background-color: #2ecc71;">Registrar Equipe Criptografada</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Acadêmico - Terceiro ADM Associados</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0; padding: 15px; box-sizing: border-box; min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            background-color: #f4f6f9; font-family: Arial, sans-serif;
+        }
+        .login-container {
+            width: 100%; max-width: 480px; margin: 0 auto; padding: 30px;
+            background: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        .logo-placeholder {
+            font-size: 1.5rem; font-weight: bold; text-align: center; margin-bottom: 20px; color: #2c3e50;
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #2d3748; }
+        .form-group input {
+            width: 100%; padding: 12px; font-size: 16px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box;
+        }
+        .texto-ajuda { font-size: 0.9em; color: #4a5568; margin-bottom: 25px; text-align: center; line-height: 1.5; }
+        .btn-principal {
+            width: 100%; padding: 12px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px;
+            background-color: #3498db; color: white; border: none; border-radius: 6px; transition: background 0.2s ease;
+        }
+        .btn-principal:hover { background-color: #2980b9; }
+        .mensagem-erro {
+            background-color: #fed7d7; color: #c53030; padding: 12px; border-radius: 6px;
+            text-align: center; margin-bottom: 15px; font-size: 0.9em; font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo-placeholder">⚙️ TERCEIRO ADM ASSOCIADOS</div>
+        
+        <!-- PASSO 1: O estudante NÃO realizou o login na equipe -->
+        {% if not session.get('logado') %}
+            <h3 style="text-align: center; color: #1a202c; margin-bottom: 10px;">Acesso ao ERP</h3>
+            <p class="texto-ajuda">Insira as credenciais de autenticação fornecidas pelo professor para liberar o simulador.</p>
+
+            <!-- Exibição de alertas do Flash do Flask -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="mensagem-erro" style="{% if category == 'success' %}background-color: #d1fae5; color: #065f46;{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="/login_validar" method="POST">
+                <div class="form-group">
+                    <label for="username">Usuário / Equipe:</label>
+                    <input type="text" id="username" name="username" placeholder="Ex: equipe_alfa" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha de Segurança:</label>
+                    <input type="password" id="password" name="password" placeholder="Digite a senha" required>
+                </div>
+                <button type="submit" class="btn-principal">Validar Credenciais de Acesso</button>
+            </form>
+
+        <!-- PASSO 2: O estudante já logou e agora define as configurações iniciais da empresa -->
+        {% else %}
+            <h3 style="text-align: center; color: #1a202c; margin-bottom: 10px;">Inicialização do Simulador</h3>
+            <p class="texto-ajuda">
+                Autenticado como: <strong>{{ session.get('usuario_equipe') }}</strong>.<br>
+                Configure a empresa para gerar a alocação de setores e destravar as operações.
+            </p>
+
+            <form action="/inicializar_simulador" method="POST">
+                <div class="form-group">
+                    <label for="nome_empresa">Nome da Empresa Simulada / Grupo:</label>
+                    <input type="text" id="nome_empresa" name="nome_empresa" placeholder="Ex: Alfa Consultoria Industrial" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="capital_inicial">Orçamento de Capital Disponível (R$):</label>
+                    <input type="number" step="0.01" id="capital_inicial" name="capital_inicial" placeholder="Ex: 500000.00" required autocomplete="off">
+                </div>
+                <button type="submit" class="btn-principal" style="background-color: #2ecc71;">Iniciar Simulação Operacional 🚀</button>
+            </form>
+            
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="/logout" style="color: #7f8c8d; text-decoration: none; font-size: 0.85em;">🔒 Desconectar Equipe</a>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

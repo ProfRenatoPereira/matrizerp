@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recibo Trabalhista - Impressão Oficial</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; color: #333; margin: 0; padding: 15px; }
+        .recibo-box { border: 2px solid #2b5797; max-width: 750px; margin: 20px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); box-sizing: border-box; }
+        .topo-dashed { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px dashed #2b5797; padding-bottom: 15px; margin-bottom: 20px; }
+        .tabela-recibo { width: 100%; border-collapse: collapse; margin: 20px 0; font-family: monospace; font-size: 14px; }
+        .tabela-recibo th, .tabela-recibo td { border: 1px solid #bdc3c7; padding: 10px; text-align: left; }
+        .total-linha { font-weight: bold; background-color: #f8f9fa; border-top: 2px solid #2b5797; }
+        .assinatura-bloco { margin-top: 60px; text-align: center; border-top: 1px solid #000; width: 280px; margin-left: auto; margin-right: auto; padding-top: 5px; font-weight: bold; }
+        
+        /* CSS de Segurança para Alto Contraste Nativo na Tela */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .recibo-box {
+            background-color: #121212 !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+            box-shadow: none !important;
+        }
+        .alto-contraste .topo-dashed {
+            border-bottom-color: #ffffff !important;
+        }
+        .alto-contraste .topo-dashed h2, .alto-contraste .topo-dashed strong {
+            color: #ffffff !important;
+        }
+        .alto-contraste .topo-dashed small {
+            color: #b3b3b3 !important;
+        }
+        .alto-contraste div[style*="background: #f8f9fa"] {
+            background-color: #1e1e1e !important;
+        }
+        .alto-contraste .tabela-recibo th {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border-color: #ffffff !important;
+        }
+        .alto-contraste .tabela-recibo td {
+            background-color: #121212 !important;
+            color: #ffffff !important;
+            border-color: #ffffff !important;
+        }
+        .alto-contraste .tabela-recibo td[style*="color: green"],
+        .alto-contraste .tabela-recibo td[style*="color: red"] {
+            font-weight: bold !important;
+        }
+        .alto-contraste .total-linha {
+            background-color: #1e1e1e !important;
+            border-top-color: #ffffff !important;
+        }
+        .alto-contraste div[style*="background: #e2efda"] {
+            background-color: #1c3d1c !important;
+            border-color: #a3e2a3 !important;
+        }
+        .alto-contraste div[style*="background: #e2efda"] strong,
+        .alto-contraste div[style*="background: #e2efda"] span {
+            color: #ffffff !important;
+        }
+        .alto-contraste .assinatura-bloco {
+            border-top-color: #ffffff !important;
+        }
+
+        /* Regras exclusivas para organizar a impressão limpa sem gastar tinta */
+        @media print { 
+            .barra-acessibilidade { 
+                display: none !important; 
+            } 
+            body { 
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .recibo-box { 
+                border: none !important; 
+                box-shadow: none !important; 
+                margin: 0 !important; 
+                padding: 0 !important; 
+                max-width: 100% !important;
+                background-color: #ffffff !important;
+                color: #000000 !important;
+            } 
+            .topo-dashed {
+                border-bottom: 2px dashed #000000 !important;
+            }
+            .topo-dashed h2, .topo-dashed strong {
+                color: #000000 !important;
+            }
+            .tabela-recibo th {
+                background-color: #e6e6e6 !important;
+                color: #000000 !important;
+                border: 1px solid #000000 !important;
+            }
+            .tabela-recibo td {
+                background-color: #ffffff !important;
+                color: #000000 !important;
+                border: 1px solid #000000 !important;
+            }
+            .total-linha {
+                background-color: #f2f2f2 !important;
+                border-top: 2px solid #000000 !important;
+            }
+            div[style*="background: #e2efda"] {
+                background-color: #ffffff !important;
+                border: 1px solid #000000 !important;
+            }
+            div[style*="background: #e2efda"] strong,
+            div[style*="background: #e2efda"] span {
+                color: #000000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra de Acessibilidade Superior Integrada ao Padrão do Repositório -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+    <button class="btn-acessibilidade" onclick="window.print()" style="background: #27ae60; color: white; border: none; font-weight: bold; cursor: pointer;">🖨️ Imprimir Holerite</button>
+</div>
+
+<div class="recibo-box" id="conteudoRecibo">
+    <div class="topo-dashed">
+        <div>
+            <h2 style="margin: 0; font-size: 20px; color: #2b5797;">TERCEIRO ADM ASSOCIADOS</h2>
+            <small style="color: #555;">Projetos, Execução, Assessoria, Auditoria e Gerenciamento</small>
+        </div>
+        <div style="text-align: right;">
+            <strong style="font-size: 14px; color: #2b5797;">{{ h.tipo_recibo }}</strong><br>
+            <small>Competência / Mês: Julho</small>
+        </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 4px;">
+        <p style="margin: 0;"><strong>Colaborador Alocado:</strong> {{ h.nome }}</p>
+        <p style="margin: 0; text-align: right;"><strong>Cargo / Posto:</strong> {{ h.cargo }}</p>
+    </div>
+    
+    <table class="tabela-recibo">
+        <thead>
+            <tr style="background: #2b5797; color: white;">
+                <th>Descrição dos Eventos e Rubricas Trabalhistas</th>
+                <th>Proventos (Créditos)</th>
+                <th>Descontos (Retenções)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>(+) {{ h.principal_nome }}</td>
+                <td style="font-weight: bold; color: green;">R$ {{ "%.2f"|format(h.principal_valor) }}</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>(+) Adicionais CLT de Risco (Insalubridade/Periculosidade)</td>
+                <td style="font-weight: bold; color: green;">R$ {{ "%.2f"|format(h.adicionais) }}</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>(+) Médias e Reflexos de Horas Extras Acumuladas</td>
+                <td style="font-weight: bold; color: green;">R$ {{ "%.2f"|format(h.he) }}</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td>(-) Desconto INSS Progressivo Previdenciário</td>
+                <td>-</td>
+                <td style="color: red; font-weight: bold;">R$ {{ "%.2f"|format(h.inss) }}</td>
+            </tr>
+            <tr>
+                <td>(-) Retenção de Imposto de Renda na Fonte (IRRF)</td>
+                <td>-</td>
+                <td style="color: red; font-weight: bold;">R$ {{ "%.2f"|format(h.irrf) }}</td>
+            </tr>
+            <tr>
+                <td>(-) Desconto Vale Transporte Legal (6% Base)</td>
+                <td>-</td>
+                <td style="color: red; font-weight: bold;">R$ {{ "%.2f"|format(h.vt) }}</td>
+            </tr>
+            <tr class="total-linha">
+                <td>SOMA DOS PROVENTOS E DESCONTOS</td>
+                <td style="color: green;">R$ {{ "%.2f"|format(h.total_proventos) }}</td>
+                <td style="color: red;">R$ {{ "%.2f"|format(h.total_descontos) }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <div style="border: 2px solid #27ae60; padding: 12px; min-width: 280px; text-align: right; background: #e2efda; border-radius: 4px;">
+            <strong style="font-size: 14px; color: #375623;">VALOR LÍQUIDO A RECEBER: <span style="color: green; font-size: 18px; font-family: monospace;">R$ {{ "%.2f"|format(h.liquido) }}</span></strong>
+        </div>
+    </div>
+    
+    <div class="assinatura-bloco">
+        Assinatura do Colaborador
+    </div>
+</div>
+
+<script>
+    // Controle do tamanho das fontes para Big TVs ou baixa visão na visualização do recibo
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
+        }
+    }
+
+    // Controle nativo por classes do modo de alto contraste corrigido
+    function alternarAltoContraste() {
+        const corpo = document.body;
+        corpo.classList.toggle('alto-contraste');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurador de Orçamentos e Engenharia de Custos</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS de Segurança para Alto Contraste Nativo nos Calculadores e Configurações Geométricas */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .card-orcamento, .alto-contraste .resultado-painel, .alto-contraste .painel-dim {
+            background-color: #121212 !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste input, .alto-contraste select {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+        .alto-contraste input[readonly] {
+            background-color: #2a2a2a !important;
+            color: #00ff00 !important;
+        }
+        .alto-contraste label, .alto-contraste h2, .alto-contraste h3, .alto-contraste h4 {
+            color: #ffffff !important;
+        }
+        .alto-contraste .alert {
+            background-color: #111111 !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+        
+        /* Grid responsivo universal para engenharia de custos (Mobile até TV) */
+        .grid-formulario {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+        }
+        .grid-resultados {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .resultado-painel {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 20px;
+            border-radius: 8px;
+            color: #166534;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Barra de Acessibilidade Superior Oficial -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+</div>
+
+<!-- Cabeçalho Principal Terceiro ADM Associados -->
+<header class="cabecalho-corporativo">
+    <div class="identidade-container">
+        <div class="branding-flex">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+            <div class="texto-empresa">
+                <h1>TERCEIRO ADM ASSOCIADOS</h1>
+                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+            </div>
+        </div>
+        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+    </div>
+
+    <!-- Navegação Responsiva com Menus Dropdown Unificados -->
+    <nav class="nav-container" id="menuNavegacao">
+        <ul class="menu-cascata">
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/orcamentos">📐 7B. Cockpit de Orçamentos</a></li>
+                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
+<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
+    <div>
+        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
+        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    </div>
+    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
+        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
+        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+    </div>
+</div>
+
+    <h2>Módulo 7B: Cockpit de Orçamentos Técnicos Comerciais</h2>
+    <p>Insira a geometria da peça e o lote desejado. O simulador calculará automaticamente o consumo de matéria-prima, tempos de máquina, custos e gerará o preço final via Mark-up fiscal.</p>
+    <!-- Bloco de Alertas de Validação do Simulador -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}" style="padding: 12px; margin-bottom: 20px; border-radius: 4px; background-color: #fff3cd; color: #856404; font-weight: bold; border: 1px solid #ffeeba;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card-orcamento" style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 25px;">
+        <h3>📐 1. Configuração Geométrica e Geometria da Peça</h3>
+        <form id="formOrcamento" action="/salvar_orcamento_calculado" method="POST">
+            
+            <div class="grid-formulario" style="margin-bottom: 20px;">
+                <div class="form-group">
+                    <label for="tipo_produto">Tipo de Produto a Orçar:</label>
+                    <select name="tipo_produto" id="tipo_produto" required onchange="alternarCamposGeometricos()">
+                        <option value="">-- Selecione o Tipo --</option>
+                        <option value="bucha">Bucha Industrial</option>
+                        <option value="pino">Pino Maciço</option>
+                        <option value="eixo">Eixo de Transmissão Complexo</option>
+                        <option value="engrenagem">Engrenagem Cilíndrica Reta</option>
+                        <option value="diversos">Diversos / Sob Desenho Técnico</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="nome_item_comercial">Nome Comercial da Peça:</label>
+                    <input type="text" name="nome_item" id="nome_item_comercial" required placeholder="Ex: Bucha de Bronze da Prensa">
+                </div>
+                <div class="form-group">
+                    <label for="tamanho_lote">Tamanho do Lote (Unidades):</label>
+                    <input type="number" name="lote" id="tamanho_lote" min="1" value="10" required oninput="calcularOrcamentoCompleto()">
+                </div>
+                <div class="form-group">
+                    <label for="maquina_alocada">Posto de Trabalho / Máquina:</label>
+                    <select name="maquina_id" id="maquina_alocada" required onchange="calcularOrcamentoCompleto()">
+                        <option value="">-- Escolha o Posto --</option>
+                        {% for maq in maquinas %}
+                        <option value="{{ maq.id }}" data-custo-minuto="{{ maq.custo_minuto_maquina }}">{{ maq.nome_equipamento }} (R$ {{ "%.4f"|format(maq.custo_minuto_maquina) }}/min)</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <!-- PAINÉIS GEOMÉTRICOS DINÂMICOS -->
+            
+            <!-- Campos para Bucha -->
+            <div id="painel_bucha" class="painel-dim" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #3498db;">
+                <h4>⚙️ Dimensões de Engenharia: Bucha</h4>
+                <div class="grid-formulario">
+                    <div class="form-group"><label for="bucha_ext">Diâmetro Externo (mm):</label><input type="number" id="bucha_ext" value="60" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="bucha_int">Diâmetro Interno (mm):</label><input type="number" id="bucha_int" value="40" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="bucha_comp">Comprimento Total (mm):</label><input type="number" id="bucha_comp" value="80" oninput="calcularOrcamentoCompleto()"></div>
+                </div>
+            </div>
+
+            <!-- Campos para Pino -->
+            <div id="painel_pino" class="painel-dim" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #e67e22;">
+                <h4>📌 Dimensões de Engenharia: Pino Maciço</h4>
+                <div class="grid-formulario">
+                    <div class="form-group"><label for="pino_diam">Diâmetro Nominal (mm):</label><input type="number" id="pino_diam" value="30" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="pino_comp">Comprimento Total (mm):</label><input type="number" id="pino_comp" value="120" oninput="calcularOrcamentoCompleto()"></div>
+                </div>
+            </div>
+
+            <!-- Campos para Eixo Complexo -->
+            <div id="painel_eixo" class="painel-dim" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #9b59b6;">
+                <h4>🔩 Características de Usinagem: Eixo</h4>
+                <div class="grid-formulario">
+                    <div class="form-group"><label for="eixo_comp">Comprimento Total (mm):</label><input type="number" id="eixo_comp" value="300" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="eixo_escalas">Nº de Diâmetros Diferentes (Escalas):</label><input type="number" id="eixo_escalas" value="3" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="eixo_furos">Quantidade de Furações Técnicas:</label><input type="number" id="eixo_furos" value="2" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="eixo_canais">Canais de Chaveta / Retentor:</label><input type="number" id="eixo_canais" value="1" oninput="calcularOrcamentoCompleto()"></div>
+                </div>
+            </div>
+
+            <!-- Campos para Engrenagem -->
+            <div id="painel_engrenagem" class="painel-dim" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #1abc9c;">
+                <h4>⚙️ Parâmetros de Fabricação: Engrenagem</h4>
+                <div class="grid-formulario">
+                    <div class="form-group"><label for="eng_dentes">Número de Dentes (Z):</label><input type="number" id="eng_dentes" value="24" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="eng_modulo">Módulo da Engrenagem (M):</label><input type="number" id="eng_modulo" value="3" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="eng_largura">Largura dos Dentes / Face (mm):</label><input type="number" id="eng_largura" value="40" oninput="calcularOrcamentoCompleto()"></div>
+                </div>
+            </div>
+
+            <!-- Campos para Diversos -->
+            <div id="painel_diversos" class="painel-dim" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #7f8c8d;">
+                <h4>🛠️ Estimativa Livre: Sob Desenho Técnico</h4>
+                <div class="grid-formulario">
+                    <div class="form-group"><label for="div_peso">Peso Estimado de Matéria-Prima (kg):</label><input type="number" id="div_peso" step="0.1" value="5" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="div_tempo">Tempo Manual Estimado de Máquina (min/un):</label><input type="number" id="div_tempo" value="20" oninput="calcularOrcamentoCompleto()"></div>
+                </div>
+            </div>
+
+            <!-- PARÂMETROS FISCAIS E MARKUP -->
+            <h4 style="margin-top: 25px;">📊 2. Alíquotas de Impostos & Margem de Lucro (% por Dentro)</h4>
+            <div class="grid-formulario" style="margin-bottom: 20px;">
+                <div class="form-group"><label for="taxa_iss">Imposto Municipal (ISS %):</label><input type="number" name="iss" id="taxa_iss" step="0.1" value="5.0" oninput="calcularOrcamentoCompleto()"></div>
+                <div class="form-group"><label for="taxa_icms">Imposto Estadual (ICMS %):</label><input type="number" name="icms" id="taxa_icms" step="0.1" value="18.0" oninput="calcularOrcamentoCompleto()"></div>
+                <div class="form-group"><label for="taxa_fed">Impostos Federais (%):</label><input type="number" name="federal" id="taxa_fed" step="0.1" value="9.25" oninput="colored_input= calcularOrcamentoCompleto()"></div>
+                <div class="form-group"><label for="margem_desejada">Margem de Lucro Desejada (%):</label><input type="number" name="margem" id="margem_desejada" step="0.1" value="25.0" oninput="calcularOrcamentoCompleto()"></div>
+            </div>
+            <!-- PAINEL VISUAL DE ENGENHARIA DE CUSTOS E MARKS -->
+            <h4 style="margin-top: 25px;">📊 3. Demonstração de Preços, Custos e Prazos Calculados</h4>
+            <div class="grid-resultados">
+                <div class="resultado-painel" style="background-color: #f0fdf4; border-color: #bbf7d0; color: #166534;">
+                    <h4 style="margin: 0 0 5px 0;">💰 Preço de Venda Final Sugerido</h4>
+                    <p style="font-size: 24px; font-weight: bold; margin: 0;">R$ <span id="preco_venda_peca">0.00</span> / peça</p>
+                    <small style="color: #15803d;">Custo Técnico de Fábrica Base absorvido</small>
+                </div>
+                
+                <div class="resultado-painel" style="background-color: #eff6ff; border-color: #bfdbfe; color: #1e40af;">
+                    <h4 style="margin: 0 0 5px 0;">📦 Custo Total Absorvido do Lote</h4>
+                    <p style="font-size: 24px; font-weight: bold; margin: 0;">R$ <span id="custo_total_lote">0.00</span></p>
+                    <small style="color: #1d4ed8;">Matéria-Prima + MOD + Taxas diluídas</small>
+                </div>
+                
+                <div class="resultado-painel" style="background-color: #fff7ed; border-color: #fed7aa; color: #9a3412;">
+                    <h4 style="margin: 0 0 5px 0;">⏳ Prazo Teórico Estimado para Entrega</h4>
+                    <p style="font-size: 24px; font-weight: bold; margin: 0;"><span id="prazo_entrega_horas">0</span> horas úteis</p>
+                    <small style="color: #c2410c;">Tempo de Operação + Setup + Fila PCP</small>
+                </div>
+            </div>
+
+            <!-- Inputs ocultos para enviar o cálculo técnico perfeitamente para o app.py -->
+            <input type="hidden" name="custo_operacao_total" id="hide_custo_operacao" value="0">
+            <input type="hidden" name="tempo_estimado_total" id="hide_tempo_estimado" value="0">
+            <input type="hidden" name="preco_final_calculado" id="hide_preco_final" value="0">
+
+            <div style="margin-top: 25px;">
+                <button type="submit" class="btn btn-success" style="width: 100%; padding: 14px; font-size: 16px; font-weight: bold; cursor: pointer;">🚀 Validar Orçamento e Registrar Demanda Comercial</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    // Função para mostrar os campos específicos de cada tipo de peça
+    function alternarCamposGeometricos() {
+        const tipo = document.getElementById('tipo_produto').value;
+        
+        // Esconde todos os painéis antes de exibir o selecionado
+        document.querySelectorAll('.painel-dim').forEach(div => div.style.display = 'none');
+        
+        if (tipo === 'bucha') document.getElementById('painel_bucha').style.display = 'block';
+        else if (tipo === 'pino') document.getElementById('painel_pino').style.display = 'block';
+        else if (tipo === 'eixo') document.getElementById('painel_eixo').style.display = 'block';
+        else if (tipo === 'engrenagem') document.getElementById('painel_engrenagem').style.display = 'block';
+        else if (tipo === 'diversos') document.getElementById('painel_diversos').style.display = 'block';
+        
+        calcularOrcamentoCompleto();
+    }
+
+    function calcularOrcamentoCompleto() {
+        const tipo = document.getElementById('tipo_produto').value;
+        const lote = parseFloat(document.getElementById('tamanho_lote').value) || 1;
+        
+        const seletorMaq = document.getElementById('maquina_alocada');
+        if (!seletorMaq || !seletorMaq.options.length || seletorMaq.selectedIndex === 0) return;
+        
+        const opcaoMaq = seletorMaq.options[seletorMaq.selectedIndex];
+        const custoMinutoMaquina = parseFloat(opcaoMaq.getAttribute('data-custo-minuto')) || 0.15;
+
+        let pesoPecaKg = 0;
+        let tempoUsinagemMin = 0;
+        let precoMateriaPrimaPorKg = 15.00; // Custo base pedagógico da matéria-prima (R$/kg)
+        const tempoSetupFixo = 15; // 15 minutos de setup por lote (Conceito SMED)
+
+        // --- ENGENHARIA GEOMÉTRICA E DE TEMPOS (FÓRMULAS POR PRODUTO) ---
+        if (tipo === 'bucha') {
+            const dExt = parseFloat(document.getElementById('bucha_ext').value) || 0;
+            const dInt = parseFloat(document.getElementById('bucha_int').value) || 0;
+            const comp = parseFloat(document.getElementById('bucha_comp').value) || 0;
+            
+            // Volume do Tubo Mecânico: PI * (R_ext^2 - R_int^2) * Comprimento
+            let volMm3 = Math.PI * (Math.pow(dExt/2, 2) - Math.pow(dInt/2, 2)) * comp;
+            pesoPecaKg = (volMm3 * 7.85) / 1000000; // Densidade do Aço: 7.85 g/cm³
+            
+            // Tempo estimado: 3 minutos base + 0.1 minuto por mm de remoção de material
+            tempoUsinagemMin = 3 + (comp * 0.1);
+            precoMateriaPrimaPorKg = 45.50; // Preço do Tubo ST52
+            
+        } else if (tipo === 'pino') {
+            const dNom = parseFloat(document.getElementById('pino_diam').value) || 0;
+            const comp = parseFloat(document.getElementById('pino_comp').value) || 0;
+            
+            // Volume do Tarugo Maciço: PI * R^2 * Comprimento
+            let volMm3 = Math.PI * Math.pow(dNom/2, 2) * comp;
+            pesoPecaKg = (volMm3 * 7.85) / 1000000;
+            
+            // Tempo estimado para pinos: torneamento linear simples
+            tempoUsinagemMin = 2 + (comp * 0.05);
+            precoMateriaPrimaPorKg = 14.50; // Preço do Tarugo SAE 1020
+            
+        } else if (tipo === 'eixo') {
+            const comp = parseFloat(document.getElementById('eixo_comp').value) || 0;
+            const escalas = parseFloat(document.getElementById('eixo_escalas').value) || 1;
+            const furos = parseFloat(document.getElementById('eixo_furos').value) || 0;
+            const canais = parseFloat(document.getElementById('eixo_canais').value) || 0;
+            
+            // Estimativa volumétrica base para eixos complexos (diâmetro médio aproximado de 50mm)
+            let volMm3 = Math.PI * Math.pow(50/2, 2) * comp;
+            pesoPecaKg = (volMm3 * 7.85) / 1000000;
+            precoMateriaPrimaPorKg = 28.90; // Preço do Aço Liga SAE 4140
+            
+            // Tempo: Função linear do comprimento + tempos adicionais por característica geométrica
+            tempoUsinagemMin = (comp * 0.08) + (escalas * 4) + (furos * 3) + (canais * 5);
+            
+        } else if (tipo === 'engrenagem') {
+            const z = parseFloat(document.getElementById('eng_dentes').value) || 1;
+            const m = parseFloat(document.getElementById('eng_modulo').value) || 1;
+            const b = parseFloat(document.getElementById('eng_largura').value) || 0;
+            
+            // Diâmetro Primitivo d = m * z
+            const dPrim = m * z;
+            let volMm3 = Math.PI * Math.pow(dPrim/2, 2) * b;
+            pesoPecaKg = (volMm3 * 7.85) / 1000000;
+            
+            // Tempo de fresagem no cabeçote divisor: Tempo fixo por dente multiplicado pela largura
+            tempoUsinagemMin = 5 + (z * (b * 0.15));
+            precoMateriaPrimaPorKg = 32.00; // Preço bloco de engrenagem
+            
+        } else if (tipo === 'diversos') {
+            pesoPecaKg = parseFloat(document.getElementById('div_peso').value) || 0;
+            tempoUsinagemMin = parseFloat(document.getElementById('div_tempo').value) || 0;
+        }
+
+        // --- ENGENHARIA DE CUSTOS E SEU FECHAMENTO CONTÁBIL ---
+        const custoMaterialUnidade = pesoPecaKg * precoMateriaPrimaPorKg;
+        const tempoTotalLoteMin = (tempoUsinagemMin * lote) + tempoSetupFixo;
+        
+        // Custo total de transformação da máquina/posto (diluído com MOD + CIF da base)
+        const custoTransformacaoTotal = tempoTotalLoteMin * custoMinutoMaquina;
+        const custoMaterialTotal = custoMaterialUnidade * lote;
+        
+        // Custo Técnico Industrial Absoluto do Lote
+        const custoTecnicoLoteTotal = custoMaterialTotal + custoTransformacaoTotal;
+        const custoTecnicoUnidade = custoTecnicoLoteTotal / lote;
+
+        // --- MODELO FISCAL: FORMATAÇÃO DO MARKUP POR DENTRO ---
+        const iss = parseFloat(document.getElementById('taxa_iss').value) || 0;
+        const icms = parseFloat(document.getElementById('taxa_icms').value) || 0;
+        const federal = parseFloat(document.getElementById('taxa_fed').value) || 0;
+        const margem = parseFloat(document.getElementById('margem_desejada').value) || 0;
+
+        const somaPercentuais = (iss + icms + federal + margem) / 100;
+        let precoVendaPeca = 0;
+        
+        if (somaPercentuais < 1) {
+            precoVendaPeca = custoTecnicoUnidade / (1 - somaPercentuais);
+        } else {
+            precoVendaPeca = custoTecnicoUnidade * (1 + somaPercentuais); // Fallback de proteção
+        }
+
+        const prazoHorasUteis = Math.ceil(tempoTotalLoteMin / 60);
+
+        // Alimentação visível dos painéis pedagógicos na tela
+        document.getElementById('preco_venda_peca').innerText = precoVendaPeca.toFixed(2);
+        document.getElementById('custo_total_lote').innerText = custoTecnicoLoteTotal.toFixed(2);
+        document.getElementById('prazo_entrega_horas').innerText = prazoHorasUteis;
+
+        // Armazenamento nos inputs ocultos para o envio seguro ao app.py
+        document.getElementById('hide_custo_operacao').value = custoTransformacaoTotal.toFixed(4);
+        document.getElementById('hide_tempo_estimado').value = tempoTotalLoteTotal = tempoTotalLoteMin.toFixed(2);
+        document.getElementById('hide_preco_final').value = (precoVendaPeca * lote).toFixed(4);
+    }
+
+    // Função para abrir e fechar o menu hambúrguer no celular
+    function alternarMenuMobile() {
+        document.getElementById('menuNavegacao').classList.toggle('ativo');
+    }
+
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
+        }
+    }
+
+    function alternarAltoContraste() {
+        document.body.classList.toggle('alto-contraste');
+    }
+
+    // Inicialização segura ao carregar a página
+    window.onload = function() {
+        alternarCamposGeometricos();
+    };
+</script>
+</body>
+</html>

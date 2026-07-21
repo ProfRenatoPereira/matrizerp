@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engenharia de Produto - BOM</title>
+    <link rel="icon" type="image/png" href="static/logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* CSS de Segurança para Alto Contraste Nativo nos Cards e Formulários */
+        .alto-contraste body {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .card-engenharia {
+            background-color: #121212 !important;
+            border: 2px solid #ffffff !important;
+            color: #ffffff !important;
+        }
+        .alto-contraste .card-engenharia h3, .alto-contraste .card-engenharia label {
+            color: #ffffff !important;
+        }
+        .alto-contraste input, .alto-contraste select {
+            background-color: #1e1e1e !important;
+            color: #ffffff !important;
+            border: 2px solid #ffffff !important;
+        }
+        .alto-contraste code {
+            background-color: #2a2a2a !important;
+            color: #00ff00 !important;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        /* Layout responsivo flexível (Celular ao Telão) */
+        .grid-layout-engenharia {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        .grid-formulario-interno {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #bdc3c7;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    
+<!-- Barra de Acessibilidade Superior Oficial -->
+<div class="barra-acessibilidade">
+    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+</div>
+
+<!-- Cabeçalho Principal Terceiro ADM Associados -->
+<header class="cabecalho-corporativo">
+    <div class="identidade-container">
+        <div class="branding-flex">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+            <div class="texto-empresa">
+                <h1>TERCEIRO ADM ASSOCIADOS</h1>
+                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+            </div>
+        </div>
+        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+    </div>
+
+    <!-- Navegação Responsiva com Menus Dropdown Unificados -->
+    <nav class="nav-container" id="menuNavegacao">
+        <ul class="menu-cascata">
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                </ul>
+            </li>
+            <li class="item-menu">
+                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <ul class="sub-menu">
+                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
+<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
+    <div>
+        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
+        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    </div>
+    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
+        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
+        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+    </div>
+</div>
+
+    <h2>Página 5: Engenharia de Produto (Estrutura e Roteiros - BOM)</h2>
+    
+    <!-- Grid Layout Responsivo Adaptado -->
+    <div class="grid-layout-engenharia">
+        <!-- Bloco Esquerdo: Criar o Produto (Master) -->
+        <div class="card-engenharia" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <h3>1. Registrar Novo Produto</h3>
+            <form action="/salvar_produto" method="POST">
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="codigo_produto">Código do Produto:</label>
+                    <input type="text" id="codigo_produto" name="codigo_produto" required placeholder="Ex: PROD-EIXO-01">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="nome_produto">Nome Comercial:</label>
+                    <input type="text" id="nome_produto" name="nome_produto" required placeholder="Ex: Eixo de Transmissão Zincado">
+                </div>
+                <button type="submit" class="btn btn-success" style="width: 100%; cursor: pointer;">Criar Produto Base</button>
+            </form>
+        </div>
+
+        <!-- Bloco Direito: Vincular Roteiro e Componentes -->
+        <div class="card-engenharia" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            <h3>2. Compor Árvore e Roteiro de Fabricação</h3>
+            <form action="/vincular_estrutura" method="POST">
+                <div class="grid-formulario-interno">
+                    <div class="form-group">
+                        <label for="produto_id">Selecionar o Produto Base:</label>
+                        <select id="produto_id" name="produto_id" required>
+                            <option value="">-- Escolha o Produto --</option>
+                            {% for prod in produtos %}
+                            <option value="{{ prod.id }}">{{ prod.codigo_produto }} - {{ prod.nome_produto }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="maquina_id">Adicionar Operação / Máquina:</label>
+                        <select id="maquina_id" name="maquina_id">
+                            <option value="">-- Nenhuma (Apenas Material) --</option>
+                            {% for maq in maquinas %}
+                            <option value="{{ maq.id }}">{{ maq.nome_equipamento }} (R$ {{ "%.4f"|format(maq.custo_minuto_maquina) }}/min)</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tempo_processo_min">Tempo da Operação (Minutos):</label>
+                        <input type="number" id="tempo_processo_min" step="0.01" name="tempo_processo_min" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="material_id">Adicionar Material / Insumo:</label>
+                        <select id="material_id" name="material_id">
+                            <option value="">-- Nenhum (Apenas Operação) --</option>
+                            {% for mat in materiais %}
+                            <option value="{{ mat.id }}">{{ mat.nome_material }} (R$ {{ "%.2f"|format(mat.preco_unidade) }}/un)</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantidade_material">Qtd / Peso Gasto de Material:</label>
+                        <input type="number" id="quantidade_material" step="0.01" name="quantidade_material" value="0">
+                    </div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <button type="submit" class="btn btn-primary" style="width: 100%; cursor: pointer;">⚙️ Inserir Elemento na Ficha Técnica</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Listagem das Árvores de Engenharia Atuais -->
+    <h3>Estruturas de Engenharia Ativas (Roteiros)</h3>
+    <!-- Contêiner de rolagem para garantir a responsividade em celulares -->
+    <div style="overflow-x: auto; width: 100%; margin-bottom: 20px;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Produto Destino</th>
+                    <th>Componente / Máquina Vinculada</th>
+                    <th>Tempo de Processo</th>
+                    <th>Material Consumido</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for comp in composicoes %}
+                <tr>
+                    <td><code>{{ comp.codigo_produto }}</code> - <strong>{{ comp.nome_produto }}</strong></td>
+                    <td>
+                        {% if comp.nome_equipamento %}
+                            ⚙️ {{ comp.nome_equipamento }}
+                        {% else %}
+                            <span style="color:#7f8c8d;">Sem operação de máquina</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ comp.tempo_processo_min }} minutos</td>
+                    <td>
+                        {% if comp.nome_material %}
+                            📦 {{ comp.nome_material }} (Qtd: {{ comp.quantidade_material }})
+                        {% else %}
+                            <span style="color:#7f8c8d;">Sem consumo de material</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="/deletar_item_estrutura/{{ comp.id }}" method="POST" onsubmit="return confirm('Remover este item da engenharia do produto?');">
+                            <button type="submit" class="btn btn-danger" style="padding: 5px 10px; cursor: pointer;">❌ Remover</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Função para abrir e fechar o menu hambúrguer no celular
+    function alternarMenuMobile() {
+        const menu = document.getElementById('menuNavegacao');
+        menu.classList.toggle('ativo');
+    }
+
+    // Controle do tamanho das fontes para as Big TVs ou baixa visão
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
+        }
+    }
+
+    // Controle nativo por classes do modo de alto contraste corrigido
+    function alternarAltoContraste() {
+        const corpo = document.body;
+        corpo.classList.toggle('alto-contraste');
+    }
+</script>
+</body>
+</html>
