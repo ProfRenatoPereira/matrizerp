@@ -1,26 +1,26 @@
-/* Variáveis de Cores para o Tema Industrial */
+/* Variáveis de Cores para o Tema Industrial - Calibrado em Alto Contraste Fixo */
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #18bc9c;
-    --danger-color: #e74c3c;
-    --background-color: #ecf0f1;
-    --card-color: #ffffff;
-    --text-color: #2c3e50;
+    --primary-color: #FFFF00;
+    --secondary-color: #00ff00;
+    --danger-color: #ff4444;
+    --background-color: #000000;
+    --card-color: #121212;
+    --text-color: #ffffff;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
+    background-color: var(--background-color) !important;
+    color: var(--text-color) !important;
     margin: 0;
     padding: 0;
 }
-
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
     transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
 .form-group {
@@ -31,83 +31,109 @@ body {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
+    color: #ffffff;
 }
 
-input[type="text"], input[type="password"], input[type="number"] {
+input[type="text"], input[type="password"], input[type="number"], select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #bdc3c7;
+    border: 2px solid #444;
     border-radius: 4px;
     box-sizing: border-box;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-size: 16px;
+}
+
+input:focus, select:focus {
+    border-color: var(--primary-color) !important;
+    outline: none;
 }
 
 input:readonly, input[readonly] {
-    background-color: #eaeded;
-    color: #7f8c8d;
+    background-color: #2a2a2a !important;
+    color: #00ff00 !important;
     font-weight: bold;
-    border-color: var(--secondary-color);
+    border-color: #444 !important;
+    font-family: monospace;
 }
-
 .btn {
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
-    color: white;
+    color: #000000;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    text-align: center;
 }
 
-.btn-primary { background-color: #1c3144; }
-.btn-success { background-color: var(--secondary-color); }
-.btn-danger { background-color: var(--danger-color); }
+.btn-primary { background-color: var(--primary-color); color: #000000; }
+.btn-success { background-color: var(--secondary-color); color: #000000; }
+.btn-danger { background-color: #222; border: 1px solid var(--danger-color); color: var(--danger-color); }
+.btn-danger:hover { background-color: var(--danger-color); color: #000000; }
 
 .data-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    background: white;
+    background: #000000;
+    font-family: monospace;
 }
 
 .data-table th, .data-table td {
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #333;
     text-align: left;
 }
 
 .data-table th {
-    background-color: #243a4e;
-    color: white;
+    background-color: #1e1e1e;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.data-table td {
+    background-color: #000000;
+    color: #ffffff;
 }
 /* --- BARRA DE ACESSIBILIDADE SUPERIOR --- */
 .barra-acessibilidade {
-    background-color: #0b1a30;
-    padding: 6px 20px;
+    background-color: #111111;
+    padding: 10px 20px;
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 8px;
-    border-bottom: 1px solid #1a2a40;
+    border-bottom: 1px solid #333;
 }
+
 .btn-acessibilidade {
-    background-color: #1c3144;
-    color: white;
-    border: 1px solid #3f5e77;
-    padding: 4px 10px;
+    background-color: #222222;
+    color: #ffffff;
+    border: 1px solid #444444;
+    padding: 6px 12px;
     font-weight: bold;
     border-radius: 4px;
     cursor: pointer;
     font-size: 12px;
 }
-.btn-acessibilidade:hover { background-color: #18bc9c; }
+.btn-acessibilidade:hover { background-color: var(--primary-color); color: #000000; }
 
 /* --- CABEÇALHO CORPORATIVO --- */
 .cabecalho-corporativo {
-    background-color: #243a4e;
-    padding: 15px 25px;
+    background-color: #111111;
+    padding: 20px 25px;
     color: white;
-    border-bottom: 2px solid #1c2d3d;
+    border-bottom: 2px solid var(--primary-color);
     position: relative;
 }
+
 .identidade-container {
     display: flex;
     align-items: center;
@@ -115,136 +141,23 @@ input:readonly, input[readonly] {
     gap: 20px;
     width: 100%;
 }
+
 .branding-flex {
     display: flex;
     align-items: center;
     gap: 20px;
 }
+
 .texto-empresa h1 {
     margin: 0;
     font-size: 22px;
     font-weight: bold;
     letter-spacing: 0.5px;
-    color: #ffffff;
+    color: var(--primary-color);
 }
+
 .texto-empresa p {
     margin: 4px 0 0 0;
     font-size: 12px;
-    color: #b0c4de;
-}
-
-/* --- BOTÃO HAMBÚRGUER (MOBILE) --- */
-.menu-hamburguer {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 28px;
-    cursor: pointer;
-    padding: 5px;
-}
-
-/* --- MENU EM CASCATA --- */
-.nav-container {
-    border-top: 1px solid #3f5e77;
-    padding-top: 10px;
-    margin-top: 10px;
-}
-.menu-cascata {
-    display: flex;
-    gap: 25px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-.item-menu { position: relative; }
-.link-principal {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 13px;
-    text-transform: uppercase;
-    padding: 8px 12px;
-    display: block;
-    border-radius: 4px;
-}
-.link-principal:hover { background-color: #1c3144; }
-
-/* Submenu dropdown desktop */
-.sub-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: #ffffff;
-    min-width: 240px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    z-index: 1000;
-}
-.sub-menu li a {
-    color: #243a4e;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    border-bottom: 1px solid #f1f3f5;
-}
-.sub-menu li a:hover { background-color: #243a4e; color: white; }
-.item-menu:hover .sub-menu { display: block; }
-
-/* --- RESPONSIVIDADE: MOBILE --- */
-@media (max-width: 992px) {
-    .menu-hamburguer { display: block; }
-    .nav-container {
-        display: none;
-        width: 100%;
-    }
-    .nav-container.ativo {
-        display: block;
-    }
-    .menu-cascata {
-        flex-direction: column;
-        gap: 5px;
-        width: 100%;
-    }
-    .sub-menu {
-        position: static;
-        display: block;
-        box-shadow: none;
-        background-color: #1c3144;
-        border-radius: 0;
-        margin-top: 5px;
-    }
-    .sub-menu li a {
-        color: #ffffff;
-        padding-left: 25px;
-        border-bottom: 1px solid #243a4e;
-    }
-    .sub-menu li a:hover { background-color: #18bc9c; }
-}
-
-/* --- ADAPTAÇÃO BIG TVS 80" --- */
-@media (min-width: 1900px) {
-    .container { max-width: 92%; }
-    .texto-empresa h1 { font-size: 32px; }
-    .texto-empresa p { font-size: 16px; }
-    .link-principal { font-size: 18px; }
-    .sub-menu li a { font-size: 16px; min-width: 300px; }
-    .data-table th, .data-table td { font-size: 16px; padding: 16px; }
-}
-
-
-
-.alto-contraste .card-caixa-mestre {
-    background-color: #1a1a1a !important;
-    border: 2px solid #ffffff !important;
-    color: #00ff00 !important;
-}
-.alto-contraste .card-caixa-mestre h4, .alto-contraste .card-caixa-mestre span {
-    color: #ffffff !important;
+    color: #bbbbbb;
 }
