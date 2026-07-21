@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Compras</title>
+    <title>Compras - Cockpit de Suprimentos</title>
     <link rel="icon" type="image/png" href="static/logo.png">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
@@ -47,125 +47,131 @@
         }
     </style>
 </head>
-<body>
+<body class="alto-contraste">
     <!-- Barra de Acessibilidade Superior Oficial -->
-<div class="barra-acessibilidade">
-    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+<div class="barra-acessibilidade" style="background: #111; padding: 10px; border-bottom: 1px solid #333; display: flex; gap: 10px;">
+    <button class="btn-acessibilidade" style="background: #FFFF00; color: #000; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(-1)">A-</button>
 </div>
 <!-- Cabeçalho Principal Terceiro ADM Associados -->
-<header class="cabecalho-corporativo">
-    <div class="identidade-container">
-        <div class="branding-flex">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+<header class="cabecalho-corporativo" style="background: #111; padding: 20px; border-bottom: 2px solid #FFFF00;">
+    <div class="identidade-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <div class="branding-flex" style="display: flex; align-items: center; gap: 15px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px; border: 1px solid #fff;">
             <div class="texto-empresa">
-                <h1>TERCEIRO ADM ASSOCIADOS</h1>
-                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+                <h1 style="color: #FFFF00; margin: 0; font-size: 22px;">TERCEIRO ADM ASSOCIADOS</h1>
+                <p style="color: #bbb; margin: 5px 0 0 0; font-size: 13px;">Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
             </div>
         </div>
-        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+        <button class="menu-hamburguer" style="background: none; border: 1px solid #fff; color: #fff; font-size: 24px; cursor: pointer; padding: 5px 12px; border-radius: 4px;" onclick="alternarMenuMobile()">☰</button>
     </div>
-
     <!-- Navegação Responsiva com Menus Dropdown Unificados -->
-    <nav class="nav-container" id="menuNavegacao">
-        <ul class="menu-cascata">
+    <nav class="nav-container" id="menuNavegacao" style="margin-top: 15px;">
+        <ul class="menu-cascata" style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 15px;">
             <li class="item-menu">
-                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <a href="#" class="link-principal" style="color: #FFFF00; font-weight: bold; text-decoration: none;">🏢 Módulos Iniciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
-                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
-                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
-                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
-                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
-                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
-                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                    <li><a href="/estrutura" style="color: #fff; text-decoration: none;">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas" style="color: #fff; text-decoration: none;">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh" style="color: #fff; text-decoration: none;">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro" style="color: #fff; text-decoration: none;">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes" style="color: #fff; text-decoration: none;">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras" style="color: #FFFF00; text-decoration: none; border-bottom: 2px solid #FFFF00;">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais" style="color: #fff; text-decoration: none;">7. Almoxarifado (Materiais)</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🛠️ Custos & Engenharia ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
-                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                    <li><a href="/engenharia" style="color: #fff; text-decoration: none;">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao" style="color: #fff; text-decoration: none;">9. Controladoria e Precificação</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">💰 Operações Comerciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
-                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                    <li><a href="/vendas" style="color: #fff; text-decoration: none;">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque" style="color: #fff; text-decoration: none;">11. Inventário de Acabados</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🏭 Chão de Fábrica & ROI ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
-                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                    <li><a href="/pcp" style="color: #fff; text-decoration: none;">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi" style="color: #fff; text-decoration: none;">13. Indicadores de Retorno (ROI)</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
 </header>
 
-<div class="container">
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box;">
+    
     <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
-<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
-    <div>
-        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
-        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    <div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #111; border: 2px solid #FFFF00; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #fff; box-sizing: border-box; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <h4 style="margin: 0; font-size: 13px; text-transform: uppercase; color: #FFFF00;">💰 Caixa Operacional Disponível (Giro)</h4>
+            <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace; color: #00ff00;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+        </div>
+        <div style="text-align: right; border-left: 2px solid #333; padding-left: 20px;">
+            <span style="font-size: 12px; font-weight: bold; color: #FFFF00;">Aporte Inicial de Capital:</span><br>
+            <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+        </div>
     </div>
-    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
-        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
-        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
-    </div>
-</div>
 
-    <h2>Módulo: Cockpit de Compras & Suprimentos</h2>
-    <p>Análise de propostas comerciais e efetivação de contratos de fornecimento.</p>
+    <h2 style="color: #fff; border-bottom: 1px solid #333; padding-bottom: 10px;">Módulo: Cockpit de Compras & Suprimentos</h2>
+    <p style="color: #bbb; font-size: 14px; margin-top: -5px; margin-bottom: 25px;">Análise de propostas comerciais e efetivação de contratos de fornecimento.</p>
 
     <!-- Grid Flexível de Cards de Efetivação de Pedidos Cotados -->
     <div class="grid-cards-compras">
         {% for req in requisicoes_cotadas %}
-        <div class="card-compra" style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 5px solid #17a2b8; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-            <h4>Pedido #{{ req.id }} - {{ req.equipamento_tipo }}</h4>
-            <p><strong>Item Solicitado:</strong> {{ req.especificacao_desejada }}</p>
-            <p><strong>Quantidade Solicitada:</strong> {{ req.quantidade }}</p>
-            <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+        <!-- Correção Neon: Mapeamento posicional por índices das colunas selecionadas (0=id, 1=equipamento_tipo, 2=especificacao, 3=quantidade, 4=preco, 5=potencia, 6=depreciacao) -->
+        <div class="card-compra" style="background: #121212; padding: 20px; border-radius: 8px; border: 2px solid #333; border-left: 5px solid #FFFF00; box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: #fff;">
+            <h4 style="margin-top: 0; color: #FFFF00; font-size: 16px; text-transform: uppercase;">Pedido #{{ req[0] }} - {{ req[1] }}</h4>
+            <p style="margin: 8px 0; font-size: 14px;"><strong>Item Solicitado:</strong> <span style="color: #bbb;">{{ req[2] }}</span></p>
+            <p style="margin: 8px 0; font-size: 14px;"><strong>Quantidade Solicitada:</strong> <span style="color: #bbb; font-family: monospace;">{{ req[3] }}</span></p>
+            <hr style="border: 0; border-top: 1px solid #222; margin: 15px 0;">
             
             <!-- Formulário para o estudante simular a Negociação Comercial -->
-            <form action="/efetivar_compra/{{ req.id }}" method="POST">
+            <form action="/efetivar_compra/{{ req[0] }}" method="POST">
                 <div class="form-group" style="margin-bottom: 12px;">
-                    <label for="preco_final_{{ req.id }}">Valor Comercial Acordado (R$ Total):</label>
-                    <input type="number" step="0.01" id="preco_final_{{ req.id }}" name="preco_final" value="{{ req.preco_cotado }}" required class="form-control">
+                    <label for="preco_final_{{ req[0] }}" style="font-size: 12px; font-weight: bold; color: #fff; display: block; margin-bottom: 5px;">Valor Comercial Acordado (R$ Total):</label>
+                    <input type="number" step="0.01" id="preco_final_{{ req[0] }}" name="preco_final" value="{{ req[4] }}" required class="form-control" style="background: #1e1e1e; color: #fff; border: 1px solid #444; font-family: monospace;">
                 </div>
                 
-                {% if req.equipamento_tipo == "Máquina / Ativo" %}
+                {% if req[1] == "Máquina / Ativo" or "Máquina" in req[1] %}
                 <div class="form-group" style="margin-bottom: 12px;">
-                    <label for="potencia_final_{{ req.id }}">Potência Nominal (kW):</label>
-                    <input type="number" step="0.1" id="potencia_final_{{ req.id }}" name="potencia_final" value="{{ req.potencia_cotada }}" required class="form-control">
+                    <label for="potencia_final_{{ req[0] }}" style="font-size: 12px; font-weight: bold; color: #fff; display: block; margin-bottom: 5px;">Potência Nominal (kW):</label>
+                    <input type="number" step="0.1" id="potencia_final_{{ req[0] }}" name="potencia_final" value="{{ req[5] }}" required class="form-control" style="background: #1e1e1e; color: #fff; border: 1px solid #444; font-family: monospace;">
                 </div>
                 <div class="form-group" style="margin-bottom: 12px;">
-                    <label for="depreciacao_final_{{ req.id }}">Depreciação Mensal Estimada (R$):</label>
-                    <input type="number" step="0.01" id="depreciacao_final_{{ req.id }}" name="depreciacao_final" value="{{ req.depreciacao_sugerida }}" required class="form-control">
+                    <label for="depreciacao_final_{{ req[0] }}" style="font-size: 12px; font-weight: bold; color: #fff; display: block; margin-bottom: 5px;">Depreciação Mensal Estimada (R$):</label>
+                    <input type="number" step="0.01" id="depreciacao_final_{{ req[0] }}" name="depreciacao_final" value="{{ req[6] }}" required class="form-control" style="background: #1e1e1e; color: #fff; border: 1px solid #444; font-family: monospace;">
                 </div>
                 {% else %}
                 <!-- Valores ocultos ou zerados automáticos para Insumos/Serviços -->
                 <input type="hidden" name="potencia_final" value="0">
                 <input type="hidden" name="depreciacao_final" value="0">
                 {% endif %}
-                <div style="margin-top: 15px; display: flex; gap: 10px;">
-                    <button type="submit" class="btn btn-success" style="width: 100%; cursor: pointer;">✍️ Fechar Negócio e Ativar</button>
-                    <button type="button" class="btn btn-danger" style="cursor: pointer;" onclick="rejeitarPedido('{{ req.id }}')">❌ Cancelar</button>
+                
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button type="submit" style="width: 100%; background: #FFFF00; color: #000; border: none; font-weight: bold; padding: 10px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-size: 12px; tracking-wider">✍️ Fechar Negócio</button>
+                    <button type="button" style="background: #222; border: 1px solid #ff4444; color: #ff4444; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;" onclick="rejeitarPedido('{{ req[0] }}')">❌ Cancelar</button>
                 </div>
             </form>
         </div>
         {% else %}
-        <div style="grid-column: span 2; text-align: center; color: #6c757d; padding: 40px;">
-            <p>📭 Nenhuma cotação de mercado aguardando aprovação no momento.</p>
+        <div style="grid-column: span 2; text-align: center; color: #555; padding: 60px 20px; border: 2px dashed #222; border-radius: 8px;">
+            <p style="font-size: 16px; margin: 0;">📭 Nenhuma cotação de mercado aguardando aprovação no momento.</p>
         </div>
         {% endfor %}
     </div>
 </div>
+
+<footer style="background: #111; text-align: center; padding: 15px; border-top: 1px solid #333; color: #555; font-size: 12px; margin-top: 60px;">
+    TERCEIRO ADM ASSOCIADOS © 2026 - Módulo Operacional de Suprimentos Corporativos
+</footer>
 
 <script>
     function rejeitarPedido(id) {
@@ -178,13 +184,11 @@
         }
     }
 
-    // Função para abrir e fechar o menu hambúrguer no celular
     function alternarMenuMobile() {
         const menu = document.getElementById('menuNavegacao');
         menu.classList.toggle('ativo');
     }
 
-    // Controle do tamanho das fontes para as Big TVs ou baixa visão
     let tamanhoAtual = 100;
     function mudarFonte(direcao) {
         tamanhoAtual += (direcao * 10);
@@ -193,7 +197,6 @@
         }
     }
 
-    // Controle nativo por classes do modo de alto contraste
     function alternarAltoContraste() {
         const corpo = document.body;
         corpo.classList.toggle('alto-contraste');
