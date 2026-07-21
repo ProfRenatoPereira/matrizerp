@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investimentos Imobiliários</title>
+    <title>Investimentos Imobiliários - TERCEIRO ADM ASSOCIADOS</title>
     <link rel="icon" type="image/png" href="static/logo.png">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
@@ -48,194 +48,199 @@
         }
     </style>
 </head>
-<body>
+<body class="alto-contraste">
 
 <!-- Barra de Acessibilidade Superior Oficial -->
-<div class="barra-acessibilidade">
-    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+<div class="barra-acessibilidade" style="background: #111; padding: 10px; border-bottom: 1px solid #333; display: flex; gap: 10px;">
+    <button class="btn-acessibilidade" style="background: #FFFF00; color: #000; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(-1)">A-</button>
 </div>
 
 <!-- Cabeçalho Principal Terceiro ADM Associados -->
-<header class="cabecalho-corporativo">
-    <div class="identidade-container">
-        <div class="branding-flex">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+<header class="cabecalho-corporativo" style="background: #111; padding: 20px; border-bottom: 2px solid #FFFF00;">
+    <div class="identidade-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <div class="branding-flex" style="display: flex; align-items: center; gap: 15px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px; border: 1px solid #fff;">
             <div class="texto-empresa">
-                <h1>TERCEIRO ADM ASSOCIADOS</h1>
-                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+                <h1 style="color: #FFFF00; margin: 0; font-size: 22px;">TERCEIRO ADM ASSOCIADOS</h1>
+                <p style="color: #bbb; margin: 5px 0 0 0; font-size: 13px;">Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
             </div>
         </div>
-        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+        <button class="menu-hamburguer" style="background: none; border: 1px solid #fff; color: #fff; font-size: 24px; cursor: pointer; padding: 5px 12px; border-radius: 4px;" onclick="alternarMenuMobile()">☰</button>
     </div>
-
     <!-- Navegação Responsiva com Menus Dropdown Unificados -->
-    <nav class="nav-container" id="menuNavegacao">
-        <ul class="menu-cascata">
+    <nav class="nav-container" id="menuNavegacao" style="margin-top: 15px;">
+        <ul class="menu-cascata" style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 15px;">
             <li class="item-menu">
-                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
-                <ul class="sub-menu">
-                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
-                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
-                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
-                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
-                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
-                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
-                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
-                </ul>
+                <a href="/estrutura" style="color: #FFFF00; font-weight: bold; text-decoration: none; border-bottom: 2px solid #FFFF00; padding-bottom: 3px;">1. Investimentos Imobiliários</a>
             </li>
-            <li class="item-menu">
-                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
-                <ul class="sub-menu">
-                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
-                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
-                </ul>
-            </li>
-            <li class="item-menu">
-                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
-                <ul class="sub-menu">
-                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
-                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
-                </ul>
-            </li>
-            <li class="item-menu">
-                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
-                <ul class="sub-menu">
-                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
-                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
-                </ul>
-            </li>
+            <li class="item-menu"><a href="/maquinas" style="color: #fff; text-decoration: none;">2. Engenharia de Ativos</a></li>
+            <li class="item-menu"><a href="/rh" style="color: #fff; text-decoration: none;">3. Gestão de Pessoal (RH)</a></li>
+            <li class="item-menu"><a href="/financeiro" style="color: #fff; text-decoration: none;">4. Fluxo Financeiro</a></li>
+            <li class="item-menu"><a href="/requisicoes" style="color: #fff; text-decoration: none;">5. Central de Requisições</a></li>
+            <li class="item-menu"><a href="/compras" style="color: #fff; text-decoration: none;">6. Cockpit de Suprimentos</a></li>
+            <li class="item-menu"><a href="/materiais" style="color: #fff; text-decoration: none;">7. Almoxarifado</a></li>
+            <li class="item-menu"><a href="/engenharia" style="color: #fff; text-decoration: none;">8. Engenharia de Produto</a></li>
+            <li class="item-menu"><a href="/precificacao" style="color: #fff; text-decoration: none;">9. Controladoria</a></li>
+            <li class="item-menu"><a href="/vendas" style="color: #fff; text-decoration: none;">10. Painel de Vendas</a></li>
+            <li class="item-menu"><a href="/estoque" style="color: #fff; text-decoration: none;">11. Inventário de Acabados</a></li>
+            <li class="item-menu"><a href="/pcp" style="color: #fff; text-decoration: none;">12. Planilha de Processos (PCP)</a></li>
+            <li class="item-menu"><a href="/roi" style="color: #fff; text-decoration: none;">13. Retorno (ROI)</a></li>
         </ul>
     </nav>
 </header>
 
-<div class="container">
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box;">
+    
     <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
-<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
-    <div>
-        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
-        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    <div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #111; border: 2px solid #FFFF00; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #fff; box-sizing: border-box; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <h4 style="margin: 0; font-size: 13px; text-transform: uppercase; color: #FFFF00;">💰 Caixa Operacional Disponível (Giro)</h4>
+            <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace; color: #00ff00;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+        </div>
+        <div style="text-align: right; border-left: 2px solid #333; padding-left: 20px;">
+            <span style="font-size: 12px; font-weight: bold; color: #FFFF00;">Aporte Inicial de Capital:</span><br>
+            <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+        </div>
     </div>
-    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
-        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
-        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
-    </div>
-</div>
 
-    <h2>Página 2: Investimentos Imobiliários e Estrutura de Custos</h2>
+    <h2 style="color: #fff; border-bottom: 1px solid #333; padding-bottom: 10px;">Página 2: Investimentos Imobiliários e Estrutura de Custos</h2>
     
     <!-- Painel Resumido de Alocação de Capital Pedagógica (Sebrae/BPM) -->
-    {% if registros and registros[-1].capital_inicial_negocio > 0 %}
-    <div class="card-form" style="background: #e0f2fe; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #0284c7;">
-        <p style="margin: 0; color: #0369a1; font-weight: bold;">
-            📊 Orçamento Inicial da Empresa: R$ {{ "{:,.2f}".format(registros[-1].capital_inicial_negocio) }}
+    <!-- Correção Neon: Acesso ao índice posicional 9 para capturar o capital_inicial_negocio -->
+    {% if registros and registros[-1][9] > 0 %}
+    <div class="card-form" style="background: #111; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 5px solid #FFFF00; border-top: 1px solid #333; border-right: 1px solid #333; border-bottom: 1px solid #333;">
+        <p style="margin: 0; color: #FFFF00; font-weight: bold; font-size: 15px;">
+            📊 Orçamento Inicial da Empresa: R$ {{ "{:,.2f}".format(registros[-1][9]) }}
         </p>
-        <small style="color: #075985;">
-            Teto sugerido para Investimento Imobiliário/Instalações (15%): R$ {{ "{:,.2f}".format(registros[-1].capital_inicial_negocio * 0.15) }}
+        <small style="color: #bbb; display: block; margin-top: 5px;">
+            Teto sugerido para Investimento Imobiliário/Instalações (15%): R$ {{ "{:,.2f}".format(registros[-1][9] * 0.15) }}
         </small>
     </div>
     {% endif %}
-    
-    <div class="card-form" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <div class="card-form" style="background: #121212; padding: 20px; border-radius: 8px; border: 2px solid #333;">
         <form id="formEstrutura" action="/salvar_estrutura" method="POST">
             <input type="hidden" id="registro_id" name="id">
             
             <div class="grid-formulario">
                 <div class="form-group">
-                    <label for="turma_nome">Identificação da Simulação / Grupo:</label>
-                    <input type="text" name="turma_nome" id="turma_nome" required value="{{ registros[-1].turma_nome if registros else '' }}" placeholder="Ex: Turma A - Grupo 1">
+                    <label for="turma_nome" style="color: #fff; font-size: 13px; font-weight: bold; display: block; margin-bottom: 5px;">Identificação da Simulação / Grupo:</label>
+                    <!-- Correção Neon: Índice 1 para turma_nome -->
+                    <input type="text" name="turma_nome" id="turma_nome" required value="{{ registros[-1][1] if registros else '' }}" placeholder="Ex: Turma A - Grupo 1" style="background: #1e1e1e; color: #fff; border: 1px solid #444; font-family: monospace;">
                 </div>
                 <div class="form-group">
-                    <label for="cidade_regiao">Cidade / Região:</label>
-                    <select name="cidade_regiao" id="cidade_regiao" required onchange="atualizarBairros()">
+                    <label for="cidade_regiao" style="color: #fff; font-size: 13px; font-weight: bold; display: block; margin-bottom: 5px;">Cidade / Região:</label>
+                    <select name="cidade_regiao" id="cidade_regiao" required onchange="atualizarBairros()" style="background: #1e1e1e; color: #fff; border: 1px solid #444;">
                         <option value="">Selecione a Região...</option>
-                        <option value="Curitiba Zonas Nobres">Curitiba (Zonas Nobres)</option>
-                        <option value="Curitiba Zonas Mistas">Curitiba (Zonas Mistas/Industriais)</option>
-                        <option value="Regiao Metropolitana">Região Metropolitana (RMC)</option>
+                        <!-- Correção Neon: Validação dinâmica de seleção comparando com o índice 2 (cidade_regiao) -->
+                        <option value="Curitiba Zonas Nobres" {% if registros and registros[-1][2] == "Curitiba Zonas Nobres" %}selected{% endif %}>Curitiba (Zonas Nobres)</option>
+                        <option value="Curitiba Zonas Mistas" {% if registros and registros[-1][2] == "Curitiba Zonas Mistas" %}selected{% endif %}>Curitiba (Zonas Mistas/Industriais)</option>
+                        <option value="Regiao Metropolitana" {% if registros and registros[-1][2] == "Regiao Metropolitana" %}selected{% endif %}>Região Metropolitana (RMC)</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="bairro_imovel">Bairro / Localidade:</label>
-                    <select name="bairro_imovel" id="bairro_imovel" required onchange="aplicarValoresReferencia()">
+                    <select name="bairro_imovel" id="bairro_imovel" required onchange="aplicarValoresReferencia()" style="background: #1e1e1e; color: #fff; border: 1px solid #444;">
                         <option value="">Selecione o Bairro...</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="area_imovel">Área Total do Imóvel (m²):</label>
-                    <input type="number" step="0.01" name="area_imovel" id="area_imovel" required oninput="aplicarValoresReferencia()">
+                    <!-- Correção Neon: Índice 4 para area_imovel -->
+                    <input type="number" step="0.01" name="area_imovel" id="area_imovel" required oninput="aplicarValoresReferencia()" value="{{ registros[-1][4] if registros else '' }}" style="background: #1e1e1e; color: #fff; border: 1px solid #444; font-family: monospace;">
                 </div>
                 <div class="form-group">
                     <label for="taxa_selic">Taxa Referência (% a.a.):</label>
-                    <input type="number" step="0.01" name="taxa_selic" id="taxa_selic" value="{{ taxa_atual }}" required oninput="calcularMetricas()">
+                    <!-- Correção Neon: Índice 5 para taxa_selic -->
+                    <input type="number" step="0.01" name="taxa_selic" id="taxa_selic" value="{{ registros[-1][5] if registros else taxa_atual }}" required oninput="calcularMetricas()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; font-family: monospace;">
                 </div>
                 <div class="form-group">
                     <label for="valor_imovel_estimado">Valor Imóvel (R$) - *Editável*:</label>
-                    <input type="number" step="0.01" name="valor_imovel_estimado" id="valor_imovel_estimado" required oninput="calcularMetricas()">
+                    <!-- Correção Neon: Índice 6 para valor_imovel_estimado -->
+                    <input type="number" step="0.01" name="valor_imovel_estimado" id="valor_imovel_estimado" required oninput="calcularMetricas()" value="{{ registros[-1][6] if registros else '' }}" style="background: #1e1e1e; color: #fff; border: 1px solid #444; font-family: monospace;">
                 </div>
                 <div class="form-group">
                     <label for="aluguel_regional">Aluguel Praticado (R$) - *Editável*:</label>
-                    <input type="number" step="0.01" name="aluguel_regional" id="aluguel_regional" required oninput="calcularMetricas()">
+                    <!-- Correção Neon: Índice 7 para aluguel_regional -->
+                    <input type="number" step="0.01" name="aluguel_regional" id="aluguel_regional" required oninput="calcularMetricas()" value="{{ registros[-1][7] if registros else '' }}" style="background: #1e1e1e; color: #fff; border: 1px solid #444; font-family: monospace;">
                 </div>
                 <div class="form-group">
                     <label for="perc_acionistas">Retorno aos Acionistas (%):</label>
-                    <input type="number" step="0.01" name="perc_acionistas" id="perc_acionistas" min="0" max="100" required placeholder="Ex: 50" oninput="calcularMetricas()">
+                    <!-- Correção Neon: Índice 8 para perc_acionistas -->
+                    <input type="number" step="0.01" name="perc_acionistas" id="perc_acionistas" min="0" max="100" required placeholder="Ex: 50" oninput="calcularMetricas()" value="{{ registros[-1][8] if registros else '' }}" style="background: #1e1e1e; color: #fff; border: 1px solid #444; font-family: monospace;">
                 </div>
                 
                 <div class="form-group">
                     <label for="retorno_acionistas">Retorno Acionistas (R$):</label>
-                    <input type="text" id="retorno_acionistas" readonly value="R$ 0,00" style="background-color: #f8f9fa; font-weight: bold;">
+                    <input type="text" id="retorno_acionistas" readonly value="R$ 0,00" style="background-color: #2a2a2a; color: #00ff00; font-weight: bold; border: 1px solid #444; font-family: monospace;">
                 </div>
                 <div class="form-group">
                     <label for="payback_estimado">Payback Relativo (Meses):</label>
-                    <input type="text" id="payback_estimado" readonly value="0 meses" style="background-color: #f8f9fa; font-weight: bold;">
+                    <input type="text" id="payback_estimado" readonly value="0 meses" style="background-color: #2a2a2a; color: #00ff00; font-weight: bold; border: 1px solid #444; font-family: monospace;">
                 </div>
                 <div class="form-group" style="grid-column: span 2;">
                     <label for="aluguel_minuto">Custo Aluguel por Minuto Máquina:</label>
-                    <input type="text" id="aluguel_minuto" readonly value="R$ 0,0000" style="background-color: #f8f9fa; font-weight: bold; color: #c0392b;">
+                    <input type="text" id="aluguel_minuto" readonly value="R$ 0,0000" style="background-color: #2a2a2a; font-weight: bold; color: #FFFF00; border: 1px solid #444; font-family: monospace;">
                 </div>
             </div>
             
-            <div style="margin-top: 20px;">
-                <button type="submit" id="btnSalvar" class="btn btn-success">💾 Salvar Simulação</button>
-    <h3>Simulações Salvas no Banco de Dados</h3>
-    <!-- Contêiner de rolagem para garantir a responsividade em celulares -->
-    <div style="overflow-x: auto; width: 100%; margin-bottom: 20px;">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Turma/Grupo</th>
-                    <th>Região / Bairro</th>
-                    <th>Área (m²)</th>
-                    <th>Taxa Ref.</th>
-                    <th>Valor Imóvel</th>
-                    <th>Aluguel Praticado</th>
-                    <th>% Acionistas</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for reg in registros %}
-                <tr>
-                    <td>{{ reg.turma_nome }}</td>
-                    <td>{{ reg.cidade_regiao }} - {{ reg.bairro_imovel }}</td>
-                    <td>{{ "%.2f"|format(reg.area_imovel) }} m²</td>
-                    <td>{{ reg.taxa_selic }}%</td>
-                    <td>R$ {{ "%.2f"|format(reg.valor_imovel_estimado) }}</td>
-                    <td>R$ {{ "%.2f"|format(reg.aluguel_regional) }}</td>
-                    <td>{{ reg.perc_acionistas }}%</td>
-                    <td>
-                        <button class="btn btn-primary" onclick="prepararEdicao('{{ reg.id }}', '{{ reg.turma_nome }}', '{{ reg.cidade_regiao }}', '{{ reg.bairro_imovel }}', '{{ reg.area_imovel }}', '{{ reg.taxa_selic }}', '{{ reg.valor_imovel_estimado }}', '{{ reg.aluguel_regional }}', '{{ reg.perc_acionistas }}')">✏️ Alterar</button>
-                        <form action="/deletar_estrutura/{{ reg.id }}" method="POST" style="display:inline;" onsubmit="return confirm('Deseja realmente deletar esta simulação?');">
-                            <button type="submit" class="btn btn-danger">❌ Deletar</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+            <div style="margin-top: 20px; text-align: right;">
+                <button type="submit" id="btnSalvar" style="background: #FFFF00; color: #000; font-weight: bold; padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-size: 14px; tracking-wider">💾 Salvar Simulação</button>
+            </div>
+        </form>
+    </div>
+    <div class="card-form" style="background: #121212; padding: 20px; border-radius: 8px; border: 2px solid #333; margin-top: 25px;">
+        <h3 style="color: #FFFF00; margin-top: 0; margin-bottom: 15px; font-size: 16px; text-transform: uppercase;">Simulações Salvas no Banco de Dados</h3>
+        <div style="overflow-x-auto; width: 100%; margin-bottom: 20px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; font-family: monospace;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #333; color: #FFFF00;">
+                        <th style="padding: 10px;">Turma/Grupo</th>
+                        <th style="padding: 10px;">Região / Bairro</th>
+                        <th style="padding: 10px;">Área (m²)</th>
+                        <th style="padding: 10px;">Taxa Ref.</th>
+                        <th style="padding: 10px;">Valor Imóvel</th>
+                        <th style="padding: 10px;">Aluguel Praticado</th>
+                        <th style="padding: 10px;">% Acionistas</th>
+                        <th style="padding: 10px; text-align: center;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody style="color: #fff;">
+                    {% for reg in registros %}
+                    <tr style="border-bottom: 1px solid #222;">
+                        <!-- Mapeamento de índices do PostgreSQL Neon: 
+                             1=turma | 2=regiao | 3=bairro | 4=area | 5=taxa | 6=valor | 7=aluguel | 8=perc | 0=id 
+                        -->
+                        <td style="padding: 10px; font-weight: bold;">{{ reg[1] }}</td>
+                        <td style="padding: 10px; color: #bbb;">{{ reg[2] }} - {{ reg[3] }}</td>
+                        <td style="padding: 10px;">{{ "%.2f"|format(reg[4]) }} m²</td>
+                        <td style="padding: 10px;">{{ reg[5] }}%</td>
+                        <td style="padding: 10px; color: #00ff00;">R$ {{ "%.2f"|format(reg[6]) }}</td>
+                        <td style="padding: 10px; color: #00ff00;">R$ {{ "%.2f"|format(reg[7]) }}</td>
+                        <td style="padding: 10px;">{{ reg[8] }}%</td>
+                        <td style="padding: 10px; text-align: center;">
+                            <button style="background: #222; border: 1px solid #FFFF00; color: #FFFF00; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;" 
+                                    onclick="prepararEdicao('{{ reg[0] }}', '{{ reg[1] }}', '{{ reg[2] }}', '{{ reg[3] }}', '{{ reg[4] }}', '{{ reg[5] }}', '{{ reg[6] }}', '{{ reg[7] }}', '{{ reg[8] }}')">✏️ Alterar</button>
+                            <form action="/deletar_estrutura/{{ reg[0] }}" method="POST" style="display:inline;" onsubmit="return confirm('Deseja realmente deletar esta simulação?');">
+                                <button type="submit" style="background: #222; border: 1px solid #ff4444; color: #ff4444; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 12px; margin-left: 5px;">❌ Deletar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8" style="padding: 20px; text-align: center; color: #555;">Nenhuma simulação ativa registrada na cadeia produtiva.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+<footer style="background: #111; text-align: center; padding: 15px; border-top: 1px solid #333; color: #555; font-size: 12px; margin-top: 40px;">
+    TERCEIRO ADM ASSOCIADOS © 2026 - ERP Pedagógico Serverless
+</footer>
 
 <script>
     const dadosImobiliarios = {
@@ -297,13 +302,13 @@
             document.getElementById('payback_estimado').value = "Rendimento Insuficiente";
         }
         
-        // Padrão de 176 horas mensais em minutos (44 horas semanais * 4 semanas)
         const minutosUteisMes = 176 * 60;
         document.getElementById('aluguel_minuto').value = "R$ " + (aluguelPraticado / minutosUteisMes).toFixed(4).replace('.', ',');
     }
 
     function prepararEdicao(id, nome, regiao, bairro, area, taxa, valorImovel, aluguel, percAcionistas) {
         document.getElementById('formEstrutura').action = '/alterar_estrutura/' + id;
+        document.getElementById('registro_id').value = id;
         document.getElementById('turma_nome').value = nome;
         document.getElementById('cidade_regiao').value = regiao;
         atualizarBairros();
@@ -314,16 +319,6 @@
         document.getElementById('aluguel_regional').value = aluguel;
         document.getElementById('perc_acionistas').value = percAcionistas;
         document.getElementById('btnSalvar').innerText = "🔄 Confirmar Alterações";
-        document.getElementById('btnCancelar').style.display = "inline-block";
-        calcularMetricas();
-    }
-
-    function cancelarEdicao() {
-        document.getElementById('formEstrutura').action = '/salvar_estrutura';
-        document.getElementById('formEstrutura').reset();
-        document.getElementById('bairro_imovel').innerHTML = '<option value="">Selecione o Bairro...</option>';
-        document.getElementById('btnSalvar').innerText = "💾 Salvar Simulação";
-        document.getElementById('btnCancelar').style.display = "none";
         calcularMetricas();
     }
 
@@ -339,10 +334,8 @@
         }
     }
     
-    // Usando o gerenciamento nativo por classes combinado com as melhorias de CSS da Parte 1
     function alternarAltoContraste() {
-        const corpo = document.body;
-        corpo.classList.toggle('alto-contraste');
+        document.body.classList.toggle('alto-contraste');
     }
 </script>
 </body>
