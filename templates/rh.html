@@ -51,215 +51,230 @@
         }
     </style>
 </head>
-<body>
+<body class="alto-contraste">
 <!-- Barra de Acessibilidade Superior Oficial -->
-<div class="barra-acessibilidade">
-    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+<div class="barra-acessibilidade" style="background: #111; padding: 10px; border-bottom: 1px solid #333; display: flex; gap: 10px;">
+    <button class="btn-acessibilidade" style="background: #FFFF00; color: #000; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(-1)">A-</button>
 </div>
 
 <!-- Cabeçalho Principal Terceiro ADM Associados -->
-<header class="cabecalho-corporativo">
-    <div class="identidade-container">
-        <div class="branding-flex">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+<header class="cabecalho-corporativo" style="background: #111; padding: 20px; border-bottom: 2px solid #FFFF00;">
+    <div class="identidade-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <div class="branding-flex" style="display: flex; align-items: center; gap: 15px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px; border: 1px solid #fff;">
             <div class="texto-empresa">
-                <h1>TERCEIRO ADM ASSOCIADOS</h1>
-                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+                <h1 style="color: #FFFF00; margin: 0; font-size: 22px;">TERCEIRO ADM ASSOCIADOS</h1>
+                <p style="color: #bbb; margin: 5px 0 0 0; font-size: 13px;">Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
             </div>
         </div>
-        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+        <button class="menu-hamburguer" style="background: none; border: 1px solid #fff; color: #fff; font-size: 24px; cursor: pointer; padding: 5px 12px; border-radius: 4px;" onclick="alternarMenuMobile()">☰</button>
     </div>
-
     <!-- Navegação Responsiva com Menus Dropdown Unificados -->
-    <nav class="nav-container" id="menuNavegacao">
-        <ul class="menu-cascata">
+    <nav class="nav-container" id="menuNavegacao" style="margin-top: 15px;">
+        <ul class="menu-cascata" style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 15px;">
             <li class="item-menu">
-                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <a href="#" class="link-principal" style="color: #FFFF00; font-weight: bold; text-decoration: none;">🏢 Módulos Iniciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
-                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
-                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
-                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
-                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
-                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
-                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                    <li><a href="/estrutura" style="color: #fff; text-decoration: none;">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas" style="color: #fff; text-decoration: none;">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh" style="color: #FFFF00; text-decoration: none; border-bottom: 2px solid #FFFF00;">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro" style="color: #fff; text-decoration: none;">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes" style="color: #fff; text-decoration: none;">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras" style="color: #fff; text-decoration: none;">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais" style="color: #fff; text-decoration: none;">7. Almoxarifado (Materials)</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🛠️ Custos & Engenharia ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
-                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                    <li><a href="/engenharia" style="color: #fff; text-decoration: none;">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao" style="color: #fff; text-decoration: none;">9. Controladoria e Precificação</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">💰 Operações Comerciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
-                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                    <li><a href="/vendas" style="color: #fff; text-decoration: none;">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque" style="color: #fff; text-decoration: none;">11. Inventário de Acabados</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🏭 Chão de Fábrica & ROI ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
-                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                    <li><a href="/pcp" style="color: #fff; text-decoration: none;">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi" style="color: #fff; text-decoration: none;">13. Indicadores de Retorno (ROI)</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
 </header>
 
-<div class="container">
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box;">
+    
     <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
-<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
-    <div>
-        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
-        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    <div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #111; border: 2px solid #FFFF00; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #fff; box-sizing: border-box; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <h4 style="margin: 0; font-size: 13px; text-transform: uppercase; color: #FFFF00;">💰 Caixa Operacional Disponível (Giro)</h4>
+            <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace; color: #00ff00;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+        </div>
+        <div style="text-align: right; border-left: 2px solid #333; padding-left: 20px;">
+            <span style="font-size: 12px; font-weight: bold; color: #FFFF00;">Aporte Inicial de Capital:</span><br>
+            <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+        </div>
     </div>
-    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
-        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
-        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
-    </div>
-</div>
 
-    {% with m = get_flashed_messages(with_categories=true) %}{% if m %}{% for c, msg in m %}
-      <div class="alert alert-{{ c }}" style="padding:12px; margin-bottom:20px; font-weight:bold; border-radius:4px;">{{ msg }}</div>
-    {% endfor %}{% endif %}{% endwith %}
-
+    <!-- Bloco de Alertas de Validação do Simulador -->
+    {% with m = get_flashed_messages(with_categories=true) %}
+      {% if m %}
+        {% for c, msg in m %}
+          <div class="alert alert-{{ c }}" style="padding:12px; margin-bottom:20px; font-weight:bold; border-radius:4px; background: #111; color: {% if c=='success' %}#00ff00{% else %}#ff4444{% endif %}; border: 2px solid {% if c=='success' %}#00ff00{% else %}#ff4444{% endif %}; font-family: monospace; font-size: 14px;">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
     <form id="formRH" action="/salvar_colaborador" method="POST">
-        <!-- Grid Flexível de Distribuição das Colunas -->
         <div class="grid-colunas-rh">
-            
             <!-- COLUNA 1: Gestão de Caixa & Cargos -->
-            <div class="card-rh" style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-top: 4px solid #4f81bd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <h3>Gestão de Caixa & Cargos</h3>
-                <div class="form-group" style="margin-bottom: 12px;"><label for="mes_ref">Mês de Referência:</label><select id="mes_ref" class="form-control"><option>Julho</option></select></div>
-                <div class="form-group" style="margin-bottom: 12px;"><label for="receita_mensal">Receita Mensal (R$):</label><input type="number" id="receita_mensal" value="150000" class="form-control"></div>
-                <div class="form-group" style="margin-bottom: 12px;"><label for="limite_pessoal">Limite de Pessoal:</label><input type="number" id="limite_pessoal" value="10" class="form-control"></div>
+            <div class="card-rh" style="background: #121212; padding: 20px; border-radius: 8px; border: 2px solid #333; border-top: 4px solid #FFFF00;">
+                <h3 style="color: #FFFF00; margin-top: 0; font-size: 16px; text-transform: uppercase;">Gestão de Caixa & Cargos</h3>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="mes_ref" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Mês de Referência:</label>
+                    <select id="mes_ref" class="form-control" style="background: #1e1e1e; color: #fff; border: 1px solid #444; width: 100%; padding: 10px; border-radius: 4px;"><option style="background: #121212;">Julho</option></select>
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="receita_mensal" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Receita Mensal (R$):</label>
+                    <input type="number" id="receita_mensal" value="150000" class="form-control" style="background: #1e1e1e; color: #fff; border: 1px solid #444; width: 100%; padding: 10px; border-radius: 4px; font-family: monospace;">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label for="limite_pessoal" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Limite de Pessoal:</label>
+                    <input type="number" id="limite_pessoal" value="10" class="form-control" style="background: #1e1e1e; color: #fff; border: 1px solid #444; width: 100%; padding: 10px; border-radius: 4px; font-family: monospace;">
+                </div>
             </div>
 
             <!-- COLUNA 2: Cadastro & Jornada -->
-            <div class="card-rh" style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-top: 4px solid #4f81bd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <h3>Cadastro & Jornada</h3>
-                <div class="form-group" style="margin-bottom: 10px;"><label for="nome_completo">Nome Completo:</label><input type="text" id="nome_completo" name="nome_completo" required class="form-control" placeholder="Ex: Renato Silva"></div>
+            <div class="card-rh" style="background: #121212; padding: 20px; border-radius: 8px; border: 2px solid #333; border-top: 4px solid #FFFF00;">
+                <h3 style="color: #FFFF00; margin-top: 0; font-size: 16px; text-transform: uppercase;">Cadastro & Jornada</h3>
                 <div class="form-group" style="margin-bottom: 10px;">
-                    <label for="cargo_funcao_select">Cargo / Função Selecionável CLT:</label>
-                    <select name="cargo_funcao" id="cargo_funcao_select" onchange="carregarDadosCargoSelecionado()">
-                        <option value="">-- Escolha o Cargo --</option>
-                        <option value="001 - Operador de Produção">001 - Operador de Produção</option>
-                        <option value="002 - Auxiliar de Produção">002 - Auxiliar de Produção</option>
-                        <option value="003 - Técnico de Produção">003 - Técnico de Produção</option>
-                        <option value="004 - Ferramenteiro">004 - Ferramenteiro</option>
-                        <option value="005 - Mecânico de Manutenção">005 - Mecânico de Manutenção</option>
-                        <option value="006 - Soldador Industrial">006 - Soldador Industrial</option>
-                        <option value="007 - Supervisor de Produção">007 - Supervisor de Produção</option>
-                        <option value="008 - Torneiro Mecânico">008 - Torneiro Mecânico</option>
-                        <option value="009 - Fresador Universal">009 - Fresador Universal</option>
-                        <option value="010 - Técnico de Qualidade">010 - Técnico de Qualidade</option>
-                        <option value="015 - Operador de Empilhadeira">015 - Operador de Empilhadeira</option>
-                        <option value="021 - Comprador Industrial">021 - Comprador Industrial</option>
-                        <option value="022 - Assistente Administrativo">022 - Assistente Administrativo</option>
+                    <label safest for="nome_completo" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Nome Completo:</label>
+                    <input type="text" id="nome_completo" name="nome_completo" required class="form-control" placeholder="Ex: Renato Silva" style="background: #1e1e1e; color: #fff; border: 1px solid #444; width: 100%; padding: 10px; border-radius: 4px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 10px;">
+                    <label for="cargo_funcao_select" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Cargo / Função Selecionável CLT:</label>
+                    <select name="cargo_funcao" id="cargo_funcao_select" onchange="carregarDadosCargoSelecionado()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; width: 100%; padding: 10px; border-radius: 4px; font-size: 16px;">
+                        <option value="" style="background: #121212;">-- Escolha o Cargo --</option>
+                        <option value="001 - Operador de Produção" style="background: #121212;">001 - Operador de Produção</option>
+                        <option value="002 - Auxiliar de Produção" style="background: #121212;">002 - Auxiliar de Produção</option>
+                        <option value="003 - Técnico de Produção" style="background: #121212;">003 - Técnico de Produção</option>
+                        <option value="004 - Ferramenteiro" style="background: #121212;">004 - Ferramenteiro</option>
+                        <option value="005 - Mecânico de Manutenção" style="background: #121212;">005 - Mecânico de Manutenção</option>
+                        <option value="006 - Soldador Industrial" style="background: #121212;">006 - Soldador Industrial</option>
+                        <option value="007 - Supervisor de Produção" style="background: #121212;">007 - Supervisor de Produção</option>
+                        <option value="008 - Torneiro Mecânico" style="background: #121212;">008 - Torneiro Mecânico</option>
+                        <option value="009 - Fresador Universal" style="background: #121212;">009 - Fresador Universal</option>
+                        <option value="010 - Técnico de Qualidade" style="background: #121212;">010 - Técnico de Qualidade</option>
+                        <option value="015 - Operador de Empilhadeira" style="background: #121212;">015 - Operador de Empilhadeira</option>
+                        <option value="021 - Comprador Industrial" style="background: #121212;">021 - Comprador Industrial</option>
+                        <option value="022 - Assistente Administrativo" style="background: #121212;">022 - Assistente Administrativo</option>
                     </select>
                 </div>
-                <div class="form-group"><label for="salario_base">Salário Base (R$):</label><input type="number" name="salario_base" id="salario_base" class="form-control" oninput="calcularHoleriteMatematico()"></div>
+                <div class="form-group">
+                    <label for="salario_base" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Salário Base (R$):</label>
+                    <input type="number" name="salario_base" id="salario_base" class="form-control" oninput="calcularHoleriteMatematico()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; width: 100%; padding: 10px; border-radius: 4px; font-family: monospace;">
+                </div>
             </div>
+
             <!-- COLUNA 3: Escala & Adicionais CLT -->
-            <div class="card-rh" style="background: #f8f9fa; padding: 20px; border-radius: 8px; border-top: 4px solid #4f81bd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                <h3>Escala & Adicionais CLT</h3>
+            <div class="card-rh" style="background: #121212; padding: 20px; border-radius: 8px; border: 2px solid #333; border-top: 4px solid #FFFF00;">
+                <h3 style="color: #FFFF00; margin-top: 0; font-size: 16px; text-transform: uppercase;">Escala & Adicionais CLT</h3>
                 <div class="form-group" style="margin-bottom: 10px;">
-                    <label for="turno_trabalho">Turno Operacional:</label>
-                    <select id="turno_trabalho" name="turno" onchange="calcularHoleriteMatematico()" class="form-control">
-                        <option value="Diurno">Diurno (Regular)</option>
-                        <option value="Noturno">Noturno (+20% Noturno)</option>
+                    <label for="turno_trabalho" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Turno Operacional:</label>
+                    <select id="turno_trabalho" name="turno" onchange="calcularHoleriteMatematico()" class="form-control" style="background: #1e1e1e; color: #fff; border: 1px solid #444; width: 100%; padding: 10px; border-radius: 4px;">
+                        <option value="Diurno" style="background: #121212;">Diurno (Regular)</option>
+                        <option value="Noturno" style="background: #121212;">Noturno (+20% Noturno)</option>
                     </select>
                 </div>
                 <div class="form-group" style="margin-bottom: 10px;">
-                    <label for="dia_semana_trabalho">Dia da Escala (Fábrica):</label>
-                    <select id="dia_semana_trabalho" name="dia_semana" onchange="calcularHoleriteMatematico()" class="form-control">
-                        <option value="Regular">Segunda a Sexta (Regular)</option>
-                        <option value="Sabado">Sábado (Escala +50%)</option>
-                        <option value="Domingo">Domingo (Escala +100%)</option>
+                    <label for="dia_semana_trabalho" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Dia da Escala (Fábrica):</label>
+                    <select id="dia_semana_trabalho" name="dia_semana" onchange="calcularHoleriteMatematico()" class="form-control" style="background: #1e1e1e; color: #fff; border: 1px solid #444; width: 100%; padding: 10px; border-radius: 4px;">
+                        <option value="Regular" style="background: #121212;">Segunda a Sexta (Regular)</option>
+                        <option value="Sabado" style="background: #121212;">Sábado (Escala +50%)</option>
+                        <option value="Domingo" style="background: #121212;">Domingo (Escala +100%)</option>
                     </select>
                 </div>
                 
-                <!-- Campos ocultos de controle e adicionais fixos do cargo -->
                 <input type="hidden" id="valor_adicionais_clt" value="0">
                 
-                <!-- Grade de Horas Extras Pedagógicas -->
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px;">
-                    <div class="form-group"><label for="he_25">H.E. 25%</label><input type="number" id="he_25" value="0" class="form-control" oninput="calcularHoleriteMatematico()"></div>
-                    <div class="form-group"><label for="he_50">H.E. 50%</label><input type="number" id="he_50" value="0" class="form-control" oninput="calcularHoleriteMatematico()"></div>
-                    <div class="form-group"><label for="he_100">H.E. 100%</label><input type="number" id="he_100" value="0" class="form-control" oninput="calcularHoleriteMatematico()"></div>
+                    <div class="form-group"><label for="he_25" style="font-size: 11px; display: block; margin-bottom: 4px;">H.E. 25%</label><input type="number" id="he_25" value="0" class="form-control" oninput="calcularHoleriteMatematico()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace;"></div>
+                    <div class="form-group"><label for="he_50" style="font-size: 11px; display: block; margin-bottom: 4px;">H.E. 50%</label><input type="number" id="he_50" value="0" class="form-control" oninput="calcularHoleriteMatematico()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace;"></div>
+                    <div class="form-group"><label for="he_100" style="font-size: 11px; display: block; margin-bottom: 4px;">H.E. 100%</label><input type="number" id="he_100" value="0" class="form-control" oninput="calcularHoleriteMatematico()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace;"></div>
                 </div>
 
                 <div class="form-group" style="margin-top: 12px;">
-                    <label for="custo_minuto_operador_calculado" style="font-weight: bold; color: #c0392b;">Custo Minuto Operador (MOD R$/min):</label>
-                    <input type="number" step="0.0001" name="custo_minuto_operador" id="custo_minuto_operador_calculado" readonly class="form-control" style="background-color: #f8f9fa; font-weight: bold; color: #c0392b;">
+                    <label for="custo_minuto_operador_calculado" style="font-weight: bold; color: #ff4444; font-size: 12px; display: block; margin-bottom: 5px;">Custo Minuto Operador (MOD R$/min):</label>
+                    <input type="number" step="0.0001" name="custo_minuto_operador" id="custo_minuto_operador_calculado" readonly class="form-control" style="background-color: #2a2a2a; font-weight: bold; color: #00ff00; border: 2px solid #444; padding: 10px; border-radius: 4px; font-family: monospace;">
                 </div>
             </div>
         </div>
-
         <!-- Painel de Simulação Trabalhista Rápida (Espelho do Holerite) -->
-        <div class="card-rh" style="background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 25px; border-left: 5px solid #27ae60;">
-            <h3 style="margin-top: 0;">📋 Painel de Auditoria e Encargos da Folha (Simulação)</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; text-align: center; margin-bottom: 15px;">
-                <div style="background:#f1f8e9; padding:10px; border-radius:4px;"><strong>Bruto + Adicionais</strong><br><span id="card_bruto" style="font-size:16px; font-weight:bold; color:#33691e;">R$ 0,00</span></div>
-                <div style="background:#fff3e0; padding:10px; border-radius:4px;"><strong>INSS Progressivo</strong><br><span id="recibo_inss" style="font-size:16px; font-weight:bold; color:#e65100;">R$ 0,00</span></div>
-                <div style="background:#ffebee; padding:10px; border-radius:4px;"><strong>IRRF Progressivo</strong><br><span id="recibo_irrf" style="font-size:16px; font-weight:bold; color:#b71c1c;">R$ 0,00</span></div>
-                <div style="background:#e3f2fd; padding:10px; border-radius:4px;"><strong>Líquido a Pagar</strong><br><span id="card_liquido" style="font-size:16px; font-weight:bold; color:#0d47a1;">R$ 0,00</span></div>
+        <div class="card-rh" style="background: #121212; padding: 20px; border-radius: 8px; border: 2px solid #333; margin-bottom: 25px; border-left: 5px solid #00ff00;">
+            <h3 style="margin-top: 0; color: #00ff00; font-size: 15px; text-transform: uppercase;">📋 Painel de Auditoria e Encargos da Folha (Simulação)</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; text-align: center; margin-bottom: 15px; font-family: monospace;">
+                <div style="background:#1e1e1e; padding:12px; border: 1px solid #333; border-radius:4px; color:#fff;"><strong>Bruto + Adicionais</strong><br><span id="card_bruto" style="font-size:18px; font-weight:bold; color:#00ff00; display: block; margin-top: 5px;">R$ 0,00</span></div>
+                <div style="background:#1e1e1e; padding:12px; border: 1px solid #333; border-radius:4px; color:#fff;"><strong>INSS Progressivo</strong><br><span id="recibo_inss" style="font-size:18px; font-weight:bold; color:#ff4444; display: block; margin-top: 5px;">R$ 0,00</span></div>
+                <div style="background:#1e1e1e; padding:12px; border: 1px solid #333; border-radius:4px; color:#fff;"><strong>IRRF Progressivo</strong><br><span id="recibo_irrf" style="font-size:18px; font-weight:bold; color:#ff4444; display: block; margin-top: 5px;">R$ 0,00</span></div>
+                <div style="background:#1e1e1e; padding:12px; border: 1px solid #333; border-radius:4px; color:#fff;"><strong>Líquido a Pagar</strong><br><span id="card_liquido" style="font-size:18px; font-weight:bold; color: #FFFF00; display: block; margin-top: 5px;">R$ 0,00</span></div>
             </div>
-            
-            <div style="display: none; visibility: hidden;">
-                <!-- Elementos mantidos ocultos para garantir compatibilidade com heranças de id antigas do JS -->
-                <span id="recibo_base"></span><span id="recibo_he"></span><span id="recibo_adicionais"></span>
-                <span id="recibo_total_credito"></span><span id="recibo_liquido"></span><span id="card_impostos"></span><span id="card_margem"></span>
+            <div style="text-align: right; margin-top: 15px;">
+                <button type="submit" style="background: #FFFF00; color: #000; font-weight: bold; padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-size: 13px; tracking-wider;">💾 Contratar e Registrar Funcionário</button>
             </div>
-
-            <button type="submit" class="btn btn-success" style="width: 100%; padding: 12px; font-size: 16px; font-weight: bold; cursor: pointer;">👥 Admitir e Registrar no Quadro Corporativo</button>
         </div>
     </form>
 
-    <!-- TABELA DO QUADRO CORPORATIVO -->
-    <h3>Quadro Corporativo Corrente</h3>
-    <div style="overflow-x: auto; width: 100%; margin-bottom: 20px; -webkit-overflow-scrolling: touch;">
-        <table class="data-table">
+    <h3 style="color: #FFFF00; margin-top: 30px; margin-bottom: 15px; font-size: 16px; text-transform: uppercase;">Quadro Corporativo Corrente</h3>
+    <div style="overflow-x: auto; width: 100%; margin-bottom: 20px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; font-family: monospace;">
             <thead>
-                <tr>
-                    <th>Funcionário / Admissão</th>
-                    <th>Posto Operacional Alocado</th>
-                    <th>Escala / Turno</th>
-                    <th>Ações de Impressão (Holerite / Férias / 13º)</th>
-                    <th>Ações Legais CLT e Rescisórias</th>
+                <tr style="border-bottom: 2px solid #333; color: #FFFF00;">
+                    <th style="padding: 10px;">Funcionário / Admissão</th>
+                    <th style="padding: 10px;">Posto Operacional Alocado</th>
+                    <th style="padding: 10px;">Escala / Turno</th>
+                    <th style="padding: 10px; text-align: center;">Ações de Impressão (Holerite / Férias / 13º)</th>
+                    <th style="padding: 10px; text-align: center;">Ações Legais CLT e Rescisórias</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="color: #fff;">
                 {% for col in colaboradores %}
+                <tr style="border-bottom: 1px solid #222;">
+                    <!-- Mapeamento posicional Neon: 1=operador_nome, 4=nome_equipamento, 2=turno_trabalho, 3=dia_semana, 0=id -->
+                    <td style="padding: 10px; font-family: sans-serif; font-weight: bold;">{{ col }}</td>
+                    <td style="padding: 10px; color: #bbb;">{{ col if col else 'Disponível no Banco de M.O.' }}</td>
+                    <td style="padding: 10px;">{{ col }} | Dia: {{ col }}</td>
+                    <td style="padding: 10px; text-align: center;">
+                        <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;">
+                            <a href="/imprimir_holerite/{{ col }}/mensal" target="_blank" style="font-size: 11px; padding: 5px 10px; background: #222; border: 1px solid #FFFF00; color: #FFFF00; text-decoration: none; font-weight: bold; border-radius: 4px; text-transform: uppercase;">🖨️ Mensal</a>
+                            <a href="/imprimir_holerite/{{ col }}/ferias" target="_blank" style="font-size: 11px; padding: 5px 10px; background: #222; border: 1px solid #00ff00; color: #00ff00; text-decoration: none; font-weight: bold; border-radius: 4px; text-transform: uppercase;">🌴 Férias</a>
+                            <a href="/imprimir_holerite/{{ col }}/decimo" target="_blank" style="font-size: 11px; padding: 5px 10px; background: #222; border: 1px solid #FFFF00; color: #FFFF00; text-decoration: none; font-weight: bold; border-radius: 4px; text-transform: uppercase;">🎄 13º</a>
+                        </div>
+                    </td>
+                    <td style="padding: 10px; text-align: center;">
+                        <div style="display: flex; gap: 5px; flex-wrap: wrap; justify-content: center;">
+                            <form action="/calcular_rescisao/{{ col }}/justa_causa" method="POST" style="margin:0;"><button style="font-size:11px; padding:5px 10px; background: #222; border: 1px solid #ff4444; color: #ff4444; font-weight: bold; cursor: pointer; border-radius: 4px; text-transform: uppercase;">⚠️ Justa Causa</button></form>
+                            <form action="/calcular_rescisao/{{ col }}/voluntaria" method="POST" style="margin:0;"><button style="font-size:11px; padding:5px 10px; background: #222; border: 1px solid #FFFF00; color: #FFFF00; font-weight: bold; cursor: pointer; border-radius: 4px; text-transform: uppercase;">🚪 Voluntária</button></form>
+                            <form action="/calcular_rescisao/{{ col }}/demissao" method="POST" style="margin:0;"><button style="font-size:11px; padding:5px 10px; background: #222; border: 1px solid #ff4444; color: #ff4444; font-weight: bold; cursor: pointer; border-radius: 4px; text-transform: uppercase;">❌ Sem Justa</button></form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
                 <tr>
-                    <td><strong>{{ col.operador_nome }}</strong></td>
-                    <td>{{ col.nome_equipamento if col.nome_equipamento else 'Disponível no Banco de M.O.' }}</td>
-                    <td>{{ col.turno_trabalho }} | Dia: {{ col.dia_semana }}</td>
-                    <td>
-                        <div style="display: flex; gap: 5px; flex-wrap: wrap;">
-                            <a href="/imprimir_holerite/{{ col.id }}/mensal" target="_blank" class="btn btn-primary" style="font-size: 11px; padding: 5px 8px; background: #2b5797; text-decoration: none; font-weight: bold;">🖨️ Mensal</a>
-                            <a href="/imprimir_holerite/{{ col.id }}/ferias" target="_blank" class="btn btn-success" style="font-size: 11px; padding: 5px 8px; background: #27ae60; text-decoration: none; font-weight: bold;">🌴 Férias</a>
-                            <a href="/imprimir_holerite/{{ col.id }}/decimo" target="_blank" class="btn btn-primary" style="font-size: 11px; padding: 5px 8px; background: #007bff; text-decoration: none; font-weight: bold;">🎄 13º</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div style="display:flex; gap:5px; flex-wrap: wrap;">
-                            <form action="/calcular_rescisao/{{ col.id }}/justa_causa" method="POST" style="margin:0;"><button class="btn btn-danger" style="font-size:11px; padding:5px 8px; font-weight: bold;">⚠️ Justa Causa</button></form>
-                            <form action="/calcular_rescisao/{{ col.id }}/voluntaria" method="POST" style="margin:0;"><button class="btn btn-primary" style="font-size:11px; padding:5px 8px; background:#f39c12; font-weight: bold;">🚪 Voluntária</button></form>
-                            <form action="/calcular_rescisao/{{ col.id }}/demissao" method="POST" style="margin:0;"><button class="btn btn-danger" style="font-size:11px; padding:5px 8px; font-weight: bold;">❌ Sem Justa</button></form>
-                        </div>
-                    </td>
+                    <td colspan="5" style="padding: 20px; text-align: center; color: #555; font-family: sans-serif;">Nenhum colaborador registrado no quadro de pessoal ativo.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+</div>
 <script>
 const bancoCargosCLT = {
     "001 - Operador de Produção": { base: 1850.00, adicional: 282.40 },
@@ -294,7 +309,7 @@ function calcularHoleriteMatematico() {
     
     let proventos = base + adic + heTotal;
     
-    // --- LÓGICA PROGRESSIVA DE INSS REAL (Tabela Oficial) ---
+    // --- LÓGICA PROGRESSIVA DE INSS REAL ---
     let inss = 0;
     if (proventos <= 1518.00) {
         inss = proventos * 0.075;
@@ -305,13 +320,12 @@ function calcularHoleriteMatematico() {
     } else if (proventos <= 8157.41) {
         inss = (proventos * 0.14) - 190.40;
     } else {
-        inss = 951.64; // Teto do INSS
+        inss = 951.64;
     }
     
-    // Base de cálculo do IRRF é o Bruto menos o INSS deduzido
     let baseIRRF = proventos - inss;
     
-    // --- LÓGICA PROGRESSIVA DE IRRF REAL (Tabela Oficial) ---
+    // --- LÓGICA PROGRESSIVA DE IRRF REAL ---
     let irrf = 0;
     if (baseIRRF <= 2259.20) {
         irrf = 0;
@@ -327,14 +341,12 @@ function calcularHoleriteMatematico() {
     
     let liq = proventos - inss - irrf;
     
-    // Cálculo do custo por minuto para alocação direta em Máquinas/CIF
     let c_min = ((base + adic) / (176 * 60)) * multNoturno;
     if(d === "Sabado") c_min *= 1.50;
     if(d === "Domingo") c_min *= 2.00;
     
     document.getElementById('custo_minuto_operador_calculado').value = c_min.toFixed(4);
     
-    // Alimentação dos painéis visuais de auditoria
     document.getElementById('card_bruto').innerText = "R$ " + proventos.toFixed(2).replace('.', ',');
     document.getElementById('recibo_inss').innerText = "R$ " + inss.toFixed(2).replace('.', ',');
     document.getElementById('recibo_irrf').innerText = "R$ " + irrf.toFixed(2).replace('.', ',');
@@ -351,7 +363,6 @@ function mudarFonte(d) {
     if(tam >= 70 && tam <= 160) document.body.style.fontSize = tam + "%"; 
 }
 
-// Reformado para usar a folha de estilo nativa por classes da Parte 1
 function alternarAltoContraste() {
     const corpo = document.body;
     corpo.classList.toggle('alto-contraste');
