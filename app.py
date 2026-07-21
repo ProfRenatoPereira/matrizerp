@@ -712,6 +712,37 @@ def deletar_estrutura(id):
         conexao_pool.putconn(conn)
         
     return redirect(url_for('estrutura'))
+@app.route('/maquinas')
+def maquinas():
+    """Gera a listagem e o gerenciamento de máquinas e equipamentos ativos"""
+    if not session.get('logado'):
+        return redirect(url_for('index'))
+    
+    conn = conexao_pool.getconn()
+    cursor = conn.cursor()
+    try:
+        # Busca todas as máquinas registradas na tabela do banco de dados
+        cursor.execute('''
+            SELECT id, nome_equipamento, potencia, consumo_eletrico, velocidade, 
+                   avanco, preco_compra, depreciacao_mensal, custo_minuto_maquina, operador_nome 
+            FROM maquinas 
+            ORDER BY id ASC;
+        ''')
+        lista_maquinas = cursor.fetchall()
+        
+        # Puxa o fluxo de caixa consolidado para exibir no topo da página
+        caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar painel de maquinas: {e}")
+        lista_maquinas = []
+        caixa, total = 0.0, 0.0
+    finally:
+        cursor.close()
+        conexao_pool.putconn(conn)
+        
+    # Renderiza o arquivo HTML correspondente passando as variáveis necessárias
+    return render_template('maquinas.html', maquinas=lista_maquinas, caixa_disponivel=caixa, capital_inicial=total)
+
 @app.route('/rh')
 def rh():
     """Gera a listagem de mão de obra direta e indireta vinculada aos ativos"""
