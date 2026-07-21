@@ -1,4 +1,4 @@
-# admerpcadastro - Simulador ERP, instrumento didático-pedagógico.
+# Simulador ERP, instrumento didático-pedagógico.
 
 Site de aprendizagem. Módulo funcional hospedado em: render.com. Tecnologias e plataformas: github, render e Neon PostgreSQL.
 
