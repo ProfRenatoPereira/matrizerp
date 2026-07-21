@@ -8,7 +8,7 @@
     <link rel="icon" type="image/png" href="static/logo.png">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        /* CSS de Segurança para Alto Contraste Nativo nas Linhas de OP e Inputs */
+        /* CSS de Segurança para Alto Contraste Nativo nos Cards e Formulários */
         .alto-contraste body {
             background-color: #000000 !important;
             color: #ffffff !important;
@@ -58,129 +58,138 @@
             padding: 8px; 
             font-size: 14px; 
             width: 120px; 
-            border: 1px solid #ccc; 
+            border: 1px solid #444; 
             border-radius: 4px;
             box-sizing: border-box;
+            background-color: #1e1e1e;
+            color: #fff;
+            font-family: monospace;
         }
     </style>
 </head>
-<body>
+<body class="alto-contraste">
 
 <!-- Barra de Acessibilidade Superior Oficial -->
-<div class="barra-acessibilidade">
-    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+<div class="barra-acessibilidade" style="background: #111; padding: 10px; border-bottom: 1px solid #333; display: flex; gap: 10px;">
+    <button class="btn-acessibilidade" style="background: #FFFF00; color: #000; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(-1)">A-</button>
 </div>
 
 <!-- Cabeçalho Principal Terceiro ADM Associados -->
-<header class="cabecalho-corporativo">
-    <div class="identidade-container">
-        <div class="branding-flex">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+<header class="cabecalho-corporativo" style="background: #111; padding: 20px; border-bottom: 2px solid #FFFF00;">
+    <div class="identidade-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <div class="branding-flex" style="display: flex; align-items: center; gap: 15px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px; border: 1px solid #fff;">
             <div class="texto-empresa">
-                <h1>TERCEIRO ADM ASSOCIADOS</h1>
-                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+                <h1 style="color: #FFFF00; margin: 0; font-size: 22px;">TERCEIRO ADM ASSOCIADOS</h1>
+                <p style="color: #bbb; margin: 5px 0 0 0; font-size: 13px;">Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
             </div>
         </div>
-        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+        <button class="menu-hamburguer" style="background: none; border: 1px solid #fff; color: #fff; font-size: 24px; cursor: pointer; padding: 5px 12px; border-radius: 4px;" onclick="alternarMenuMobile()">☰</button>
     </div>
-
     <!-- Navegação Responsiva com Menus Dropdown Unificados -->
-    <nav class="nav-container" id="menuNavegacao">
-        <ul class="menu-cascata">
+    <nav class="nav-container" id="menuNavegacao" style="margin-top: 15px;">
+        <ul class="menu-cascata" style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 15px;">
             <li class="item-menu">
-                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <a href="#" class="link-principal" style="color: #FFFF00; font-weight: bold; text-decoration: none;">🏢 Módulos Iniciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
-                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
-                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
-                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
-                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
-                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
-                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                    <li><a href="/estrutura" style="color: #fff; text-decoration: none;">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas" style="color: #fff; text-decoration: none;">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh" style="color: #fff; text-decoration: none;">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro" style="color: #fff; text-decoration: none;">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes" style="color: #fff; text-decoration: none;">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras" style="color: #fff; text-decoration: none;">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais" style="color: #fff; text-decoration: none;">7. Almoxarifado (Materiais)</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🛠️ Custos & Engenharia ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
-                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                    <li><a href="/engenharia" style="color: #fff; text-decoration: none;">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao" style="color: #fff; text-decoration: none;">9. Controladoria e Precificação</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">💰 Operações Comerciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
-                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                    <li><a href="/vendas" style="color: #fff; text-decoration: none;">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque" style="color: #fff; text-decoration: none;">11. Inventário de Acabados</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🏭 Chão de Fábrica & ROI ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
-                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                    <li><a href="/pcp" style="color: #FFFF00; text-decoration: none; border-bottom: 2px solid #FFFF00;">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi" style="color: #fff; text-decoration: none;">13. Indicadores de Retorno (ROI)</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
 </header>
+
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box;">
     
-<div class="container">
     <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
-<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
-    <div>
-        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
-        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    <div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #111; border: 2px solid #FFFF00; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #fff; box-sizing: border-box; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <h4 style="margin: 0; font-size: 13px; text-transform: uppercase; color: #FFFF00;">💰 Caixa Operacional Disponível (Giro)</h4>
+            <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace; color: #00ff00;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+        </div>
+        <div style="text-align: right; border-left: 2px solid #333; padding-left: 20px;">
+            <span style="font-size: 12px; font-weight: bold; color: #FFFF00;">Aporte Inicial de Capital:</span><br>
+            <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+        </div>
     </div>
-    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
-        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
-        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
-    </div>
-</div>
 
     <h2>Página 10: Chão de Fábrica - Planilha Operacional de Roteiros Encadeados (PCP)</h2>
+    <p style="color: #bbb; font-size: 14px; margin-top: -5px; margin-bottom: 25px;">O apontamento de produção e baixa nas ordens atualiza o Almoxarifado Central em tempo real.</p>
     
-    <h3>Fila de Produção e Ordens de Serviço Ativas</h3>
-    <!-- Contêiner responsivo para evitar esmagamento em smartphones e tablets -->
-    <div class="tabela-responsiva">
-        <table class="data-table">
+    <h3 style="color: #FFFF00; margin-top: 20px; margin-bottom: 15px; font-size: 16px; text-transform: uppercase;">Fila de Produção e Ordens de Serviço Ativas</h3>
+    
+    <div style="overflow-x: auto; width: 100%; margin-bottom: 20px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px; font-family: monospace;">
             <thead>
-                <tr>
-                    <th>OS (Pedido)</th>
-                    <th>Nº Operação</th>
-                    <th>Posto / Máquina</th>
-                    <th>Produto / Lote</th>
-                    <th>Entrada</th>
-                    <th>Tempo Lote</th>
-                    <th>Saída (Fim)</th>
-                    <th>Custo Operação</th>
-                    <th>Operador / Apontamento</th>
-                    <th>Ações</th>
+                <tr style="border-bottom: 2px solid #333; color: #FFFF00;">
+                    <th style="padding: 10px;">OS (Pedido)</th>
+                    <th style="padding: 10px;">Nº Operação</th>
+                    <th style="padding: 10px;">Posto / Máquina</th>
+                    <th style="padding: 10px;">Produto / Lote</th>
+                    <th style="padding: 10px;">Entrada</th>
+                    <th style="padding: 10px;">Tempo Lote</th>
+                    <th style="padding: 10px;">Saída (Fim)</th>
+                    <th style="padding: 10px; text-align: right;">Custo Operação</th>
+                    <th style="padding: 10px;">Operador / Apontamento</th>
+                    <th style="padding: 10px; text-align: center;">Ações</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody style="color: #fff;">
                 {% for ord in ordens %}
-                <tr class="{% if ord.status == 'Finalizado' %}op-concluida{% else %}op-ativa{% endif %}" style="background-color: {% if ord.status == 'Finalizado' %}#e2efda{% else %}#ffffff{% endif %}; color: {% if ord.status == 'Finalizado' %}#274e13{% else %}#000000{% endif %};">
-                    <td><code>OS-00{{ ord.pedido_id }}</code></td>
-                    <td><strong>{{ ord.numero_operacao }}</strong></td>
-                    <td>⚙️ {{ ord.maquina_name }}</td>
-                    <td><code>{{ ord.codigo_produto }}</code> - {{ ord.nome_produto }}</td>
-                    <td style="color:#1a5276; font-weight:bold;"><small>{{ ord.data_entrada }}</small></td>
-                    <td>{{ "%.1f"|format(ord.tempo_estimado_min) }} min</td>
-                    <td style="color:#78281f; font-weight:bold;"><small>{{ ord.data_saida }}</small></td>
-                    <td style="color:#27ae60; font-weight:bold;">R$ {{ "%.2f"|format(ord.custo_operacao) }}</td>
-                    <td><strong>{{ ord.operador_nome }}</strong></td>
-                    <td>
-                        {% if ord.status != 'Finalizado' %}
-                        <form action="/dar_baixa_op/{{ ord.id }}" method="POST" style="display: flex; gap: 5px; align-items: center; margin: 0;">
-                            <input type="text" name="operador_nome" required placeholder="Nome Operador" class="input-apontamento">
-                            <button type="submit" class="btn btn-success" style="padding: 8px 12px; font-size: 13px; font-weight: bold; cursor: pointer;">🏁 Concluir</button>
+                <tr style="border-bottom: 1px solid #222; background-color: {% if ord[7] == 'Finalizado' %}#121212{% else %}#000000{% endif %};">
+                    <!-- Correção Neon: mapeamento posicional das variáveis da tupla remota (1=pedido_id, 2=numero_op, 10=maquina_name, 11=codigo_produto, 12=nome_produto, 8=data_entrada, 4=tempo_estimado, 9=data_saida, 5=custo, 6=operador, 7=status, 0=id) -->
+                    <td style="padding: 10px;"><code>OS-00{{ ord[1] }}</code></td>
+                    <td style="padding: 10px; color: #FFFF00;"><strong>{{ ord[2] }}</strong></td>
+                    <td style="padding: 10px;">⚙️ {{ ord[10] }}</td>
+                    <td style="padding: 10px;"><code>{{ ord[11] }}</code> - <span style="font-family: sans-serif;">{{ ord[12] }}</span></td>
+                    <td style="padding: 10px; color: #66b2ff;"><small>{{ ord[8] }}</small></td>
+                    <td style="padding: 10px;">{{ "%.1f"|format(ord[4]) }} min</td>
+                    <td style="padding: 10px; color: #ff6666;"><small>{{ ord[9] }}</small></td>
+                    <td style="padding: 10px; text-align: right; color: #00ff00; font-weight: bold;">R$ {{ "%.2f"|format(ord[5]) }}</td>
+                    <td style="padding: 10px; font-family: sans-serif;"><strong>{{ ord[6] if ord[6] else '--' }}</strong></td>
+                    <td style="padding: 10px; text-align: center;">
+                        {% if ord[7] != 'Finalizado' %}
+                        <form action="/dar_baixa_op/{{ ord[0] }}" method="POST" style="display: flex; gap: 5px; align-items: center; margin: 0; justify-content: center;">
+                            <input type="text" name="operador_nome" required placeholder="Nome" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 6px; border-radius: 4px; font-size: 13px; font-family: sans-serif; width: 100px; box-sizing: border-box;">
+                            <button type="submit" style="background: #00ff00; color: #000; border: none; font-weight: bold; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; text-transform: uppercase;">🏁 Ok</button>
                         </form>
                         {% else %}
-                            <span style="color:#375623; font-weight:bold;">✔ Concluído</span>
+                            <span style="color:#00ff00; font-weight:bold; text-transform: uppercase; font-size: 11px; border: 1px solid #00ff00; padding: 3px 8px; background: #111; border-radius: 4px;">✔ Pronto</span>
                         {% endif %}
                     </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="10" style="padding: 30px; text-align: center; color: #555; font-family: sans-serif; font-size: 14px;">📭 Nenhuma ordem de produção encadeada no sequenciamento do PCP.</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -188,14 +197,16 @@
     </div>
 </div>
 
+<footer style="background: #111; text-align: center; padding: 15px; border-top: 1px solid #333; color: #555; font-size: 12px; margin-top: 60px;">
+    TERCEIRO ADM ASSOCIADOS © 2026 - Módulo de Planejamento e Controle da Produção (PCP)
+</footer>
+
 <script>
-    // Função para abrir e fechar o menu hambúrguer no celular
     function alternarMenuMobile() {
         const menu = document.getElementById('menuNavegacao');
         menu.classList.toggle('ativo');
     }
 
-    // Controle do tamanho das fontes para as Big TVs ou baixa visão
     let tamanhoAtual = 100;
     function mudarFonte(direcao) {
         tamanhoAtual += (direcao * 10);
@@ -204,7 +215,6 @@
         }
     }
 
-    // Controle nativo por classes do modo de alto contraste corrigido
     function alternarAltoContraste() {
         const corpo = document.body;
         corpo.classList.toggle('alto-contraste');
