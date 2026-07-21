@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,212 +47,212 @@
         }
     </style>
 </head>
-<body>
+<body class="alto-contraste">
 
 <!-- Barra de Acessibilidade Superior Oficial -->
-<div class="barra-acessibilidade">
-    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+<div class="barra-acessibilidade" style="background: #111; padding: 10px; border-bottom: 1px solid #333; display: flex; gap: 10px;">
+    <button class="btn-acessibilidade" style="background: #FFFF00; color: #000; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(-1)">A-</button>
 </div>
 
 <!-- Cabeçalho Principal Terceiro ADM Associados -->
-<header class="cabecalho-corporativo">
-    <div class="identidade-container">
-        <div class="branding-flex">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+<header class="cabecalho-corporativo" style="background: #111; padding: 20px; border-bottom: 2px solid #FFFF00;">
+    <div class="identidade-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <div class="branding-flex" style="display: flex; align-items: center; gap: 15px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px; border: 1px solid #fff;">
             <div class="texto-empresa">
-                <h1>TERCEIRO ADM ASSOCIADOS</h1>
-                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+                <h1 style="color: #FFFF00; margin: 0; font-size: 22px;">TERCEIRO ADM ASSOCIADOS</h1>
+                <p style="color: #bbb; margin: 5px 0 0 0; font-size: 13px;">Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
             </div>
         </div>
-        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+        <button class="menu-hamburguer" style="background: none; border: 1px solid #fff; color: #fff; font-size: 24px; cursor: pointer; padding: 5px 12px; border-radius: 4px;" onclick="alternarMenuMobile()">☰</button>
     </div>
-
     <!-- Navegação Responsiva com Menus Dropdown Unificados -->
-    <nav class="nav-container" id="menuNavegacao">
-        <ul class="menu-cascata">
+    <nav class="nav-container" id="menuNavegacao" style="margin-top: 15px;">
+        <ul class="menu-cascata" style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 15px;">
             <li class="item-menu">
-                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <a href="#" class="link-principal" style="color: #FFFF00; font-weight: bold; text-decoration: none;">🏢 Módulos Iniciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
-                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
-                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
-                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
-                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
-                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
-                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                    <li><a href="/estrutura" style="color: #fff; text-decoration: none;">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas" style="color: #fff; text-decoration: none;">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh" style="color: #fff; text-decoration: none;">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro" style="color: #fff; text-decoration: none;">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes" style="color: #fff; text-decoration: none;">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras" style="color: #fff; text-decoration: none;">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais" style="color: #fff; text-decoration: none;">7. Almoxarifado (Materiais)</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🛠️ Custos & Engenharia ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
-                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                    <li><a href="/engenharia" style="color: #fff; text-decoration: none;">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao" style="color: #FFFF00; text-decoration: none; border-bottom: 2px solid #FFFF00;">9. Controladoria e Precificação</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">💰 Operações Comerciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
-                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                    <li><a href="/vendas" style="color: #fff; text-decoration: none;">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque" style="color: #fff; text-decoration: none;">11. Inventário de Acabados</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🏭 Chão de Fábrica & ROI ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
-                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                    <li><a href="/pcp" style="color: #fff; text-decoration: none;">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi" style="color: #fff; text-decoration: none;">13. Indicadores de Retorno (ROI)</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
 </header>
 
-<div class="container">
-    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
-<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
-    <div>
-        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
-        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
-    </div>
-    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
-        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
-        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
-    </div>
-</div>
-
-    <h2>Página 6: Controladoria - Formação de Preços & Configuração Fiscal</h2>
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box;">
     
-    <div class="card-precificacao" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
+    <div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #111; border: 2px solid #FFFF00; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #fff; box-sizing: border-box; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <h4 style="margin: 0; font-size: 13px; text-transform: uppercase; color: #FFFF00;">💰 Caixa Operacional Disponível (Giro)</h4>
+            <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace; color: #00ff00;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+        </div>
+        <div style="text-align: right; border-left: 2px solid #333; padding-left: 20px;">
+            <span style="font-size: 12px; font-weight: bold; color: #FFFF00;">Aporte Inicial de Capital:</span><br>
+            <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+        </div>
+    </div>
+
+    <h2 style="color: #fff; border-bottom: 1px solid #333; padding-bottom: 10px;">Página 6: Controladoria - Formação de Preços & Configuração Fiscal</h2>
+    
+    <div class="card-precificacao" style="background: #121212; padding: 20px; border-radius: 8px; border: 2px solid #333; color: #fff;">
         <form action="/salvar_preco" method="POST" id="formPreco">
-            <!-- Grid de Formulário Totalmente Responsivo -->
             <div class="grid-formulario">
                 <div class="form-group">
-                    <label for="produto_id">Selecionar Produto:</label>
-                    <select name="produto_id" id="produto_id" required onchange="atualizarCustoBase()">
-                        <option value="">-- Escolha o Produto --</option>
+                    <label for="produto_id" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Selecionar Produto:</label>
+                    <select name="produto_id" id="produto_id" required onchange="atualizarCustoBase()" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
+                        <option value="" style="background: #121212;">-- Escolha o Produto --</option>
                         {% for prod in produtos %}
-                        <option value="{{ prod.id }}" data-custo="{{ prod.custo_fabricacao }}">{{ prod.codigo_produto }} - {{ prod.nome_produto }}</option>
+                        <!-- Mapeamento Neon: 0=id, 1=codigo, 2=nome, 3=custo_fabricacao -->
+                        <option value="{{ prod }}" data-custo="{{ prod }}" style="background: #121212;">{{ prod }} - {{ prod }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="custo_fabricacao_visivel">Custo Base de Fabricação (R$):</label>
-                    <input type="number" id="custo_fabricacao_visivel" readonly value="0.00" style="background-color: #f8f9fa; font-weight: bold;">
+                    <label for="custo_fabricacao_visivel" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Custo Base de Fabricação (R$):</label>
+                    <input type="number" id="custo_fabricacao_visivel" readonly value="0.00" style="width: 100%; padding: 10px; background: #2a2a2a; color: #00ff00; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box; font-family: monospace; font-weight: bold;">
                 </div>
                 <div class="form-group">
-                    <label for="margem_lucro">Margem de Lucro Desejada (%):</label>
-                    <input type="number" step="0.1" name="margem_lucro" id="margem_lucro" required value="0" oninput="calcularPrecoVenda()">
+                    <label for="margem_lucro" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Margem de Lucro Desejada (%):</label>
+                    <input type="number" step="0.1" name="margem_lucro" id="margem_lucro" required value="0" oninput="calcularPrecoVenda()" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box; font-family: monospace;">
                 </div>
                 <div class="form-group">
-                    <label for="imposto_municipal">Imposto Municipal / ISS (%):</label>
-                    <input type="number" step="0.1" name="imposto_municipal" id="imposto_municipal" value="5.0" required oninput="calcularPrecoVenda()">
+                    <label for="imposto_municipal" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Imposto Municipal / ISS (%):</label>
+                    <input type="number" step="0.1" name="imposto_municipal" id="imposto_municipal" value="5.0" required oninput="calcularPrecoVenda()" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box; font-family: monospace;">
                 </div>
                 <div class="form-group">
-                    <label for="imposto_estadual">Imposto Estadual / ICMS (%):</label>
-                    <input type="number" step="0.1" name="imposto_estadual" id="imposto_estadual" value="18.0" required oninput="calcularPrecoVenda()">
+                    <label for="imposto_estadual" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Imposto Estadual / ICMS (%):</label>
+                    <input type="number" step="0.1" name="imposto_estadual" id="imposto_estadual" value="18.0" required oninput="calcularPrecoVenda()" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box; font-family: monospace;">
                 </div>
                 <div class="form-group">
-                    <label for="imposto_federal">Imposto Federal / IPI-PIS-COFINS (%):</label>
-                    <input type="number" step="0.1" name="imposto_federal" id="imposto_federal" value="9.25" required oninput="calcularPrecoVenda()">
+                    <label for="imposto_federal" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Imposto Federal / IPI-PIS-COFINS (%):</label>
+                    <input type="number" step="0.1" name="imposto_federal" id="imposto_federal" value="9.25" required oninput="calcularPrecoVenda()" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box; font-family: monospace;">
                 </div>
                 <div class="form-group" style="grid-column: span 3;">
-                    <label for="preco_venda_final" style="font-weight: bold;">PREÇO DE VENDA FINAL SUGERIDO (R$):</label>
-                    <input type="number" step="0.01" name="preco_venda_final" id="preco_venda_final" readonly style="font-size: 18px; font-weight: bold; background-color: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0;">
+                    <label for="preco_venda_final" style="color: #FFFF00; font-weight: bold; font-size: 13px; display: block; margin-bottom: 5px;">PREÇO DE VENDA FINAL SUGERIDO (R$):</label>
+                    <input type="number" step="0.01" name="preco_venda_final" id="preco_venda_final" readonly style="width: 100%; padding: 12px; background-color: #2a2a2a; color: #00ff00; border: 2px solid #444; border-radius: 4px; font-size: 18px; font-weight: bold; font-family: monospace; box-sizing: border-box;">
                 </div>
             </div>
-                <div style="margin-top: 15px;">
-                    <button type="submit" class="btn btn-success" style="cursor: pointer;">💾 Salvar Estrutura de Preço</button>
-                </div>
-            </form>
-        </div>
-        
-        <h3>Modelos de Precificação no Banco de Dados</h3>
-        <!-- Contêiner de rolagem para garantir a responsividade em celulares -->
-        <div style="overflow-x: auto; width: 100%; margin-bottom: 20px; -webkit-overflow-scrolling: touch;">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>Produto</th>
-                        <th>ISS (Mun.)</th>
-                        <th>ICMS (Est.)</th>
-                        <th>Federais</th>
-                        <th>Margem Lucro</th>
-                        <th>Preço Final</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for preco in precos_salvos %}
-                    <tr>
-                        <td><code>{{ preco.codigo_produto }}</code> - {{ preco.nome_produto }}</td>
-                        <td>{{ preco.imposto_municipal }}%</td>
-                        <td>{{ preco.imposto_estadual }}%</td>
-                        <td>{{ preco.imposto_federal }}%</td>
-                        <td>{{ preco.margem_lucro }}%</td>
-                        <td><strong>R$ {{ "%.2f"|format(preco.preco_venda_final) }}</strong></td>
-                        <td>
-                            <form action="/deletar_preco/{{ preco.id }}" method="POST" onsubmit="return confirm('Deseja remover este modelo de preço?');" style="margin: 0;">
-                                <button type="submit" class="btn btn-danger" style="cursor: pointer; padding: 5px 10px;">❌ Deletar</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+            <div style="margin-top: 15px;">
+                <button type="submit" style="background: #FFFF00; color: #000; border: none; font-weight: bold; padding: 12px 25px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-size: 14px; tracking-wider">💾 Salvar Estrutura de Preço</button>
+            </div>
+        </form>
     </div>
+    <h3 style="color: #FFFF00; margin-top: 30px; margin-bottom: 15px; font-size: 16px; text-transform: uppercase;">Modelos de Precificação no Banco de Dados</h3>
+    <div style="overflow-x: auto; width: 100%; margin-bottom: 20px;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; font-family: monospace;">
+            <thead>
+                <tr style="border-bottom: 2px solid #333; color: #FFFF00;">
+                    <th style="padding: 10px;">Produto</th>
+                    <th style="padding: 10px;">ISS (Mun.)</th>
+                    <th style="padding: 10px;">ICMS (Est.)</th>
+                    <th style="padding: 10px;">Federais</th>
+                    <th style="padding: 10px;">Margem Lucro</th>
+                    <th style="padding: 10px; text-align: right;">Preço Final</th>
+                    <th style="padding: 10px; text-align: center;">Ações</th>
+                </tr>
+            </thead>
+            <tbody style="color: #fff;">
+                {% for preco in precos_salvos %}
+                <tr style="border-bottom: 1px solid #222;">
+                    <!-- Mapeamento Neon: 7=codigo_produto, 8=nome_produto, 2=iss, 3=icms, 4=federal, 5=margem, 6=preco_venda_final, 0=id -->
+                    <td style="padding: 10px;"><code>{{ preco }}</code> - <span style="font-family: sans-serif;">{{ preco }}</span></td>
+                    <td style="padding: 10px;">{{ preco }}%</td>
+                    <td style="padding: 10px;">{{ preco }}%</td>
+                    <td style="padding: 10px;">{{ preco }}%</td>
+                    <td style="padding: 10px; color: #FFFF00;">{{ preco }}%</td>
+                    <td style="padding: 10px; text-align: right; color: #00ff00; font-weight: bold;">R$ {{ "%.2f"|format(preco) }}</td>
+                    <td style="padding: 10px; text-align: center;">
+                        <form action="/deletar_preco/{{ preco }}" method="POST" onsubmit="return confirm('Do you want to remove this price model?');" style="margin: 0;">
+                            <button type="submit" style="background: #222; border: 1px solid #ff4444; color: #ff4444; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: bold;">❌ Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" style="padding: 20px; text-align: center; color: #555; font-family: sans-serif;">Nenhuma estrutura fiscal parametrizada para precificação.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
-    <script>
-        function atualizarCustoBase() {
-            const seletor = document.getElementById('produto_id');
-            const opcaoSelecionada = seletor.options[seletor.selectedIndex];
-            const custo = parseFloat(opcaoSelecionada.getAttribute('data-custo')) || 0;
-            document.getElementById('custo_fabricacao_visivel').value = custo.toFixed(2);
-            calcularPrecoVenda();
-        }
+<script>
+    function atualizarCustoBase() {
+        const seletor = document.getElementById('produto_id');
+        if (!seletor || !seletor.options.length || seletor.selectedIndex === 0) return;
+        const opcaoSelecionada = seletor.options[seletor.selectedIndex];
+        const custo = parseFloat(opcaoSelecionada.getAttribute('data-custo')) || 0;
+        document.getElementById('custo_fabricacao_visivel').value = custo.toFixed(2);
+        calcularPrecoVenda();
+    }
 
-        function calcularPrecoVenda() {
-            const custo = parseFloat(document.getElementById('custo_fabricacao_visivel').value) || 0;
-            const margem = parseFloat(document.getElementById('margem_lucro').value) || 0;
-            const municipal = parseFloat(document.getElementById('imposto_municipal').value) || 0;
-            const estadual = parseFloat(document.getElementById('imposto_estadual').value) || 0;
-            const federal = parseFloat(document.getElementById('imposto_federal').value) || 0;
-            
-            // Fórmula pedagógica do Markup por Dentro (Preço de venda absorve os impostos e a margem)
-            const somaPercentuais = (margem + municipal + estadual + federal) / 100;
-            
-            let precoFinal = 0;
-            if (somaPercentuais < 1) {
-                precoFinal = custo / (1 - somaPercentuais);
-            } else {
-                precoFinal = custo * (1 + somaPercentuais); // Fallback caso estoure os 100%
-            }
-            
-            document.getElementById('preco_venda_final').value = precoFinal.toFixed(2);
+    function calcularPrecoVenda() {
+        const custo = parseFloat(document.getElementById('custo_fabricacao_visivel').value) || 0;
+        const margem = parseFloat(document.getElementById('margem_lucro').value) || 0;
+        const municipal = parseFloat(document.getElementById('imposto_municipal').value) || 0;
+        const estadual = parseFloat(document.getElementById('imposto_estadual').value) || 0;
+        const federal = parseFloat(document.getElementById('imposto_federal').value) || 0;
+        
+        const somaPercentuais = (margem + municipal + estadual + federal) / 100;
+        
+        let precoFinal = 0;
+        if (somaPercentuais < 1) {
+            precoFinal = custo / (1 - somaPercentuais);
+        } else {
+            precoFinal = custo * (1 + somaPercentuais);
         }
+        
+        document.getElementById('preco_venda_final').value = precoFinal.toFixed(2);
+    }
 
-        // Função para abrir e fechar o menu hambúrguer no celular
-        function alternarMenuMobile() {
-            const menu = document.getElementById('menuNavegacao');
-            menu.classList.toggle('ativo');
-        }
+    function alternarMenuMobile() {
+        const menu = document.getElementById('menuNavegacao');
+        menu.classList.toggle('ativo');
+    }
 
-        // Controle do tamanho das fontes para as Big TVs ou baixa visão
-        let tamanhoAtual = 100;
-        function mudarFonte(direcao) {
-            tamanhoAtual += (direcao * 10);
-            if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
-                document.body.style.fontSize = tamanhoAtual + "%";
-            }
+    let tamanhoAtual = 100;
+    function mudarFonte(direcao) {
+        tamanhoAtual += (direcao * 10);
+        if(tamanhoAtual >= 70 && tamanhoAtual <= 160) {
+            document.body.style.fontSize = tamanhoAtual + "%";
         }
+    }
 
-        // Reformado para usar a folha de estilo nativa do sistema em vez do filtro cego
-        function alternarAltoContraste() {
-            const corpo = document.body;
-            corpo.classList.toggle('alto-contraste');
-        }
-    </script>
+    function alternarAltoContraste() {
+        const corpo = document.body;
+        corpo.classList.toggle('alto-contraste');
+    }
+</script>
 </body>
 </html>
