@@ -36,12 +36,12 @@
             margin-top: 20px; 
         }
         .card { 
-            background: white; 
+            background: #121212; 
             padding: 20px; 
             border-radius: 8px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+            border: 1px solid #333;
             text-align: center; 
-            border-top: 5px solid var(--primary-color); 
+            border-top: 5px solid #FFFF00; 
         }
         .card h3 { 
             margin: 0 0 10px 0; 
@@ -53,130 +53,128 @@
             margin: 0; 
             font-size: 24px; 
             font-weight: bold; 
-            color: var(--primary-color); 
+            color: #00ff00; 
         }
     </style>
 </head>
-<body>
+<body class="alto-contraste">
 
 <!-- Barra de Acessibilidade Superior Oficial -->
-<div class="barra-acessibilidade">
-    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+<div class="barra-acessibilidade" style="background: #111; padding: 10px; border-bottom: 1px solid #333; display: flex; gap: 10px;">
+    <button class="btn-acessibilidade" style="background: #FFFF00; color: #000; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(-1)">A-</button>
 </div>
-
 <!-- Cabeçalho Principal Terceiro ADM Associados -->
-<header class="cabecalho-corporativo">
-    <div class="identidade-container">
-        <div class="branding-flex">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+<header class="cabecalho-corporativo" style="background: #111; padding: 20px; border-bottom: 2px solid #FFFF00;">
+    <div class="identidade-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <div class="branding-flex" style="display: flex; align-items: center; gap: 15px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px; border: 1px solid #fff;">
             <div class="texto-empresa">
-                <h1>TERCEIRO ADM ASSOCIADOS</h1>
-                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+                <h1 style="color: #FFFF00; margin: 0; font-size: 22px;">TERCEIRO ADM ASSOCIADOS</h1>
+                <p style="color: #bbb; margin: 5px 0 0 0; font-size: 13px;">Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
             </div>
         </div>
-        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+        <button class="menu-hamburguer" style="background: none; border: 1px solid #fff; color: #fff; font-size: 24px; cursor: pointer; padding: 5px 12px; border-radius: 4px;" onclick="alternarMenuMobile()">☰</button>
     </div>
 
     <!-- Navegação Responsiva com Menus Dropdown Unificados -->
-    <nav class="nav-container" id="menuNavegacao">
-        <ul class="menu-cascata">
+    <nav class="nav-container" id="menuNavegacao" style="margin-top: 15px;">
+        <ul class="menu-cascata" style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 15px;">
             <li class="item-menu">
-                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <a href="#" class="link-principal" style="color: #FFFF00; font-weight: bold; text-decoration: none;">🏢 Módulos Iniciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
-                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
-                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
-                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
-                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
-                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
-                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                    <li><a href="/estrutura" style="color: #fff; text-decoration: none;">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas" style="color: #fff; text-decoration: none;">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh" style="color: #fff; text-decoration: none;">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro" style="color: #fff; text-decoration: none;">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes" style="color: #fff; text-decoration: none;">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras" style="color: #fff; text-decoration: none;">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais" style="color: #fff; text-decoration: none;">7. Almoxarifado (Materiais)</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🛠️ Custos & Engenharia ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
-                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                    <li><a href="/engenharia" style="color: #fff; text-decoration: none;">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao" style="color: #fff; text-decoration: none;">9. Controladoria e Precificação</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">💰 Operações Comerciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
-                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                    <li><a href="/vendas" style="color: #fff; text-decoration: none;">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque" style="color: #fff; text-decoration: none;">11. Inventário de Acabados</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🏭 Chão de Fábrica & ROI ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
-                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                    <li><a href="/pcp" style="color: #fff; text-decoration: none;">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi" style="color: #FFFF00; text-decoration: none; border-bottom: 2px solid #FFFF00;">13. Indicadores de Retorno (ROI)</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
 </header>
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box;">
     
-<div class="container">
     <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
-<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
-    <div>
-        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
-        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    <div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #111; border: 2px solid #FFFF00; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #fff; box-sizing: border-box; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <h4 style="margin: 0; font-size: 13px; text-transform: uppercase; color: #FFFF00;">💰 Caixa Operacional Disponível (Giro)</h4>
+            <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace; color: #00ff00;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+        </div>
+        <div style="text-align: right; border-left: 2px solid #333; padding-left: 20px;">
+            <span style="font-size: 12px; font-weight: bold; color: #FFFF00;">Aporte Inicial de Capital:</span><br>
+            <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+        </div>
     </div>
-    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
-        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
-        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
-    </div>
-</div>
 
-    <h2>Painel Corporativo - Indicadores de Retorno Acionário (ROI)</h2>
-    
+    <h2 style="color: #fff; border-bottom: 1px solid #333; padding-bottom: 10px;">Painel Corporativo - Indicadores de Retorno Acionário (ROI)</h2>
     <!-- Grid Flexível de Distribuição dos Cards Macro -->
     <div class="grid-cards">
-        <div class="card" style="border-top-color: #3498db;">
-            <h3>Capital Inicial Imobilizado</h3>
-            <p>R$ {{ "%.2f"|format(capital) }}</p>
+        <div class="card">
+            <h3 style="color: #aaa; font-size: 12px;">Capital Inicial Imobilizado</h3>
+            <p style="color: #FFFF00; font-family: monospace;">R$ {{ "%.2f"|format(capital) }}</p>
         </div>
-        <div class="card" style="border-top-color: var(--secondary-color);">
-            <h3>Faturamento Bruto</h3>
-            <p>R$ {{ "%.2f"|format(receita) }}</p>
+        <div class="card">
+            <h3 style="color: #aaa; font-size: 12px;">Faturamento Bruto</h3>
+            <p style="color: #00ff00; font-family: monospace;">R$ {{ "%.2f"|format(receita) }}</p>
         </div>
-        <div class="card" style="border-top-color: #9b59b6;">
-            <h3>Volume de Production</h3>
-            <p>{{ pecas }} peças</p>
+        <div class="card">
+            <h3 style="color: #aaa; font-size: 12px;">Volume de Produção</h3>
+            <p style="color: #FFFF00; font-family: monospace;">{{ pecas }} peças</p>
         </div>
-        <div class="card" style="border-top-color: var(--danger-color);">
-            <h3>Dividendos Acionistas</h3>
-            <p>R$ {{ "%.2f"|format(lucro_acionistas) }}</p>
+        <div class="card">
+            <h3 style="color: #aaa; font-size: 12px;">Dividendos Acionistas</h3>
+            <p style="color: #00ff00; font-family: monospace;">R$ {{ "%.2f"|format(lucro_acionistas) }}</p>
         </div>
     </div>
-
-    <div class="analise-box" style="background: white; margin-top: 30px; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-        <h3>Análise Econômica da Turma</h3>
-        <p>Com base no ritmo de vendas corporativas e nos investimentos estruturais cadastrados pelas equipes, estima-se que o tempo real para o pagamento integral dos ativos e retorno financeiro total ao caixa dos acionistas é de:</p>
-        <h1 style="color: var(--secondary-color); margin: 15px 0;">
-            {% if payback_real > 0 %}
+    <div class="analise-box" style="background: #121212; border: 2px solid #333; margin-top: 30px; padding: 20px; border-radius: 8px; color: #fff;">
+        <h3 style="color: #FFFF00; margin-top: 0; font-size: 16px; text-transform: uppercase;">Análise Econômica da Turma</h3>
+        <p style="font-size: 14px; color: #bbb; line-height: 1.5;">Com base no ritmo de vendas corporativas e nos investimentos estruturais cadastrados pelas equipes, estima-se que o tempo real para o pagamento integral dos ativos e retorno financeiro total ao caixa dos acionistas é de:</p>
+        
+        {% if payback_real > 0 %}
+            <h1 style="color: #00ff00; margin: 15px 0; font-size: 32px; font-family: monospace; font-weight: bold;">
                 {{ "%.1f"|format(payback_real) }} Ciclos/Meses Operacionais
             </h1>
-            {% else %}
-                <span style="font-size: 20px; font-weight: normal; color: #7f8c8d;">Aguardando registro de faturamento...</span>
+        {% else %}
+            <h1 style="margin: 15px 0;">
+                <span style="font-size: 18px; font-weight: bold; color: #ff4444; font-family: monospace; text-transform: uppercase; background: #111; border: 1px solid #ff4444; padding: 5px 10px; border-radius: 4px;">Aguardando registro de faturamento...</span>
             </h1>
-            {% endif %}
-        <p style="font-size: 12px; color: #7f8c8d;">*Métricas calculadas dinamicamente usando markup interno e amortização linear contábil.</p>
+        {% endif %}
+        
+        <p style="font-size: 12px; color: #666; margin-bottom: 0; font-style: italic;">*Métricas calculadas dinamicamente usando markup interno e amortização linear contábil.</p>
     </div>
 </div>
 
 <script>
-    // Função para abrir e fechar o menu hambúrguer no celular
     function alternarMenuMobile() {
         const menu = document.getElementById('menuNavegacao');
         menu.classList.toggle('ativo');
     }
 
-    // Controle do tamanho das fontes para as Big TVs ou baixa visão
     let tamanhoAtual = 100;
     function mudarFonte(direcao) {
         tamanhoAtual += (direcao * 10);
@@ -185,7 +183,6 @@
         }
     }
 
-    // Controle nativo por classes do modo de alto contraste corrigido
     function alternarAltoContraste() {
         const corpo = document.body;
         corpo.classList.toggle('alto-contraste');
