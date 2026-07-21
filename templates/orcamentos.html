@@ -57,216 +57,216 @@
             font-size: 16px;
         }
         .resultado-painel {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
+            background: #121212;
+            border: 1px solid #333;
             padding: 20px;
             border-radius: 8px;
-            color: #166534;
+            color: #fff;
         }
     </style>
 </head>
-<body>
+<body class="alto-contraste">
 
 <!-- Barra de Acessibilidade Superior Oficial -->
-<div class="barra-acessibilidade">
-    <button class="btn-acessibilidade" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(1)">A+</button>
-    <button class="btn-acessibilidade" onclick="mudarFonte(-1)">A-</button>
+<div class="barra-acessibilidade" style="background: #111; padding: 10px; border-bottom: 1px solid #333; display: flex; gap: 10px;">
+    <button class="btn-acessibilidade" style="background: #FFFF00; color: #000; font-weight: bold; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="alternarAltoContraste()">Acessibilidade 🌓 Alto Contraste</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(1)">A+</button>
+    <button class="btn-acessibilidade" style="background: #222; color: #fff; border: 1px solid #444; padding: 5px 10px; cursor: pointer; border-radius: 4px;" onclick="mudarFonte(-1)">A-</button>
 </div>
-
 <!-- Cabeçalho Principal Terceiro ADM Associados -->
-<header class="cabecalho-corporativo">
-    <div class="identidade-container">
-        <div class="branding-flex">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px;">
+<header class="cabecalho-corporativo" style="background: #111; padding: 20px; border-bottom: 2px solid #FFFF00;">
+    <div class="identidade-container" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+        <div class="branding-flex" style="display: flex; align-items: center; gap: 15px;">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo TERADMAS" style="height: 65px; width: auto; object-fit: contain; border-radius: 4px; border: 1px solid #fff;">
             <div class="texto-empresa">
-                <h1>TERCEIRO ADM ASSOCIADOS</h1>
-                <p>Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
+                <h1 style="color: #FFFF00; margin: 0; font-size: 22px;">TERCEIRO ADM ASSOCIADOS</h1>
+                <p style="color: #bbb; margin: 5px 0 0 0; font-size: 13px;">Módulo 4: Gestão do Fluxo Financeiro, Caixa e Demonstrativo de Resultados</p>
             </div>
         </div>
-        <button class="menu-hamburguer" onclick="alternarMenuMobile()">☰</button>
+        <button class="menu-hamburguer" style="background: none; border: 1px solid #fff; color: #fff; font-size: 24px; cursor: pointer; padding: 5px 12px; border-radius: 4px;" onclick="alternarMenuMobile()">☰</button>
     </div>
 
     <!-- Navegação Responsiva com Menus Dropdown Unificados -->
-    <nav class="nav-container" id="menuNavegacao">
-        <ul class="menu-cascata">
+    <nav class="nav-container" id="menuNavegacao" style="margin-top: 15px;">
+        <ul class="menu-cascata" style="list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 15px;">
             <li class="item-menu">
-                <a href="#" class="link-principal">🏢 Módulos Iniciais ▾</a>
+                <a href="#" class="link-principal" style="color: #FFFF00; font-weight: bold; text-decoration: none;">🏢 Módulos Iniciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/estrutura">1. Investimentos Imobiliários</a></li>
-                    <li><a href="/maquinas">2. Engenharia de Ativos (Máquinas)</a></li>
-                    <li><a href="/rh">👥 3. Gestão de Pessoal (RH)</a></li>
-                    <li><a href="/financeiro">💰 4. Fluxo Financeiro</a></li>
-                    <li><a href="/requisicoes">📋 5. Central de Requisições</a></li>
-                    <li><a href="/compras">🛒 6. Cockpit de Suprimentos</a></li>
-                    <li><a href="/materiais">7. Almoxarifado (Materiais)</a></li>
+                    <li><a href="/estrutura" style="color: #fff; text-decoration: none;">1. Investimentos Imobiliários</a></li>
+                    <li><a href="/maquinas" style="color: #fff; text-decoration: none;">2. Engenharia de Ativos (Máquinas)</a></li>
+                    <li><a href="/rh" style="color: #fff; text-decoration: none;">👥 3. Gestão de Pessoal (RH)</a></li>
+                    <li><a href="/financeiro" style="color: #fff; text-decoration: none;">💰 4. Fluxo Financeiro</a></li>
+                    <li><a href="/requisicoes" style="color: #fff; text-decoration: none;">📋 5. Central de Requisições</a></li>
+                    <li><a href="/compras" style="color: #fff; text-decoration: none;">🛒 6. Cockpit de Suprimentos</a></li>
+                    <li><a href="/materiais" style="color: #fff; text-decoration: none;">7. Almoxarifado (Materiais)</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🛠️ Custos & Engenharia ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🛠️ Custos & Engenharia ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/orcamentos">📐 7B. Cockpit de Orçamentos</a></li>
-                    <li><a href="/engenharia">8. Engenharia de Produto (BOM)</a></li>
-                    <li><a href="/precificacao">9. Controladoria e Precificação</a></li>
+                    <li><a href="/orcamentos" style="color: #FFFF00; text-decoration: none; border-bottom: 2px solid #FFFF00;">📐 7B. Cockpit de Orçamentos</a></li>
+                    <li><a href="/engenharia" style="color: #fff; text-decoration: none;">8. Engenharia de Produto (BOM)</a></li>
+                    <li><a href="/precificacao" style="color: #fff; text-decoration: none;">9. Controladoria e Precificação</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">💰 Operações Comerciais ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">💰 Operações Comerciais ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/vendas">10. Painel de Vendas Comerciais</a></li>
-                    <li><a href="/estoque">11. Inventário de Acabados</a></li>
+                    <li><a href="/vendas" style="color: #fff; text-decoration: none;">10. Painel de Vendas Comerciais</a></li>
+                    <li><a href="/estoque" style="color: #fff; text-decoration: none;">11. Inventário de Acabados</a></li>
                 </ul>
             </li>
             <li class="item-menu">
-                <a href="#" class="link-principal">🏭 Chão de Fábrica & ROI ▾</a>
+                <a href="#" class="link-principal" style="color: #fff; text-decoration: none;">🏭 Chão de Fábrica & ROI ▾</a>
                 <ul class="sub-menu">
-                    <li><a href="/pcp">12. Planilha de Processos (PCP)</a></li>
-                    <li><a href="/roi">13. Indicadores de Retorno (ROI)</a></li>
+                    <li><a href="/pcp" style="color: #fff; text-decoration: none;">12. Planilha de Processos (PCP)</a></li>
+                    <li><a href="/roi" style="color: #fff; text-decoration: none;">13. Indicadores de Retorno (ROI)</a></li>
                 </ul>
             </li>
         </ul>
     </nav>
 </header>
-
-<div class="container">
+<div class="container" style="max-width: 1200px; margin: 0 auto; padding: 20px; box-sizing: border-box;">
+    
     <!-- Widget do Caixa Mestre Integrado em Tempo Real -->
-<div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #e3f2fd; border: 1px solid #90caf9; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #0d47a1; box-sizing: border-box;">
-    <div>
-        <h4 style="margin: 0; font-size: 14px; text-transform: uppercase; color: #1565c0;">💰 Caixa Operacional Disponível (Giro)</h4>
-        <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+    <div class="card-caixa-mestre" style="display: flex; justify-content: space-between; align-items: center; background: #111; border: 2px solid #FFFF00; padding: 15px; border-radius: 6px; margin-bottom: 25px; color: #fff; box-sizing: border-box; flex-wrap: wrap; gap: 15px;">
+        <div>
+            <h4 style="margin: 0; font-size: 13px; text-transform: uppercase; color: #FFFF00;">💰 Caixa Operacional Disponível (Giro)</h4>
+            <p style="margin: 5px 0 0 0; font-size: 26px; font-weight: bold; font-family: monospace; color: #00ff00;">R$ {{ "%.2f"|format(caixa_disponivel) }}</p>
+        </div>
+        <div style="text-align: right; border-left: 2px solid #333; padding-left: 20px;">
+            <span style="font-size: 12px; font-weight: bold; color: #FFFF00;">Aporte Inicial de Capital:</span><br>
+            <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
+        </div>
     </div>
-    <div style="text-align: right; border-left: 2px solid #90caf9; padding-left: 20px;">
-        <span style="font-size: 12px; font-weight: bold; color: #1565c0;">Aporte Inicial de Capital:</span><br>
-        <strong style="font-size: 16px; font-family: monospace;">R$ {{ "%.2f"|format(capital_inicial) }}</strong>
-    </div>
-</div>
 
     <h2>Módulo 7B: Cockpit de Orçamentos Técnicos Comerciais</h2>
-    <p>Insira a geometria da peça e o lote desejado. O simulador calculará automaticamente o consumo de matéria-prima, tempos de máquina, custos e gerará o preço final via Mark-up fiscal.</p>
+    <p style="color: #bbb; font-size: 14px; margin-top: -5px; margin-bottom: 25px;">Insira a geometria da peça e o lote desejado. O simulador calculará automaticamente o consumo de matéria-prima, tempos de máquina, custos e gerará o preço final via Mark-up fiscal.</p>
+    
     <!-- Bloco de Alertas de Validação do Simulador -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ category }}" style="padding: 12px; margin-bottom: 20px; border-radius: 4px; background-color: #fff3cd; color: #856404; font-weight: bold; border: 1px solid #ffeeba;">
+          <div class="alert alert-{{ category }}" style="padding: 12px; margin-bottom: 20px; border-radius: 4px; background-color: #111; color: {% if category=='success' %}#00ff00{% else %}#ff4444{% endif %}; font-weight: bold; border: 2px solid {% if category=='success' %}#00ff00{% else %}#ff4444{% endif %}; font-family: monospace; font-size: 14px;">
             {{ message }}
           </div>
         {% endfor %}
       {% endif %}
     {% endwith %}
 
-    <div class="card-orcamento" style="background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 25px;">
-        <h3>📐 1. Configuração Geométrica e Geometria da Peça</h3>
+    <div class="card-orcamento" style="background: #121212; padding: 25px; border-radius: 8px; border: 2px solid #333; margin-bottom: 25px; color: #fff;">
+        <h3 style="color: #FFFF00; margin-top: 0; font-size: 16px; text-transform: uppercase;">📐 1. Configuração Geométrica e Geometria da Peça</h3>
         <form id="formOrcamento" action="/salvar_orcamento_calculado" method="POST">
             
             <div class="grid-formulario" style="margin-bottom: 20px;">
                 <div class="form-group">
-                    <label for="tipo_produto">Tipo de Produto a Orçar:</label>
-                    <select name="tipo_produto" id="tipo_produto" required onchange="alternarCamposGeometricos()">
-                        <option value="">-- Selecione o Tipo --</option>
-                        <option value="bucha">Bucha Industrial</option>
-                        <option value="pino">Pino Maciço</option>
-                        <option value="eixo">Eixo de Transmissão Complexo</option>
-                        <option value="engrenagem">Engrenagem Cilíndrica Reta</option>
-                        <option value="diversos">Diversos / Sob Desenho Técnico</option>
+                    <label for="tipo_produto" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Tipo de Produto a Orçar:</label>
+                    <select name="tipo_produto" id="tipo_produto" required onchange="alternarCamposGeometricos()" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
+                        <option value="" style="background: #121212;">-- Selecione o Tipo --</option>
+                        <option value="bucha" style="background: #121212;">Bucha Industrial</option>
+                        <option value="pino" style="background: #121212;">Pino Maciço</option>
+                        <option value="eixo" style="background: #121212;">Eixo de Transmissão Complexo</option>
+                        <option value="engrenagem" style="background: #121212;">Engrenagem Cilíndrica Reta</option>
+                        <option value="diversos" style="background: #121212;">Diversos / Sob Desenho Técnico</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="nome_item_comercial">Nome Comercial da Peça:</label>
-                    <input type="text" name="nome_item" id="nome_item_comercial" required placeholder="Ex: Bucha de Bronze da Prensa">
+                    <label for="nome_item_comercial" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Nome Comercial da Peça:</label>
+                    <input type="text" name="nome_item" id="nome_item_comercial" required placeholder="Ex: Bucha de Bronze da Prensa" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
                 </div>
                 <div class="form-group">
-                    <label for="tamanho_lote">Tamanho do Lote (Unidades):</label>
-                    <input type="number" name="lote" id="tamanho_lote" min="1" value="10" required oninput="calcularOrcamentoCompleto()">
+                    <label for="tamanho_lote" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Tamanho do Lote (Unidades):</label>
+                    <input type="number" name="lote" id="tamanho_lote" min="1" value="10" required oninput="calcularOrcamentoCompleto()" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box; font-family: monospace;">
                 </div>
                 <div class="form-group">
-                    <label for="maquina_alocada">Posto de Trabalho / Máquina:</label>
-                    <select name="maquina_id" id="maquina_alocada" required onchange="calcularOrcamentoCompleto()">
-                        <option value="">-- Escolha o Posto --</option>
+                    <label for="maquina_alocada" style="font-size: 12px; font-weight: bold; display: block; margin-bottom: 5px;">Posto de Trabalho / Máquina:</label>
+                    <select name="maquina_id" id="maquina_alocada" required onchange="calcularOrcamentoCompleto()" style="width: 100%; padding: 10px; background: #1e1e1e; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 16px; box-sizing: border-box;">
+                        <option value="" style="background: #121212;">-- Escolha o Posto --</option>
                         {% for maq in maquinas %}
-                        <option value="{{ maq.id }}" data-custo-minuto="{{ maq.custo_minuto_maquina }}">{{ maq.nome_equipamento }} (R$ {{ "%.4f"|format(maq.custo_minuto_maquina) }}/min)</option>
+                        <!-- Correção Neon: Mapeamento posicional por índices das colunas selecionadas (0=id, 1=nome_equipamento, 13=custo_minuto) -->
+                        <option value="{{ maq }}" data-custo-minuto="{{ maq }}" style="background: #121212;">{{ maq }} (R$ {{ "%.4f"|format(maq) }}/min)</option>
                         {% endfor %}
                     </select>
                 </div>
             </div>
-
             <!-- PAINÉIS GEOMÉTRICOS DINÂMICOS -->
             
             <!-- Campos para Bucha -->
-            <div id="painel_bucha" class="painel-dim" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #3498db;">
-                <h4>⚙️ Dimensões de Engenharia: Bucha</h4>
+            <div id="painel_bucha" class="painel-dim" style="display: none; background: #121212; padding: 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #333; border-left: 4px solid #FFFF00;">
+                <h4 style="margin-top: 0; color: #FFFF00; font-size: 14px; text-transform: uppercase;">⚙️ Dimensões de Engenharia: Bucha</h4>
                 <div class="grid-formulario">
-                    <div class="form-group"><label for="bucha_ext">Diâmetro Externo (mm):</label><input type="number" id="bucha_ext" value="60" oninput="calcularOrcamentoCompleto()"></div>
-                    <div class="form-group"><label for="bucha_int">Diâmetro Interno (mm):</label><input type="number" id="bucha_int" value="40" oninput="calcularOrcamentoCompleto()"></div>
-                    <div class="form-group"><label for="bucha_comp">Comprimento Total (mm):</label><input type="number" id="bucha_comp" value="80" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="bucha_ext" style="font-size: 12px; display: block; margin-bottom: 5px;">Diâmetro Externo (mm):</label><input type="number" id="bucha_ext" value="60" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
+                    <div class="form-group"><label for="bucha_int" style="font-size: 12px; display: block; margin-bottom: 5px;">Diâmetro Interno (mm):</label><input type="number" id="bucha_int" value="40" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
+                    <div class="form-group"><label for="bucha_comp" style="font-size: 12px; display: block; margin-bottom: 5px;">Comprimento Total (mm):</label><input type="number" id="bucha_comp" value="80" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
                 </div>
             </div>
 
             <!-- Campos para Pino -->
-            <div id="painel_pino" class="painel-dim" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #e67e22;">
-                <h4>📌 Dimensões de Engenharia: Pino Maciço</h4>
+            <div id="painel_pino" class="painel-dim" style="display: none; background: #121212; padding: 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #333; border-left: 4px solid #00ff00;">
+                <h4 style="margin-top: 0; color: #00ff00; font-size: 14px; text-transform: uppercase;">📌 Dimensões de Engenharia: Pino Maciço</h4>
                 <div class="grid-formulario">
-                    <div class="form-group"><label for="pino_diam">Diâmetro Nominal (mm):</label><input type="number" id="pino_diam" value="30" oninput="calcularOrcamentoCompleto()"></div>
-                    <div class="form-group"><label for="pino_comp">Comprimento Total (mm):</label><input type="number" id="pino_comp" value="120" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="pino_diam" style="font-size: 12px; display: block; margin-bottom: 5px;">Diâmetro Nominal (mm):</label><input type="number" id="pino_diam" value="30" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
+                    <div class="form-group"><label for="pino_comp" style="font-size: 12px; display: block; margin-bottom: 5px;">Comprimento Total (mm):</label><input type="number" id="pino_comp" value="120" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
                 </div>
             </div>
 
             <!-- Campos para Eixo Complexo -->
-            <div id="painel_eixo" class="painel-dim" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #9b59b6;">
-                <h4>🔩 Características de Usinagem: Eixo</h4>
+            <div id="painel_eixo" class="painel-dim" style="display: none; background: #121212; padding: 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #333; border-left: 4px solid #FFFF00;">
+                <h4 style="margin-top: 0; color: #FFFF00; font-size: 14px; text-transform: uppercase;">🔩 Características de Usinagem: Eixo</h4>
                 <div class="grid-formulario">
-                    <div class="form-group"><label for="eixo_comp">Comprimento Total (mm):</label><input type="number" id="eixo_comp" value="300" oninput="calcularOrcamentoCompleto()"></div>
-                    <div class="form-group"><label for="eixo_escalas">Nº de Diâmetros Diferentes (Escalas):</label><input type="number" id="eixo_escalas" value="3" oninput="calcularOrcamentoCompleto()"></div>
-                    <div class="form-group"><label for="eixo_furos">Quantidade de Furações Técnicas:</label><input type="number" id="eixo_furos" value="2" oninput="calcularOrcamentoCompleto()"></div>
-                    <div class="form-group"><label for="eixo_canais">Canais de Chaveta / Retentor:</label><input type="number" id="eixo_canais" value="1" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="eixo_comp" style="font-size: 12px; display: block; margin-bottom: 5px;">Comprimento Total (mm):</label><input type="number" id="eixo_comp" value="300" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
+                    <div class="form-group"><label for="eixo_escalas" style="font-size: 12px; display: block; margin-bottom: 5px;">Nº de Diâmetros Diferentes (Escalas):</label><input type="number" id="eixo_escalas" value="3" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
+                    <div class="form-group"><label for="eixo_furos" style="font-size: 12px; display: block; margin-bottom: 5px;">Quantidade de Furações Técnicas:</label><input type="number" id="eixo_furos" value="2" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
+                    <div class="form-group"><label for="eixo_canais" style="font-size: 12px; display: block; margin-bottom: 5px;">Canais de Chaveta / Retentor:</label><input type="number" id="eixo_canais" value="1" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
                 </div>
             </div>
 
             <!-- Campos para Engrenagem -->
-            <div id="painel_engrenagem" class="painel-dim" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #1abc9c;">
-                <h4>⚙️ Parâmetros de Fabricação: Engrenagem</h4>
+            <div id="painel_engrenagem" class="painel-dim" style="display: none; background: #121212; padding: 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #333; border-left: 4px solid #00ff00;">
+                <h4 style="margin-top: 0; color: #00ff00; font-size: 14px; text-transform: uppercase;">⚙️ Parâmetros de Fabricação: Engrenagem</h4>
                 <div class="grid-formulario">
-                    <div class="form-group"><label for="eng_dentes">Número de Dentes (Z):</label><input type="number" id="eng_dentes" value="24" oninput="calcularOrcamentoCompleto()"></div>
-                    <div class="form-group"><label for="eng_modulo">Módulo da Engrenagem (M):</label><input type="number" id="eng_modulo" value="3" oninput="calcularOrcamentoCompleto()"></div>
-                    <div class="form-group"><label for="eng_largura">Largura dos Dentes / Face (mm):</label><input type="number" id="eng_largura" value="40" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="eng_dentes" style="font-size: 12px; display: block; margin-bottom: 5px;">Número de Dentes (Z):</label><input type="number" id="eng_dentes" value="24" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
+                    <div class="form-group"><label for="eng_modulo" style="font-size: 12px; display: block; margin-bottom: 5px;">Módulo da Engrenagem (M):</label><input type="number" id="eng_modulo" value="3" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
+                    <div class="form-group"><label for="eng_largura" style="font-size: 12px; display: block; margin-bottom: 5px;">Largura dos Dentes / Face (mm):</label><input type="number" id="eng_largura" value="40" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
                 </div>
             </div>
-
             <!-- Campos para Diversos -->
-            <div id="painel_diversos" class="painel-dim" style="display: none; background: #f8f9fa; padding: 15px; border-radius: 6px; margin-bottom: 20px; border-left: 4px solid #7f8c8d;">
-                <h4>🛠️ Estimativa Livre: Sob Desenho Técnico</h4>
+            <div id="painel_diversos" class="painel-dim" style="display: none; background: #121212; padding: 15px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #333; border-left: 4px solid #FFFF00;">
+                <h4 style="margin-top: 0; color: #FFFF00; font-size: 14px; text-transform: uppercase;">🛠️ Estimativa Livre: Sob Desenho Técnico</h4>
                 <div class="grid-formulario">
-                    <div class="form-group"><label for="div_peso">Peso Estimado de Matéria-Prima (kg):</label><input type="number" id="div_peso" step="0.1" value="5" oninput="calcularOrcamentoCompleto()"></div>
-                    <div class="form-group"><label for="div_tempo">Tempo Manual Estimado de Máquina (min/un):</label><input type="number" id="div_tempo" value="20" oninput="calcularOrcamentoCompleto()"></div>
+                    <div class="form-group"><label for="div_peso" style="font-size: 12px; display: block; margin-bottom: 5px;">Peso Estimado de Matéria-Prima (kg):</label><input type="number" id="div_peso" step="0.1" value="5" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
+                    <div class="form-group"><label for="div_tempo" style="font-size: 12px; display: block; margin-bottom: 5px;">Tempo Manual Estimado de Máquina (min/un):</label><input type="number" id="div_tempo" value="20" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 8px; border-radius: 4px; font-family: monospace; width: 100%; box-sizing: border-box;"></div>
                 </div>
             </div>
 
             <!-- PARÂMETROS FISCAIS E MARKUP -->
-            <h4 style="margin-top: 25px;">📊 2. Alíquotas de Impostos & Margem de Lucro (% por Dentro)</h4>
+            <h4 style="margin-top: 25px; color: #FFFF00; text-transform: uppercase; font-size: 14px;">📊 2. Alíquotas de Impostos & Margem de Lucro (% por Dentro)</h4>
             <div class="grid-formulario" style="margin-bottom: 20px;">
-                <div class="form-group"><label for="taxa_iss">Imposto Municipal (ISS %):</label><input type="number" name="iss" id="taxa_iss" step="0.1" value="5.0" oninput="calcularOrcamentoCompleto()"></div>
-                <div class="form-group"><label for="taxa_icms">Imposto Estadual (ICMS %):</label><input type="number" name="icms" id="taxa_icms" step="0.1" value="18.0" oninput="calcularOrcamentoCompleto()"></div>
-                <div class="form-group"><label for="taxa_fed">Impostos Federais (%):</label><input type="number" name="federal" id="taxa_fed" step="0.1" value="9.25" oninput="colored_input= calcularOrcamentoCompleto()"></div>
-                <div class="form-group"><label for="margem_desejada">Margem de Lucro Desejada (%):</label><input type="number" name="margem" id="margem_desejada" step="0.1" value="25.0" oninput="calcularOrcamentoCompleto()"></div>
+                <div class="form-group"><label for="taxa_iss" style="font-size: 12px; display: block; margin-bottom: 5px;">Imposto Municipal (ISS %):</label><input type="number" name="iss" id="taxa_iss" step="0.1" value="5.0" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 4px; width: 100%; box-sizing: border-box; font-family: monospace;"></div>
+                <div class="form-group"><label for="taxa_icms" style="font-size: 12px; display: block; margin-bottom: 5px;">Imposto Estadual (ICMS %):</label><input type="number" name="icms" id="taxa_icms" step="0.1" value="18.0" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 4px; width: 100%; box-sizing: border-box; font-family: monospace;"></div>
+                <div class="form-group"><label for="taxa_fed" style="font-size: 12px; display: block; margin-bottom: 5px;">Impostos Federais (%):</label><input type="number" name="federal" id="taxa_fed" step="0.1" value="9.25" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 4px; width: 100%; box-sizing: border-box; font-family: monospace;"></div>
+                <div class="form-group"><label for="margem_desejada" style="font-size: 12px; display: block; margin-bottom: 5px;">Margem de Lucro Desejada (%):</label><input type="number" name="margem" id="margem_desejada" step="0.1" value="25.0" oninput="calcularOrcamentoCompleto()" style="background: #1e1e1e; color: #fff; border: 1px solid #444; padding: 10px; border-radius: 4px; width: 100%; box-sizing: border-box; font-family: monospace;"></div>
             </div>
-            <!-- PAINEL VISUAL DE ENGENHARIA DE CUSTOS E MARKS -->
-            <h4 style="margin-top: 25px;">📊 3. Demonstração de Preços, Custos e Prazos Calculados</h4>
-            <div class="grid-resultados">
-                <div class="resultado-painel" style="background-color: #f0fdf4; border-color: #bbf7d0; color: #166534;">
-                    <h4 style="margin: 0 0 5px 0;">💰 Preço de Venda Final Sugerido</h4>
-                    <p style="font-size: 24px; font-weight: bold; margin: 0;">R$ <span id="preco_venda_peca">0.00</span> / peça</p>
-                    <small style="color: #15803d;">Custo Técnico de Fábrica Base absorvido</small>
+            
+            <!-- PAINEL VISUAL DE ENGENHARIA DE CUSTOS E MARKUP -->
+            <h4 style="margin-top: 25px; color: #FFFF00; text-transform: uppercase; font-size: 14px;">📊 3. Demonstração de Preços, Custos e Prazos Calculados</h4>
+            <div class="grid-resultados" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 20px;">
+                <div class="resultado-painel" style="background-color: #121212; border: 2px solid #333; border-top: 4px solid #00ff00; padding: 20px; border-radius: 8px; color: #fff;">
+                    <h4 style="margin: 0 0 5px 0; color: #00ff00; text-transform: uppercase; font-size: 12px;">💰 Preço de Venda Final Sugerido</h4>
+                    <p style="font-size: 24px; font-weight: bold; margin: 0; color: #00ff00; font-family: monospace;">R$ <span id="preco_venda_peca">0.00</span> / peça</p>
+                    <small style="color: #aaa; display: block; margin-top: 4px;">Custo Técnico de Fábrica Base absorvido</small>
                 </div>
                 
-                <div class="resultado-painel" style="background-color: #eff6ff; border-color: #bfdbfe; color: #1e40af;">
-                    <h4 style="margin: 0 0 5px 0;">📦 Custo Total Absorvido do Lote</h4>
-                    <p style="font-size: 24px; font-weight: bold; margin: 0;">R$ <span id="custo_total_lote">0.00</span></p>
-                    <small style="color: #1d4ed8;">Matéria-Prima + MOD + Taxas diluídas</small>
+                <div class="resultado-painel" style="background-color: #121212; border: 2px solid #333; border-top: 4px solid #00ff00; padding: 20px; border-radius: 8px; color: #fff;">
+                    <h4 style="margin: 0 0 5px 0; color: #00ff00; text-transform: uppercase; font-size: 12px;">📦 Custo Total Absorvido do Lote</h4>
+                    <p style="font-size: 24px; font-weight: bold; margin: 0; color: #00ff00; font-family: monospace;">R$ <span id="custo_total_lote">0.00</span></p>
+                    <small style="color: #aaa; display: block; margin-top: 4px;">Matéria-Prima + MOD + Taxas diluídas</small>
                 </div>
                 
-                <div class="resultado-painel" style="background-color: #fff7ed; border-color: #fed7aa; color: #9a3412;">
-                    <h4 style="margin: 0 0 5px 0;">⏳ Prazo Teórico Estimado para Entrega</h4>
-                    <p style="font-size: 24px; font-weight: bold; margin: 0;"><span id="prazo_entrega_horas">0</span> horas úteis</p>
-                    <small style="color: #c2410c;">Tempo de Operação + Setup + Fila PCP</small>
+                <div class="resultado-painel" style="background-color: #121212; border: 2px solid #333; border-top: 4px solid #FFFF00; padding: 20px; border-radius: 8px; color: #fff;">
+                    <h4 style="margin: 0 0 5px 0; color: #FFFF00; text-transform: uppercase; font-size: 12px;">⏳ Prazo Teórico Estimado para Entrega</h4>
+                    <p style="font-size: 24px; font-weight: bold; margin: 0; color: #FFFF00; font-family: monospace;"><span id="prazo_entrega_horas">0</span> horas úteis</p>
+                    <small style="color: #aaa; display: block; margin-top: 4px;">Tempo de Operação + Setup + Fila PCP</small>
                 </div>
             </div>
 
@@ -276,7 +276,7 @@
             <input type="hidden" name="preco_final_calculado" id="hide_preco_final" value="0">
 
             <div style="margin-top: 25px;">
-                <button type="submit" class="btn btn-success" style="width: 100%; padding: 14px; font-size: 16px; font-weight: bold; cursor: pointer;">🚀 Validar Orçamento e Registrar Demanda Comercial</button>
+                <button type="submit" style="width: 100%; padding: 14px; background: #FFFF00; color: #000; border: none; font-size: 14px; font-weight: bold; cursor: pointer; text-transform: uppercase; tracking-wider; border-radius: 6px; transition: all;">🚀 Validar Orçamento e Registrar Demanda Comercial</button>
             </div>
         </form>
     </div>
@@ -372,7 +372,7 @@
             tempoUsinagemMin = parseFloat(document.getElementById('div_tempo').value) || 0;
         }
 
-        // --- ENGENHARIA DE CUSTOS E SEU FECHAMENTO CONTÁBIL ---
+        // --- ENGENHARIA DE CUSTOS ---
         const custoMaterialUnidade = pesoPecaKg * precoMateriaPrimaPorKg;
         const tempoTotalLoteMin = (tempoUsinagemMin * lote) + tempoSetupFixo;
         
@@ -408,11 +408,10 @@
 
         // Armazenamento nos inputs ocultos para o envio seguro ao app.py
         document.getElementById('hide_custo_operacao').value = custoTransformacaoTotal.toFixed(4);
-        document.getElementById('hide_tempo_estimado').value = tempoTotalLoteTotal = tempoTotalLoteMin.toFixed(2);
+        document.getElementById('hide_tempo_estimado').value = tempoTotalLoteMin.toFixed(2);
         document.getElementById('hide_preco_final').value = (precoVendaPeca * lote).toFixed(4);
     }
 
-    // Função para abrir e fechar o menu hambúrguer no celular
     function alternarMenuMobile() {
         document.getElementById('menuNavegacao').classList.toggle('ativo');
     }
