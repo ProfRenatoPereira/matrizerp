@@ -1,3 +1,79 @@
+import os
+import math
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+from whitenoise import WhiteNoise
+import psycopg2
+
+app = Flask(__name__)
+# Chave de segurança para ativação das mensagens flash e controle de login
+app.secret_key = os.environ.get("SECRET_KEY", "teradmas_secret_key_2026")
+
+# Acoplamento do WhiteNoise para servir arquivos estáticos no Render de forma nativa
+app.wsgi_app = WhiteNoise(app.wsgi_app, root="static/")
+
+# Dicionário de Engenharia de Ativos - Catálogo de Máquinas Pedagógico
+CATALOGO_MAQUINAS = {
+    "001 - Torno CNC Industrial": {"nome": "Torno CNC Industrial", "custo_minuto": 0.4500},
+    "002 - Fresadora Universal": {"nome": "Fresadora Universal", "custo_minuto": 0.3800},
+    "003 - Furadeira de Bancada": {"nome": "Furadeira de Bancada", "custo_minuto": 0.1500},
+    "004 - Retífica Cilíndrica": {"nome": "Retífica Cilíndrica", "custo_minuto": 0.5200},
+    "005 - Centro de Usinagem": {"nome": "Centro de Usinagem", "custo_minuto": 0.8500}
+}
+
+def conectar_banco():
+    """Estabelece a conexão com a base de dados serverless do Neon PostgreSQL"""
+    DATABASE_URL = os.environ.get("DATABASE_URL")
+    if not DATABASE_URL:
+        # Fallback local para desenvolvimento seguro se a variável de ambiente não existir
+        return psycopg2.connect("dbname=matrizerp user=postgres password=postgres host=localhost")
+    return psycopg2.connect(DATABASE_URL)
+
+def get_db_connection():
+    """Recupera uma conexão limpa com o banco de dados Neon PostgreSQL"""
+    return conectar_banco()
+
+def release_db_connection(conn):
+    """Fecha a conexão com segurança após a execução das queries"""
+    if conn:
+        conn.close()
+
+def inicializar_banco():
+    """Cria a tabela de máquinas e outras tabelas necessárias caso não existam no Neon"""
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS maquinas (
+                id SERIAL PRIMARY KEY,
+                nome_equipamento VARCHAR(255) NOT NULL,
+                potencia NUMERIC(10,2),
+                consumo_eletrico NUMERIC(10,2),
+                velocidade VARCHAR(100),
+                avanco VARCHAR(100),
+                comprimento_max INTEGER,
+                diametro_max INTEGER,
+                frequencia_manutencao INTEGER,
+                preco_compra NUMERIC(12,2),
+                depreciacao_mensal NUMERIC(10,2),
+                valor_venda_final NUMERIC(12,2),
+                custo_minuto_maquina NUMERIC(10,4),
+                operador_nome VARCHAR(255),
+                custo_minuto_operador NUMERIC(10,4),
+                salario_base NUMERIC(10,2),
+                valor_adicionais NUMERIC(10,2),
+                vida_util_meses INTEGER
+            );
+        ''')
+        conn.commit()
+    except Exception as e:
+        conn.rollback()
+        print(f"Erro ao inicializar tabelas no banco: {e}")
+    finally:
+        cursor.close()
+        release_db_connection(conn)
+
+# Executa a criação das tabelas automaticamente ao iniciar o app
+inicializar_banco()
 def buscar_dados_maquina_na_internet(nome_maquina):
     """
     PROEZA: Motor genérico de estimativa industrial.
