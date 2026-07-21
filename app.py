@@ -1,8 +1,13 @@
 import os
 import math
+import logging
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from whitenoise import WhiteNoise
-import psycopg2
+from psycopg2 import pool
+
+# Configuração de logs para monitoramento em produção
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 # Chave de segurança para ativação das mensagens flash e controle de login
@@ -20,26 +25,38 @@ CATALOGO_MAQUINAS = {
     "005 - Centro de Usinagem": {"nome": "Centro de Usinagem", "custo_minuto": 0.8500}
 }
 
-def conectar_banco():
-    """Estabelece a conexão com a base de dados serverless do Neon PostgreSQL"""
-    DATABASE_URL = os.environ.get("DATABASE_URL")
-    if not DATABASE_URL:
-        # Fallback local para desenvolvimento seguro se a variável de ambiente não existir
-        return psycopg2.connect("dbname=matrizerp user=postgres password=postgres host=localhost")
-    return psycopg2.connect(DATABASE_URL)
+# --- CONFIGURAÇÃO DO POOL DE CONEXÕES (THREAD-SAFE) ---
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-def get_db_connection():
-    """Recupera uma conexão limpa com o banco de dados Neon PostgreSQL"""
-    return conectar_banco()
-
-def release_db_connection(conn):
-    """Fecha a conexão com segurança após a execução das queries"""
-    if conn:
-        conn.close()
+try:
+    if DATABASE_URL:
+        # Correção necessária para o psycopg2 aceitar strings do Render/Heroku
+        if DATABASE_URL.startswith("postgres://"):
+            DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+        
+        # Configuração para produção (Neon): Requer SSL obrigatoriamente
+        conexao_pool = pool.ThreadedConnectionPool(
+            minconn=1, 
+            maxconn=10, 
+            dsn=DATABASE_URL,
+            sslmode='require'
+        )
+        logger.info("Pool de conexões inicializado para o Neon PostgreSQL (Nuvem).")
+    else:
+        # Fallback local seguro para desenvolvimento
+        conexao_pool = pool.ThreadedConnectionPool(
+            minconn=1, 
+            maxconn=5, 
+            dsn="dbname=matrizerp user=postgres password=postgres host=localhost"
+        )
+        logger.info("Pool de conexões inicializado para o PostgreSQL Local.")
+except Exception as e:
+    logger.critical(f"Falha crítica ao criar o Pool de conexões: {e}")
+    raise e
 
 def inicializar_banco():
-    """Cria a tabela de máquinas e outras tabelas necessárias caso não existam no Neon"""
-    conn = get_db_connection()
+    """Cria a tabela de máquinas e outras tabelas necessárias caso não existam"""
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('''
@@ -65,15 +82,14 @@ def inicializar_banco():
             );
         ''')
         conn.commit()
+        logger.info("Tabela 'maquinas' verificada/criada com sucesso.")
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao inicializar tabelas no banco: {e}")
+        logger.error(f"Erro ao inicializar tabelas no banco: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
 
-# Executa a criação das tabelas automaticamente ao iniciar o app
-inicializar_banco()
 def buscar_dados_maquina_na_internet(nome_maquina):
     """
     PROEZA: Motor genérico de estimativa industrial.
@@ -104,9 +120,9 @@ def buscar_dados_maquina_na_internet(nome_maquina):
         operador_sugerido = f"Operador de {termo}"
         salario_sugerido = 2100.0
 
-    depreciacao = round(preco_base / 120, 2) # Vida útil padrão de 120 meses
-    valor_venda = round(preco_base * 0.2, 2) # 20% de valor residual de mercado
-    custo_minuto = round((salario_sugerido / 220 / 60) * 1.5, 4) # Estimativa de custo por minuto operativa
+    depreciacao = round(preco_base / 120, 2)  # Vida útil padrão de 120 meses
+    valor_venda = round(preco_base * 0.2, 2)  # 20% de valor residual de mercado
+    custo_minuto = round((salario_sugerido / 220 / 60) * 1.5, 4)  # Estimativa de custo por minuto operativa
     
     return {
         'nome': f"{termo} (Mapeado via Web)",
@@ -116,14 +132,14 @@ def buscar_dados_maquina_na_internet(nome_maquina):
         'avan': 'Automático/Manual',
         'comp': int(preco_base * 0.02) if preco_base < 50000 else 1200,
         'diam': int(preco_base * 0.01) if preco_base < 50000 else 600,
-        'mnt': int(preco_base * 0.03), # 3% do valor em manutenção
+        'mnt': int(preco_base * 0.03),  # 3% do valor em manutenção
         'preco': round(preco_base, 2),
         'dep': depreciacao,
         'venda': valor_venda,
         'operador': operador_sugerido,
         'custo_op': custo_minuto,
         'salario': salario_sugerido,
-        'adic': round(salario_sugerido * 0.2, 2), # 20% de adicionais padrão (Insalubridade/Periculosidade)
+        'adic': round(salario_sugerido * 0.2, 2),  # 20% de adicionais padrão (Insalubridade/Periculosidade)
         'vida': 120
     }
 
@@ -141,7 +157,7 @@ def cadastrar_maquina():
         # Se ele digitar qualquer texto genérico, o robô assume a pesquisa de mercado
         dados = buscar_dados_maquina_na_internet(nome_inserido)
         
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     
     try:
@@ -161,14 +177,14 @@ def cadastrar_maquina():
         flash(f"Equipamento '{dados['nome']}' integrado à cadeia com dados de mercado calibrados!")
     except Exception as e:
         conn.rollback()
+        logger.error(f"Erro ao cadastrar máquina no Neon: {e}")
         flash(f"Erro ao cadastrar no Neon: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('maquinas'))
-
-        # 1. Carga Inicial de Máquinas do Catálogo do Professor
+                # 1. Carga Inicial de Máquinas do Catálogo do Professor
         for k, m in CATALOGO_MAQUINAS.items():
             if k in ['cnc_romi', 'prensa_100t', 'forno_tempera']:
                 minutos_mes = 44 * 4.33 * 60
@@ -203,10 +219,10 @@ def cadastrar_maquina():
         conn.commit()
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao popular dados iniciais no Neon: {e}")
+        logger.error(f"Erro ao popular dados iniciais no Neon: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn) # Mantém a conexão disponível no pool
+        conexao_pool.putconn(conn) # Mantém a conexão disponível no pool
 
 # Função Inteligente de Cálculo de Fluxo de Caixa baseada no Neon
 def calcular_caixa_disponivel(conn):
@@ -249,7 +265,7 @@ def login_validar():
     user_input = request.form.get('username')
     pass_input = request.form.get('password')
     
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     
     try:
@@ -264,22 +280,28 @@ def login_validar():
             flash('Acesso concedido com sucesso!', 'success')
         else:
             flash('Usuário ou senha inválidos.', 'danger')
+    except Exception as e:
+        logger.error(f"Erro na validação de login: {e}")
+        flash('Erro ao processar o login no banco de dados.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('index'))
 
 @app.route('/professor_painel_secreto')
 def professor_painel():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT id, usuario FROM usuarios')
         todas_equipes = cursor.fetchall()
+    except Exception as e:
+        logger.error(f"Erro ao buscar equipes no painel do professor: {e}")
+        todas_equipes = []
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('professor.html', usuarios=todas_equipes)
 
@@ -289,7 +311,7 @@ def professor_resetar():
     nova_senha = request.form.get('nova_senha')
     novo_hash = generate_password_hash(nova_senha)
     
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('UPDATE usuarios SET senha = %s WHERE usuario = %s', (novo_hash, user_aluno))
@@ -297,10 +319,11 @@ def professor_resetar():
         flash(f"Sucesso! A senha da equipe '{user_aluno}' foi alterada para '{nova_senha}'.", 'success')
     except Exception as e:
         conn.rollback()
+        logger.error(f"Erro ao resetar senha da equipe {user_aluno}: {e}")
         flash(f"Erro ao resetar senha: {e}", 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('professor_painel'))
 
@@ -310,7 +333,7 @@ def professor_cadastrar():
     senha_inicial = request.form.get('senha_inicial')
     hash_senha = generate_password_hash(senha_inicial)
     
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('INSERT INTO usuarios (usuario, senha) VALUES (%s, %s)', (novo_user, hash_senha))
@@ -321,10 +344,11 @@ def professor_cadastrar():
         flash("Erro: Essa equipe já está cadastrada.", 'danger')
     except Exception as e:
         conn.rollback()
+        logger.error(f"Erro inesperado no cadastro de equipe: {e}")
         flash(f"Erro inesperado no Neon: {e}", 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('professor_painel'))
 
@@ -342,7 +366,7 @@ def inicializar_simulador():
     except ValueError: 
         capital_inicial = 0.0
         
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         # No Postgres, TRUNCATE com CASCADE limpa as tabelas e remove dependências de chaves estrangeiras com rapidez e eficiência
@@ -350,15 +374,16 @@ def inicializar_simulador():
         conn.commit()
     except Exception as e:
         conn.rollback()
+        logger.error(f"Erro ao limpar tabelas no Neon: {e}")
         flash(f"Erro ao limpar tabelas no Neon: {e}", 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     # Reexecuta o método de criação/checagem do esqueleto estrutural inicial
-    init_db()
+    inicializar_banco()
     
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('''
@@ -369,30 +394,35 @@ def inicializar_simulador():
         flash(f'Empresa {nome_empresa} inicializada com sucesso!', 'success')
     except Exception as e:
         conn.rollback()
+        logger.error(f"Erro ao inserir cenário básico de simulação: {e}")
         flash(f"Erro ao inserir cenário básico de simulação: {e}", 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('estrutura'))
 
 @app.route('/estrutura')
 def estrutura():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT id, turma_nome, cidade_regiao, bairro_imovel, area_imovel, taxa_selic, valor_imovel_estimado, aluguel_regional, perc_acionistas, capital_inicial_negocio FROM investimentos_imobiliarios')
         registros = cursor.fetchall()
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar estrutura: {e}")
+        registros = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('estrutura.html', taxa_atual=11.39, registros=registros, caixa_disponivel=caixa, capital_inicial=total)
 
 @app.route('/salvar_estrutura', methods=['POST'])
 def salvar_estrutura():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT capital_inicial_negocio FROM investimentos_imobiliarios ORDER BY id DESC LIMIT 1')
@@ -413,16 +443,16 @@ def salvar_estrutura():
         conn.commit()
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao salvar estrutura no Neon: {e}")
+        logger.error(f"Erro ao salvar estrutura no Neon: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('estrutura'))
 
 @app.route('/alterar_estrutura/<int:id>', methods=['POST'])
 def alterar_estrutura(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT capital_inicial_negocio FROM investimentos_imobiliarios WHERE id = %s', (id,))
@@ -441,32 +471,32 @@ def alterar_estrutura(id):
         conn.commit()
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao alterar estrutura no Neon: {e}")
+        logger.error(f"Erro ao alterar estrutura no Neon: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('estrutura'))
 
 @app.route('/deletar_estrutura/<int:id>', methods=['POST'])
 def deletar_estrutura(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('DELETE FROM investimentos_imobiliarios WHERE id = %s', (id,))
         conn.commit()
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao deletar estrutura no Neon: {e}")
+        logger.error(f"Erro ao deletar estrutura no Neon: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('estrutura'))
 
 @app.route('/maquinas')
 def maquinas():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT id, nome_equipamento, potencia, consumo_eletrico, velocidade, avanco, comprimento_max, diametro_max, frequencia_manutencao, horas_trabalhadas, preco_compra, depreciacao_mensal, valor_venda_final, custo_minuto_maquina, operador_nome, custo_minuto_operador, salario_base, valor_adicionais, turno_trabalho, dia_semana, vida_util_meses FROM maquinas')
@@ -476,9 +506,14 @@ def maquinas():
         ult = cursor.fetchone()
         
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar máquinas ou cálculo de caixa: {e}")
+        m_dados = []
+        ult = None
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     base = float(ult[0]) if ult and ult[0] is not None else 0
     minutos_padrao_mes = 44 * 4.33 * 60
@@ -493,7 +528,7 @@ def maquinas():
 
 @app.route('/salvar_maquina', methods=['POST'])
 def salvar_maquina():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('''
@@ -514,16 +549,16 @@ def salvar_maquina():
         conn.commit()
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao salvar máquina no Neon: {e}")
+        logger.error(f"Erro ao salvar máquina no Neon: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('maquinas'))
 
 @app.route('/alterar_maquina/<int:id>', methods=['POST'])
 def alterar_maquina(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('''
@@ -543,10 +578,10 @@ def alterar_maquina(id):
         conn.commit()
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao alterar máquina no Neon: {e}")
+        logger.error(f"Erro ao alterar máquina no Neon: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('maquinas'))
 
@@ -558,27 +593,28 @@ def deletar_maquina(id):
     conn.close()
     return redirect(url_for('maquinas'))
 
-
-
-
 @app.route('/rh')
 def rh():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         # Busca operadores ativos mapeados no banco
         cursor.execute("SELECT id, nome_equipamento, operador_nome, salario_base, valor_adicionais, turno_trabalho, dia_semana FROM maquinas WHERE operador_nome != 'Posto Vago - Aguardando MOD' AND operador_nome != ''")
         colaboradores = cursor.fetchall()
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar módulo de RH: {e}")
+        colaboradores = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('rh.html', colaboradores=colaboradores, caixa_disponivel=caixa, capital_inicial=total)
 
 @app.route('/salvar_colaborador', methods=['POST'])
 def salvar_colaborador():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         # Verifica se existe alguma máquina comprada pelos alunos com posto vago de MOD
@@ -618,26 +654,30 @@ def salvar_colaborador():
             flash('Mão de Obra Indireta alocada com sucesso no simulador.', 'success')
     except Exception as e:
         conn.rollback()
+        logger.error(f"Erro ao alocar folha de RH no Neon: {e}")
         flash(f"Erro ao alocar folha de RH no Neon: {e}", 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('rh'))
 
 @app.route('/imprimir_holerite/<int:id>/<string:tipo>')
 def imprimir_holerite(id, tipo):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         # Mapeamento explícito das colunas para leitura posicional exata do Neon
         cursor.execute('SELECT id, operador_nome, salario_base, valor_adicionais, dia_semana, turno_trabalho FROM maquinas WHERE id = %s', (id,))
         col = cursor.fetchone()
+    except Exception as e:
+        logger.error(f"Erro ao buscar dados para impressão do holerite: {e}")
+        col = None
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
-    # Mapeamento posicional: col[1] = operador_nome, col[2] = salario_base, col[3] = valor_adicionais, col[4] = dia_semana, col[5] = turno_trabalho
+        # Mapeamento posicional: col[1] = operador_nome, col[2] = salario_base, col[3] = valor_adicionais, col[4] = dia_semana, col[5] = turno_trabalho
     if not col or col[1] == 'Posto Vago - Aguardando MOD': 
         return "Colaborador não localizado ou posto vago."
         
@@ -661,36 +701,68 @@ def imprimir_holerite(id, tipo):
     total_proventos = provento_principal_valor + adicionais + horas_extras_acumuladas
     
     # Motor de Cálculo de Tributos Trabalhistas Brasileiros (Faixas INSS 2026)
-    inss = total_proventos * 0.075 if total_proventos <= 1518.00 else ((total_proventos * 0.09) - 22.77 if total_proventos <= 2793.88 else ((total_proventos * 0.12) - 106.59 if total_proventos <= 4190.83 else ((total_proventos * 0.14) - 190.40 if total_proventos <= 8157.41 else 951.64)))
+    if total_proventos <= 1518.00:
+        inss = total_proventos * 0.075
+    elif total_proventos <= 2793.88:
+        inss = (total_proventos * 0.09) - 22.77
+    elif total_proventos <= 4190.83:
+        inss = (total_proventos * 0.12) - 106.59
+    elif total_proventos <= 8157.41:
+        inss = (total_proventos * 0.14) - 190.40
+    else:
+        inss = 951.64
+
     base_irrf = total_proventos - inss
     
     # Cálculo das Faixas de Dedução de IRRF Retido na Fonte
-    irrf = 0.0 if base_irrf <= 2259.20 else ((base_irrf * 0.075) - 169.44 if base_irrf <= 2826.65 else ((base_irrf * 0.15) - 381.44 if base_irrf <= 3751.05 else ((base_irrf * 0.225) - 662.77 if base_irrf <= 4664.68 else (base_irrf * 0.275) - 896.00)))
+    if base_irrf <= 2259.20:
+        irrf = 0.0
+    elif base_irrf <= 2826.65:
+        irrf = (base_irrf * 0.075) - 169.44
+    elif base_irrf <= 3751.05:
+        irrf = (base_irrf * 0.15) - 381.44
+    elif base_irrf <= 4664.68:
+        irrf = (base_irrf * 0.225) - 662.77
+    else:
+        irrf = (base_irrf * 0.275) - 896.00
     
     vale_transporte = salario_base * 0.06 if col[5] == 'Diurno' else 0.0
     total_descontos = inss + irrf + vale_transporte
     valor_liquido = total_proventos - total_descontos
     
     dados_holerite = {
-        "tipo_recibo": titulo_recibo, "nome": col[1], "cargo": f"CBO {col[0]} - Ativo", 
-        "principal_nome": provento_principal_nome, "principal_valor": provento_principal_valor, 
-        "adicionais": adicionais, "horas_extras": horas_extras_acumuladas, "total_proventos": total_proventos, 
-        "inss": inss, "irrf": irrf, "vt": vale_transporte, "total_descontos": total_descontos, "liquido": valor_liquido
+        "tipo_recibo": titulo_recibo, 
+        "nome": col[1], 
+        "cargo": f"CBO {col[0]} - Ativo", 
+        "principal_nome": provento_principal_nome, 
+        "principal_valor": provento_principal_valor, 
+        "adicionais": adicionais, 
+        "horas_extras": horas_extras_acumuladas, 
+        "total_proventos": total_proventos, 
+        "inss": inss, 
+        "irrf": irrf, 
+        "vt": vale_transporte, 
+        "total_descontos": total_descontos, 
+        "liquido": valor_liquido
     }
     
     return render_template('holerite.html', h=dados_holerite)
 
 @app.route('/orcamentos')
 def orcamentos():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT id, nome_equipamento, custo_minuto_maquina FROM maquinas')
         maqs = cursor.fetchall()
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar orçamentos: {e}")
+        maqs = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('orcamentos.html', maquinas=maqs, caixa_disponivel=caixa, capital_inicial=total)
 
@@ -702,7 +774,7 @@ def salvar_orcamento_calculado():
     preco_final = float(request.form.get('preco_final_calculado') or 0.0)
     sku = f"ORC-{tipo.upper()}-{int(preco_final)%1000}"
     
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('INSERT INTO produtos (codigo_produto, nome_produto) VALUES (%s, %s)', (sku, nome_item))
@@ -720,63 +792,73 @@ def salvar_orcamento_calculado():
         flash('Orçamento integrado à carteira de demandas comerciais!', 'success')
     except psycopg2.errors.UniqueViolation:
         conn.rollback()
+        logger.error("Erro no processamento comercial: Código ou SKU duplicado.")
         flash('Erro no processamento comercial: Código ou SKU duplicado.', 'danger')
     except Exception as e:
         conn.rollback()
+        logger.error(f'Erro operacional ao salvar orçamento calculado no Neon: {e}')
         flash(f'Erro operacional no Neon: {e}', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('vendas'))
 
 @app.route('/requisicoes')
 def requisicoes():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT id, equipamento_tipo, especificacao_desejada, quantidade, status, preco_cotado, potencia_cotada, depreciacao_sugerida, vida_util_sugerida, data_requisicao FROM requisicoes_compras ORDER BY id DESC')
         reqs = cursor.fetchall()
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar requisições: {e}")
+        reqs = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('requisicoes.html', requisicoes=reqs, caixa_disponivel=caixa, capital_inicial=total)
 
 @app.route('/compras')
 def compras():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT id, equipamento_tipo, especificacao_desejada, quantidade, status, preco_cotado, potencia_cotada, depreciacao_sugerida, vida_util_sugerida, data_requisicao FROM requisicoes_compras WHERE status LIKE 'Cotado%%' ORDER BY id DESC")
         cotadas = cursor.fetchall()
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar compras: {e}")
+        cotadas = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('compras.html', requisicoes_cotadas=cotadas, caixa_disponivel=caixa, capital_inicial=total)
 
 @app.route('/salvar_requisicao', methods=['POST'])
 def salvar_requisicao():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('INSERT INTO requisicoes_compras (equipamento_tipo, especificacao_desejada, quantidade) VALUES (%s, %s, %s)', (request.form.get('equipamento_tipo', 'Equipamento'), request.form.get('especificacao_desejada', 'N/A'), int(request.form.get('quantidade') or 1)))
         conn.commit()
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao salvar requisição: {e}")
+        logger.error(f"Erro ao salvar requisição: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('requisicoes'))
 
 @app.route('/cotar_internet/<int:id>', methods=['POST'])
 def cotar_internet(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT equipamento_tipo, especificacao_desejada FROM requisicoes_compras WHERE id = %s', (id,))
@@ -800,16 +882,16 @@ def cotar_internet(id):
             conn.commit()
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao cotar internet: {e}")
+        logger.error(f"Erro ao cotar internet: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('requisicoes'))
 
 @app.route('/efetivar_compra/<int:id>', methods=['POST'])
 def efetivar_compra(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT equipamento_tipo, especificacao_desejada, quantidade FROM requisicoes_compras WHERE id = %s', (id,))
@@ -848,33 +930,33 @@ def efetivar_compra(id):
             conn.commit()
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao efetivar compra: {e}")
+        logger.error(f"Erro ao efetivar compra: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('requisicoes'))
 
 @app.route('/deletar_requisicao/<int:id>', methods=['POST'])
 def deletar_requisicao(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('DELETE FROM requisicoes_compras WHERE id = %s', (id,))
         conn.commit()
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao deletar requisição: {e}")
+        logger.error(f"Erro ao deletar requisição: {e}")
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('requisicoes'))
 
 @app.route('/inventario')
 @app.route('/materiais')
 def materiais():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT id, codigo_material, nome_material, preco_unidade, dimensoes, volume_disponivel FROM materiais')
@@ -888,15 +970,20 @@ def materiais():
         itens_acabados = cursor.fetchall()
         
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar inventário de materiais: {e}")
+        mats = []
+        itens_acabados = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('materiais.html', materiais=mats, estoque_itens=itens_acabados, caixa_disponivel=caixa, capital_inicial=total)
 
 @app.route('/salvar_material', methods=['POST'])
 def salvar_material():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('''
@@ -908,21 +995,24 @@ def salvar_material():
             float(request.form.get('volume_disponivel') or 0)
         ))
         conn.commit()
+        flash('Material cadastrado com sucesso!', 'success')
     except psycopg2.errors.UniqueViolation:
         conn.rollback()
-        return "Erro: SKU duplicado!"
+        logger.error("Tentativa de cadastro com SKU duplicado na tabela de materiais.")
+        flash('Erro: SKU duplicado!', 'danger')
     except Exception as e:
         conn.rollback()
-        return f"Erro operacional no Neon: {e}"
+        logger.error(f"Erro operacional ao salvar material no Neon: {e}")
+        flash(f"Erro operacional no Neon: {e}", 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('materiais'))
 
 @app.route('/alterar_material/<int:id>', methods=['POST'])
 def alterar_material(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('''
@@ -935,34 +1025,38 @@ def alterar_material(id):
             float(request.form.get('volume_disponivel') or 0), id
         ))
         conn.commit()
+        flash('Material atualizado com sucesso!', 'success')
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao alterar material no Neon: {e}")
+        logger.error(f"Erro ao alterar material no Neon: {e}")
+        flash('Erro ao atualizar as especificações do material.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('materiais'))
 
 @app.route('/deletar_material/<int:id>', methods=['POST'])
 def deletar_material(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('DELETE FROM materiais WHERE id = %s', (id,))
         conn.commit()
+        flash('Material removido do inventário!', 'success')
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao deletar material no Neon: {e}")
+        logger.error(f"Erro ao deletar material no Neon: {e}")
+        flash('Erro ao remover o material selecionado.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('materiais'))
 
 @app.route('/engenharia')
 def engenharia():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT id, codigo_produto, nome_produto, custo_total_fabricacao FROM produtos')
@@ -985,34 +1079,44 @@ def engenharia():
         comps = cursor.fetchall()
         
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar módulo de engenharia: {e}")
+        prods = []
+        maqs = []
+        mats = []
+        comps = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('engenharia.html', produtos=prods, maquinas=maqs, materiais=mats, composicoes=comps, caixa_disponivel=caixa, capital_inicial=total)
 
 @app.route('/salvar_produto', methods=['POST'])
 def salvar_produto():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('INSERT INTO produtos (codigo_produto, nome_produto) VALUES (%s, %s)', (request.form.get('codigo_produto', 'PROD').strip(), request.form.get('nome_produto', 'Acabado').strip()))
         conn.commit()
+        flash('Produto de engenharia cadastrado com sucesso!', 'success')
     except psycopg2.errors.UniqueViolation:
         conn.rollback()
-        return "Erro: Produto duplicado."
+        logger.error("Tentativa de cadastro com código de produto duplicado.")
+        flash('Erro: Produto duplicado.', 'danger')
     except Exception as e:
         conn.rollback()
-        return f"Erro operacional no Neon: {e}"
+        logger.error(f"Erro operacional ao salvar produto no Neon: {e}")
+        flash(f"Erro operacional no Neon: {e}", 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('engenharia'))
 
 @app.route('/vincular_estrutura', methods=['POST'])
 def vincular_estrutura():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     maquina_id = request.form.get('maquina_id')
     material_id = request.form.get('material_id')
@@ -1030,34 +1134,38 @@ def vincular_estrutura():
             float(request.form.get('tempo_processo_min') or 0), float(request.form.get('quantidade_material') or 0)
         ))
         conn.commit()
+        flash('Estrutura vinculada com sucesso ao item de engenharia!', 'success')
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao vincular estrutura de engenharia no Neon: {e}")
+        logger.error(f"Erro ao vincular estrutura de engenharia no Neon: {e}")
+        flash('Erro ao realizar a vinculação da lista de materiais e processos.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('engenharia'))
 
 @app.route('/deletar_item_estrutura/<int:id>', methods=['POST'])
 def deletar_item_estrutura(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('DELETE FROM estrutura_produto WHERE id = %s', (id,))
         conn.commit()
+        flash('Item da estrutura removido com sucesso!', 'success')
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao deletar item da estrutura no Neon: {e}")
+        logger.error(f"Erro ao deletar item da estrutura no Neon: {e}")
+        flash('Erro ao deletar o componente selecionado da engenharia.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('engenharia'))
 
 @app.route('/precificacao')
 def precificacao():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         # Consulta avançada com GROUP BY adaptada para o Postgres puro do Neon
@@ -1082,15 +1190,20 @@ def precificacao():
         salvos = cursor.fetchall()
         
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar módulo de precificação: {e}")
+        prods = []
+        salvos = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('precificacao.html', produtos=prods, precos_salvos=salvos, caixa_disponivel=caixa, capital_inicial=total)
 
 @app.route('/salvar_preco', methods=['POST'])
 def salvar_preco():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         # Mudança: INSERT OR REPLACE alterado para ON CONFLICT (produto_id) DO UPDATE para compatibilidade Neon
@@ -1105,22 +1218,24 @@ def salvar_preco():
                           preco_venda_final = EXCLUDED.preco_venda_final;
         ''', (
             int(request.form.get('produto_id') or 0), float(request.form.get('imposto_municipal') or 0), 
-            float(request.form.get('imposto_estadual') or 0), float(request.form.get('imposto_federal') or 0), 
+            float(request.form.get('imposto_estadual) or 0), float(request.form.get('imposto_federal') or 0), 
             float(request.form.get('margem_lucro') or 0), float(request.form.get('preco_venda_final') or 0)
         ))
         conn.commit()
+        flash('Preço de venda final definido e salvo estrategicamente!', 'success')
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao salvar preço no Neon: {e}")
+        logger.error(f"Erro ao salvar preço no Neon: {e}")
+        flash('Erro ao salvar formação de preços no banco de dados.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('precificacao'))
 
 @app.route('/vendas')
 def vendas():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('''
@@ -1143,15 +1258,20 @@ def vendas():
         peds = cursor.fetchall()
         
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar carteira de vendas: {e}")
+        prods = []
+        peds = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('vendas.html', produtos=prods, pedidos=peds, caixa_disponivel=caixa, capital_inicial=total)
 
 @app.route('/estoque')
 def estoque():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('''
@@ -1173,9 +1293,14 @@ def estoque():
         peds = cursor.fetchall()
         
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao processar visão de estoque: {e}")
+        itens = []
+        peds = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('estoque.html', estoque_itens=itens, pedidos=peds, caixa_disponivel=caixa, capital_inicial=total)
 @app.route('/lancar_venda', methods=['POST'])
@@ -1183,7 +1308,7 @@ def lancar_venda():
     prod_id = int(request.form.get('produto_id') or 0)
     qtd = int(request.form.get('quantidade') or 1)
     
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT quantidade_disponivel FROM estoque_produtos WHERE produto_id = %s', (prod_id,))
@@ -1192,52 +1317,60 @@ def lancar_venda():
         
         if estoque_atual >= qtd:
             cursor.execute('UPDATE estoque_produtos SET quantidade_disponivel = quantidade_disponivel - %s WHERE produto_id = %s', (qtd, prod_id))
-            cursor.execute('INSERT INTO pedidos_vendas (produto_id, quantidade, desconto_percentual, observacoes) VALUES (%s, %s, 0, \'Pronta Entrega - Faturado\')', (prod_id, qtd))
+            cursor.execute('INSERT INTO pedidos_vendas (produto_id, quantity, desconto_percentual, observacoes) VALUES (%s, %s, 0, \'Pronta Entrega - Faturado\')', (prod_id, qtd))
         else:
-            cursor.execute('INSERT INTO pedidos_vendas (produto_id, quantidade, desconto_percentual, observacoes) VALUES (%s, %s, 0, \'SOB ENCOMENDA - Fila PCP\')', (prod_id, qtd))
+            cursor.execute('INSERT INTO pedidos_vendas (produto_id, quantity, desconto_percentual, observacoes) VALUES (%s, %s, 0, \'SOB ENCOMENDA - Fila PCP\')', (prod_id, qtd))
         conn.commit()
+        flash('Movimentação comercial lançada com sucesso!', 'success')
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao lançar transação comercial: {e}")
+        logger.error(f"Erro ao lançar transação comercial: {e}")
+        flash('Erro ao processar o lançamento da venda.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('vendas'))
 
 @app.route('/deletar_venda/<int:id>', methods=['POST'])
 def deletar_venda(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('DELETE FROM pedidos_vendas WHERE id = %s', (id,))
         conn.commit()
+        flash('Pedido de venda cancelado com sucesso.', 'success')
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao deletar venda no Neon: {e}")
+        logger.error(f"Erro ao deletar venda no Neon: {e}")
+        flash('Erro ao tentar excluir o registro de venda.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('vendas'))
 
 @app.route('/pcp')
 def pcp():
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT id, pedido_id, numero_operacao, maquina_name, codigo_produto, nome_produto, data_entrada, tempo_estimado_min, data_saida, operador_nome, status, custo_operacao FROM ordens_processo ORDER BY pedido_id ASC, id ASC')
         ords = cursor.fetchall()
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao processar painel de PCP: {e}")
+        ords = []
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return render_template('pcp.html', ordens=ords, caixa_disponivel=caixa, capital_inicial=total)
 
 @app.route('/solicitar_producao_pcp/<int:pedido_id>', methods=['POST'])
 def solicitar_producao_pcp(pedido_id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT id FROM ordens_processo WHERE pedido_id = %s', (pedido_id,))
@@ -1261,7 +1394,7 @@ def solicitar_producao_pcp(pedido_id):
                 tempo_setup_fixo = 15
                 
                 for idx, r in enumerate(rots):
-                    # Relação posicional: r[4] = tempo_processo_min, r[6] = nome_equipamento, r[7] = custo_minuto_maquina, r[8] = operador_nome
+                    # Relação posicional: r = tempo_processo_min, r = nome_equipamento, r = custo_minuto_maquina, r = operador_nome
                     tempo_lote_min = (float(r[4] or 0) * qtd_ped) + tempo_setup_fixo
                     custo_total_operacao = tempo_lote_min * float(r[7] or 0.15)
                     status_inicial = "Na Fila [GARGALO OPERACIONAL]" if tempo_lote_min > 480 else "Na Fila"
@@ -1280,11 +1413,11 @@ def solicitar_producao_pcp(pedido_id):
             flash('Ordem de Produção transmitida com sucesso para o painel do PCP!', 'success')
     except Exception as e:
         conn.rollback()
-        print(f"Erro no agendamento do PCP no Neon: {e}")
+        logger.error(f"Erro no agendamento do PCP no Neon: {e}")
         flash('Erro operacional ao processar ordens.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('estoque'))
 
@@ -1294,7 +1427,7 @@ def abastecer_estoque_pcp():
     pedido_id = int(request.form.get('pedido_id') or 0)
     qtd = float(request.form.get('quantidade_abastecer') or 0)
     
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         # Checa se existem operações pendentes para travar no Bloqueio de Qualidade pedagógico
@@ -1321,31 +1454,34 @@ def abastecer_estoque_pcp():
         flash('Recebimento efetuado e integrado com sucesso ao estoque disponível.', 'success')
     except Exception as e:
         conn.rollback()
-        print(f"Erro no almoxarifado do Neon: {e}")
+        logger.error(f"Erro no almoxarifado do Neon: {e}")
+        flash('Erro operacional ao processar abastecimento de estoque.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     return redirect(url_for('estoque'))
 
 @app.route('/dar_baixa_op/<int:id>', methods=['POST'])
 def dar_baixa_op(id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('UPDATE ordens_processo SET operador_nome = %s, status = \'Finalizado\' WHERE id = %s', (request.form.get('operador_nome', 'Operador'), id))
         conn.commit()
+        flash('Ordem de Processo finalizada com sucesso!', 'success')
     except Exception as e:
         conn.rollback()
-        print(f"Erro ao baixar OP no Neon: {e}")
+        logger.error(f"Erro ao baixar OP no Neon: {e}")
+        flash('Erro ao tentar dar baixa na Ordem de Processo.', 'danger')
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
     return redirect(url_for('pcp'))
 
 @app.route('/imprimir_nf/<int:pedido_id>')
 def imprimir_nf(pedido_id):
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         # Mapeamento estrito das colunas da junção comercial
@@ -1358,9 +1494,12 @@ def imprimir_nf(pedido_id):
             WHERE pv.id = %s
         ''', (pedido_id,))
         row = cursor.fetchone()
+    except Exception as e:
+        logger.error(f"Erro ao buscar nota fiscal no Neon: {e}")
+        row = None
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     if not row: 
         return "Nota Fiscal não encontrada."
@@ -1388,7 +1527,7 @@ def financeiro():
     if not session.get('logado'):
         return redirect(url_for('index'))
     
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT COALESCE(SUM(fp.preco_venda_final * pv.quantidade), 0) FROM pedidos_vendas pv JOIN formacao_precos fp ON pv.produto_id = fp.produto_id')
@@ -1401,9 +1540,15 @@ def financeiro():
         impostos_vendas = float(cursor.fetchone()[0] or 0.0)
         
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao carregar módulo financeiro: {e}")
+        faturamento_bruto = 0.0
+        despesa_pessoal_bruta = 0.0
+        impostos_vendas = 0.0
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     total_encargos = impostos_vendas + (despesa_pessoal_bruta * 0.20)
     
@@ -1425,7 +1570,7 @@ def roi():
     if not session.get('logado'):
         return redirect(url_for('index'))
         
-    conn = get_db_connection()
+    conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
         cursor.execute('SELECT COALESCE(SUM(fp.preco_venda_final * pv.quantidade), 0), COALESCE(SUM(pv.quantidade), 0) FROM pedidos_vendas pv JOIN formacao_precos fp ON pv.produto_id = fp.produto_id')
@@ -1438,9 +1583,15 @@ def roi():
         despesa_pessoal = float(cursor.fetchone()[0] or 0.0)
         
         caixa, total = calcular_caixa_disponivel(conn)
+    except Exception as e:
+        logger.error(f"Erro ao calcular métricas de ROI: {e}")
+        v_dados = [0.0, 0.0]
+        invs = [0.0, 0.0]
+        despesa_pessoal = 0.0
+        caixa, total = 0.0, 0.0
     finally:
         cursor.close()
-        release_db_connection(conn)
+        conexao_pool.putconn(conn)
         
     rec = float(v_dados[0] or 0.0)
     pecas = float(v_dados[1] or 0.0)
