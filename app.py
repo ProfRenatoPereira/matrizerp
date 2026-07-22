@@ -155,6 +155,15 @@ def logout():
     flash('Sessão encerrada.', 'info')
     return redirect(url_for('index'))
 
+    # ... fim da rota anterior (ex: login ou logout)
+    return redirect(url_for('index'))
+
+@app.route('/salvar_estrutura', methods=['POST'])
+def salvar_estrutura():
+    if not session.get('logado'):
+        return redirect(url_for('index'))
+    return estrutura()
+
 @app.route('/estrutura', methods=['GET', 'POST'])
 def estrutura():
     if not session.get('logado'):
