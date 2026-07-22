@@ -59,7 +59,6 @@ CATALOGO_MATERIAIS = {
     "Alumínio 6061": {"cod": "MAT-ALU-6061", "nome": "Tarugo de Alumínio Naval 6061-T6", "preco": 85.00, "dim": "Ø 4\" x 500mm", "vol": 80.0},
     "Polímero Nylon 6.6": {"cod": "MAT-NYLON-66", "nome": "Tarugo de Nylon 6.6 Técnico", "preco": 35.00, "dim": "Ø 50mm x 1000mm", "vol": 120.0}
 }
-
 DATABASE_URL = os.environ.get("DATABASE_URL")
 try:
     if DATABASE_URL:
@@ -297,7 +296,6 @@ def imprimir_holerite(id):
         cursor.close()
         conexao_pool.putconn(conn)
     return render_template('holerite.html', holerite=holerite)
-
 @app.route('/almoxarifado', methods=['GET', 'POST'])
 def almoxarifado():
     if not session.get('logado'):
@@ -319,7 +317,7 @@ def almoxarifado():
                 else:
                     cursor.execute('INSERT INTO materiais (codigo_material, nome_material, preco_unidade, dimensoes, volume_disponivel) VALUES (%s, %s, %s, %s, %s);', (mat['cod'], mat['nome'], mat['preco'], mat['dim'], qtd))
                 conn.commit()
-                flash('Almoxarifado updated!', 'success')
+                flash('Almoxarifado atualizado!', 'success')
         cursor.execute("SELECT id, codigo_material, nome_material, preco_unidade, dimensoes, volume_disponivel FROM materiais ORDER BY id ASC;")
         estoque = cursor.fetchall()
         caixa, total = calcular_caixa_disponivel(conn)
@@ -332,9 +330,6 @@ def almoxarifado():
         cursor.close()
         conexao_pool.putconn(conn)
     return render_template('almoxarifado.html', estoque=estoque, catalogo=CATALOGO_MATERIAIS, caixa_disponivel=caixa, capital_inicial=total)
-# ==============================================================================
-# ENGENHARIA, COMERCIAL, PLANEJAMENTO E GESTÃO PROFESSOR
-# ==============================================================================
 
 @app.route('/produtos', methods=['GET', 'POST'])
 def produtos():
@@ -411,7 +406,6 @@ def faturar_pedido(id):
         cursor.close()
         conexao_pool.putconn(conn)
     return redirect(url_for('vendas'))
-
 @app.route('/pcp', methods=['GET', 'POST'])
 def pcp():
     if not session.get('logado'): return redirect(url_for('index'))
@@ -450,6 +444,31 @@ def pcp():
         conexao_pool.putconn(conn)
     return render_template('pcp.html', ordens=ordens, pedidos=p_pend, maquinas=maqs, caixa_disponivel=caixa, capital_inicial=total)
 
+# CANAL 1: Função exclusiva para processar o cadastro de novas equipes (Fim dos Resets Acidentais)
+@app.route('/professor/cadastrar', methods=['POST'])
+def professor_cadastrar_equipe():
+    conn = conexao_pool.getconn()
+    cursor = conn.cursor()
+    try:
+        u = request.form.get('novo_usuario')
+        s = request.form.get('nova_senha')
+        if u and s:
+            cursor.execute("INSERT INTO usuarios (usuario, senha) VALUES (%s, %s) ON CONFLICT DO NOTHING;", (u, generate_password_hash(s)))
+            conn.commit()
+            flash(f"Nova equipe '{u}' cadastrada com sucesso!", "success")
+        else:
+            flash("Erro: Usuário e senha são obrigatórios para o cadastro da equipe.", "danger")
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        logger.error(f"Erro ao cadastrar nova equipe: {e}")
+        flash("Ocorreu um erro interno ao tentar registrar a equipe.", "danger")
+    finally:
+        cursor.close()
+        conexao_pool.putconn(conn)
+    return redirect(url_for('professor_painel_secreto'))
+
+# CANAL 2: Função dedicada estritamente à visualização e ações de reset estrutural
 @app.route('/professor/resetar', methods=['GET', 'POST'])
 @app.route('/professor_painel_secreto', methods=['GET', 'POST'])
 def professor_painel_secreto():
@@ -463,19 +482,14 @@ def professor_painel_secreto():
                 TRUNCATE TABLE 
                     usuarios, investimentos_imobiliarios, maquinas, materiais, produtos, 
                     estrutura_produto, formacao_precos, pedidos_vendas, ordens_processo, 
-                    estoque_produtos, alunos, turmas, disciplines, boletim 
+                    estoque_produtos, alunos, turmas, disciplinas, boletim 
                 RESTART IDENTITY CASCADE;
             """)
             cursor.execute("INSERT INTO usuarios (usuario, senha) VALUES (%s, %s) ON CONFLICT DO NOTHING;", ("admin", generate_password_hash("admin123")))
             conn.commit()
             flash("Ambiente de Simulação e tabelas pedagógicas resetados com sucesso!", "danger")
-        elif acao == 'CRIAR_EQUIPE' and request.method == 'POST':
-            u = request.form.get('novo_usuario')
-            s = request.form.get('nova_senha')
-            if u and s:
-                cursor.execute("INSERT INTO usuarios (usuario, senha) VALUES (%s, %s) ON CONFLICT DO NOTHING;", (u, generate_password_hash(s)))
-                conn.commit()
-                flash(f"Equipe estudantil '{u}' registrada!", "success")
+            return redirect(url_for('professor_painel_secreto'))
+            
         cursor.execute("SELECT id, usuario FROM usuarios ORDER BY id ASC;")
         usuarios = cursor.fetchall()
     except Exception as e:
