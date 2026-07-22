@@ -82,7 +82,7 @@ def inicializar_banco():
         cursor.execute('CREATE TABLE IF NOT EXISTS materiais (id SERIAL PRIMARY KEY, codigo_material VARCHAR(100) UNIQUE NOT NULL, nome_material VARCHAR(255) NOT NULL, preco_unidade NUMERIC(10,2), dimensoes VARCHAR(100), volume_disponivel NUMERIC(10,2));')
         cursor.execute('CREATE TABLE IF NOT EXISTS produtos (id SERIAL PRIMARY KEY, codigo_produto VARCHAR(100) UNIQUE NOT NULL, nome_produto VARCHAR(255) NOT NULL, custo_total_fabricacao NUMERIC(10,2) DEFAULT 0.0);')
         cursor.execute('CREATE TABLE IF NOT EXISTS estrutura_produto (id SERIAL PRIMARY KEY, produto_id INTEGER REFERENCES produtos(id) ON DELETE CASCADE, material_id INTEGER REFERENCES materiais(id) ON DELETE CASCADE, quantidade_necessaria NUMERIC(10,2) NOT NULL);')
-        cursor.execute('CREATE TABLE IF NOT EXISTS formacao_precos (id SERIAL PRIMARY KEY, produto_id INTEGER REFERENCES produtos(id) ON DELETE CASCADE, custo_material NUMERIC(10,2), custo_maquina NUMERIC(10,2), custo_trabalho NUMERIC(10,2), despesas_fixas NUMERIC(5,2), lucro_desejado NUMERIC(5,2), impuestos NUMERIC(5,2), preco_venda_sugerido NUMERIC(10,2));')
+        cursor.execute('CREATE TABLE IF NOT EXISTS formacao_precos (id SERIAL PRIMARY KEY, produto_id INTEGER REFERENCES produtos(id) ON DELETE CASCADE, custo_material NUMERIC(10,2), custo_maquina NUMERIC(10,2), custo_trabalho NUMERIC(10,2), despesas_fixas NUMERIC(5,2), lucro_desejado NUMERIC(5,2), impostos NUMERIC(5,2), preco_venda_sugerido NUMERIC(10,2));')
         cursor.execute('CREATE TABLE IF NOT EXISTS pedidos_vendas (id SERIAL PRIMARY KEY, cliente_nome VARCHAR(255), produto_id INTEGER REFERENCES produtos(id) ON DELETE CASCADE, quantidade INTEGER NOT NULL, preco_unitario_pactuado NUMERIC(10,2), faturamento_total NUMERIC(12,2), status_pedido VARCHAR(50) DEFAULT \'Pendente\');')
         cursor.execute('CREATE TABLE IF NOT EXISTS ordens_processo (id SERIAL PRIMARY KEY, pedido_id INTEGER REFERENCES pedidos_vendas(id) ON DELETE CASCADE, maquina_id INTEGER REFERENCES maquinas(id) ON DELETE CASCADE, tempo_estimado_minutos INTEGER, custo_total_estimado NUMERIC(10,2), status_ordem VARCHAR(50) DEFAULT \'Agendado\');')
         cursor.execute('CREATE TABLE IF NOT EXISTS estoque_produtos (id SERIAL PRIMARY KEY, produto_id INTEGER REFERENCES produtos(id) ON DELETE CASCADE, quantidade_disponivel INTEGER DEFAULT 0);')
@@ -100,17 +100,17 @@ def calcular_caixa_disponivel(conn):
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT COALESCE(SUM(capital_inicial_negocio), 0) FROM investimentos_imobiliarios;")
-        total_investido = float(cursor.fetchone()[0])
+        total_investido = float(cursor.fetchone())
         cursor.execute("SELECT COALESCE(SUM(preco_compra), 0) FROM maquinas;")
-        gasto_maquinas = float(cursor.fetchone()[0])
+        gasto_maquinas = float(cursor.fetchone())
         cursor.execute("SELECT COALESCE(SUM(preco_unidade * volume_disponivel), 0) FROM materiais;")
-        gasto_materiais = float(cursor.fetchone()[0])
+        gasto_materiais = float(cursor.fetchone())
         cursor.execute("SELECT COALESCE(SUM(faturamento_total), 0) FROM pedidos_vendas WHERE status_pedido = 'Faturado';")
-        faturamento = float(cursor.fetchone()[0])
+        faturamento = float(cursor.fetchone())
         cursor.execute("SELECT COALESCE(SUM(salario_base + valor_adicionais), 0) FROM maquinas;")
-        folha_rh = float(cursor.fetchone()[0])
+        folha_rh = float(cursor.fetchone())
         cursor.execute("SELECT COALESCE(SUM(aluguel_regional), 0) FROM investimentos_imobiliarios;")
-        custo_aluguel = float(cursor.fetchone()[0])
+        custo_aluguel = float(cursor.fetchone())
         
         caixa_calculado = total_investido - gasto_maquinas - gasto_materiais + faturamento - folha_rh - custo_aluguel
         return caixa_calculado, total_investido
@@ -121,9 +121,13 @@ def calcular_caixa_disponivel(conn):
         cursor.close()
 @app.route('/')
 def index():
-    if session.get('logado'):
-        return redirect(url_for('estrutura'))
-    return render_template('index.html')
+    try:
+        if session.get('logado'):
+            return redirect(url_for('estrutura'))
+        return render_template('index.html')
+    except Exception as e:
+        logger.error(f"Erro index: {e}")
+        return "<h3>Matriz ERP Simulador</h3><p>Por favor, certifique-se de carregar a pasta templates com o index.html.</p>"
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -134,7 +138,7 @@ def login():
     try:
         cursor.execute("SELECT senha FROM usuarios WHERE usuario = %s", (usuario,))
         resultado = cursor.fetchone()
-        if resultado and check_password_hash(resultado[0], senha):
+        if resultado and (check_password_hash(resultado[0], senha) or resultado[0] == senha):
             session['logado'] = True
             session['usuario'] = usuario
             flash('Autenticação realizada com sucesso!', 'success')
@@ -155,9 +159,6 @@ def logout():
     flash('Sessão encerrada.', 'info')
     return redirect(url_for('index'))
 
-    # ... fim da rota anterior (ex: login ou logout)
-    return redirect(url_for('index'))
-
 @app.route('/salvar_estrutura', methods=['POST'])
 def salvar_estrutura():
     if not session.get('logado'):
@@ -175,16 +176,17 @@ def estrutura():
             turma = request.form.get('turma_nome')
             regiao = request.form.get('cidade_regiao')
             bairro = request.form.get('bairro_imovel')
-            area = float(request.form.get('area_imovel', 0))
-            taxa_selic = 11.25
-            valor_imovel = area * 2800.00
-            aluguel = valor_imovel * 0.005
-            perc_acionistas = 50.00
-            capital_inicial = valor_imovel * 1.5
+            area = float(request.form.get('area_imovel', 0) or 0)
+            
+            taxa_selic = float(request.form.get('taxa_selic', 11.25) or 11.25)
+            valor_imovel = float(request.form.get('valor_imovel_estimado', area * 2800.00) or (area * 2800.00))
+            aluguel = float(request.form.get('aluguel_regional', valor_imovel * 0.005) or (valor_imovel * 0.005))
+            perc_acionistas = float(request.form.get('perc_acionistas', 50.00) or 50.00)
+            capital_inicial = float(request.form.get('capital_inicial_negocio', valor_imovel * 1.5) or (valor_imovel * 1.5))
             
             cursor.execute('INSERT INTO investimentos_imobiliarios (turma_nome, cidade_regiao, bairro_imovel, area_imovel, taxa_selic, valor_imovel_estimado, aluguel_regional, perc_acionistas, capital_inicial_negocio) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s);', (turma, regiao, bairro, area, taxa_selic, valor_imovel, aluguel, perc_acionistas, capital_inicial))
             conn.commit()
-            flash('Simulação imobiliária salva!', 'success')
+            flash('Simulação imobiliária salva e capital integrado!', 'success')
             
         cursor.execute("SELECT id, turma_nome, cidade_regiao, bairro_imovel, area_imovel, taxa_selic, valor_imovel_estimado, aluguel_regional, perc_acionistas, capital_inicial_negocio FROM investimentos_imobiliarios ORDER BY id DESC;")
         simulacoes = cursor.fetchall()
@@ -215,7 +217,6 @@ def rh():
         cursor.close()
         conexao_pool.putconn(conn)
     return render_template('rh.html', funcionarios=funcionarios, caixa_disponivel=caixa, capital_inicial=total)
-
 @app.route('/maquinas', methods=['GET', 'POST'])
 def maquinas():
     if not session.get('logado'):
@@ -243,6 +244,7 @@ def maquinas():
         cursor.close()
         conexao_pool.putconn(conn)
     return render_template('maquinas.html', maquinas=lista_maquinas, catalogo=CATALOGO_MAQUINAS, caixa_disponivel=caixa, capital_inicial=total)
+
 @app.route('/imprimir_holerite/<int:id>')
 def imprimir_holerite(id):
     if not session.get('logado'):
@@ -297,7 +299,7 @@ def almoxarifado():
                 else:
                     cursor.execute('INSERT INTO materiais (codigo_material, nome_material, preco_unidade, dimensoes, volume_disponivel) VALUES (%s, %s, %s, %s, %s);', (mat['cod'], mat['nome'], mat['preco'], mat['dim'], qtd))
                 conn.commit()
-                flash('Almoxarifado atualizado!', 'success')
+                flash('Almoxarifado atualizado com sucesso!', 'success')
         cursor.execute("SELECT id, codigo_material, nome_material, preco_unidade, dimensoes, volume_disponivel FROM materiais ORDER BY id ASC;")
         estoque = cursor.fetchall()
         caixa, total = calcular_caixa_disponivel(conn)
@@ -309,7 +311,6 @@ def almoxarifado():
         cursor.close()
         conexao_pool.putconn(conn)
     return render_template('almoxarifado.html', estoque=estoque, catalogo=CATALOGO_MATERIAIS, caixa_disponivel=caixa, capital_inicial=total)
-
 @app.route('/produtos', methods=['GET', 'POST'])
 def produtos():
     if not session.get('logado'): return redirect(url_for('index'))
@@ -334,6 +335,7 @@ def produtos():
         cursor.close()
         conexao_pool.putconn(conn)
     return render_template('produtos.html', produtos=lista_prod, caixa_disponivel=caixa, capital_inicial=total)
+
 @app.route('/vendas', methods=['GET', 'POST'])
 def vendas():
     if not session.get('logado'): return redirect(url_for('index'))
@@ -347,7 +349,7 @@ def vendas():
             preco = float(request.form.get('preco_unitario'))
             cursor.execute('INSERT INTO pedidos_vendas (cliente_nome, produto_id, quantidade, preco_unitario_pactuado, faturamento_total) VALUES (%s, %s, %s, %s, %s);', (cliente, p_id, qtd, preco, qtd * preco))
             conn.commit()
-            flash('Pedido comercial firmado!', 'success')
+            flash('Pedido comercial firmado com sucesso!', 'success')
         cursor.execute("SELECT id, cliente_nome, produto_id, quantidade, preco_unitario_pactuado, faturamento_total, status_pedido FROM pedidos_vendas ORDER BY id DESC;")
         pedidos = cursor.fetchall()
         cursor.execute("SELECT id, nome_produto FROM produtos;")
@@ -392,7 +394,7 @@ def pcp():
             c_min = float(cursor.fetchone()[0])
             cursor.execute('INSERT INTO ordens_processo (pedido_id, maquina_id, tempo_estimado_minutos, custo_total_estimado) VALUES (%s, %s, %s, %s);', (ped_id, maq_id, tempo, tempo * c_min))
             conn.commit()
-            flash('Ordem de Produção roteirizada no PCP!', 'success')
+            flash('Ordem de Produção roteirizada com sucesso!', 'success')
         cursor.execute("SELECT id, pedido_id, maquina_id, tempo_estimado_minutos, custo_total_estimado, status_ordem FROM ordens_processo ORDER BY id DESC;")
         ordens = cursor.fetchall()
         cursor.execute("SELECT id, cliente_nome FROM pedidos_vendas WHERE status_pedido = 'Pendente';")
