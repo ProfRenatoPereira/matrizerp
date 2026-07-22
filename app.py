@@ -449,27 +449,41 @@ def pcp():
 
 # CANAL 1: Função exclusiva para processar o cadastro de novas equipes (Fim dos Resets Acidentais)
 # CANAL 1: Função exclusiva para processar o cadastro de novas equipes
+# CANAL 1: Função exclusiva para processar o cadastro de novas equipes
 @app.route('/professor/cadastrar', methods=['POST'])
 def professor_cadastrar_equipe():
     conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
-        # Busca pelos nomes padrões utilizados no back-end
-        u = request.form.get('novo_usuario')
-        s = request.form.get('nova_senha')
+        # Pega TODOS os dados enviados pelo formulário em formato de dicionário
+        dados = request.form.to_dict()
+        logger.info(f"Dados recebidos do HTML: {dados}")
         
-        # CORREÇÃO: Caso o seu professor.html use nomes alternativos nos inputs, captura eles aqui
-        if not u:
-            u = request.form.get('usuario') or request.form.get('nome_usuario') or request.form.get('login')
-        if not s:
-            s = request.form.get('senha') or request.form.get('senha_usuario') or request.form.get('senha_acesso')
-            
+        u = None
+        s = None
+        
+        # Procura de forma inteligente qualquer campo que lembre usuário ou senha
+        for chave, valor in dados.items():
+            chave_lower = chave.lower()
+            if 'user' in chave_lower or 'nome' in chave_lower or 'login' in chave_lower:
+                u = valor
+            elif 'senha' in chave_lower or 'pass' in chave_lower or 'code' in chave_lower:
+                s = valor
+
+        # Se a busca inteligente falhar, tenta pegar pela ordem dos campos (primeiro e segundo)
+        if not u or not s:
+            valores = list(dados.values())
+            if len(valores) >= 2:
+                u = valores[0]
+                s = valores[1]
+
         if u and s:
             cursor.execute("INSERT INTO usuarios (usuario, senha) VALUES (%s, %s) ON CONFLICT DO NOTHING;", (u.strip(), generate_password_hash(s)))
             conn.commit()
             flash(f"Nova equipe '{u}' cadastrada com sucesso!", "success")
         else:
-            flash("Erro: Usuário e senha são obrigatórios para o cadastro de equipe.", "danger")
+            flash("Erro: Não foi possível identificar os campos de usuário e senha no formulário.", "danger")
+            
     except Exception as e:
         if conn:
             conn.rollback()
