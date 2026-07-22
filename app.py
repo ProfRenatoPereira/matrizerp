@@ -123,7 +123,7 @@ def calcular_caixa_disponivel(conn):
 def index():
     if session.get('logado'):
         return redirect(url_for('estrutura'))
-    return render_template('index.html')
+    return render_template('login.html')
 
 @app.route('/login', methods=['POST'])
 def login():
