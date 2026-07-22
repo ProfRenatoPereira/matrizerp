@@ -448,19 +448,28 @@ def pcp():
     return render_template('pcp.html', ordens=ordens, pedidos=p_pend, maquinas=maqs, caixa_disponivel=caixa, capital_inicial=total)
 
 # CANAL 1: Função exclusiva para processar o cadastro de novas equipes (Fim dos Resets Acidentais)
+# CANAL 1: Função exclusiva para processar o cadastro de novas equipes
 @app.route('/professor/cadastrar', methods=['POST'])
 def professor_cadastrar_equipe():
     conn = conexao_pool.getconn()
     cursor = conn.cursor()
     try:
+        # Busca pelos nomes padrões utilizados no back-end
         u = request.form.get('novo_usuario')
         s = request.form.get('nova_senha')
+        
+        # CORREÇÃO: Caso o seu professor.html use nomes alternativos nos inputs, captura eles aqui
+        if not u:
+            u = request.form.get('usuario') or request.form.get('nome_usuario') or request.form.get('login')
+        if not s:
+            s = request.form.get('senha') or request.form.get('senha_usuario') or request.form.get('senha_acesso')
+            
         if u and s:
-            cursor.execute("INSERT INTO usuarios (usuario, senha) VALUES (%s, %s) ON CONFLICT DO NOTHING;", (u, generate_password_hash(s)))
+            cursor.execute("INSERT INTO usuarios (usuario, senha) VALUES (%s, %s) ON CONFLICT DO NOTHING;", (u.strip(), generate_password_hash(s)))
             conn.commit()
             flash(f"Nova equipe '{u}' cadastrada com sucesso!", "success")
         else:
-            flash("Erro: Usuário e senha são obrigatórios para o cadastro da equipe.", "danger")
+            flash("Erro: Usuário e senha são obrigatórios para o cadastro de equipe.", "danger")
     except Exception as e:
         if conn:
             conn.rollback()
