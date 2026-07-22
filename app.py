@@ -148,6 +148,8 @@ def login():
     try:
         cursor.execute("SELECT senha FROM usuarios WHERE usuario = %s", (usuario,))
         resultado = cursor.fetchone()
+        
+        # CORREÇÃO APLICADA: acessando o índice [0] da tupla para pegar o hash correto
         if resultado and check_password_hash(resultado[0], senha):
             session['logado'] = True
             session['usuario'] = usuario
@@ -157,6 +159,7 @@ def login():
             flash('Credenciais de acesso incorretas.', 'danger')
             return redirect(url_for('index'))
     except Exception as e:
+        logger.error(f"Erro na autenticação: {e}")
         flash('Erro interno ao processar a autenticação.', 'danger')
         return redirect(url_for('index'))
     finally:
@@ -269,7 +272,7 @@ def imprimir_holerite(id):
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT nome_equipamento, operador_nome, salario_base, valor_adicionais, turno_trabalho FROM maquinas WHERE id = %s;", (id,))
-        func = cursor.fetchone()
+        func = ()
         if not func:
             return redirect(url_for('rh'))
         sb = float(func[2])
